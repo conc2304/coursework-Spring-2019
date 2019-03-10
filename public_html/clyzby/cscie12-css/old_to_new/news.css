@@ -1,0 +1,93 @@
+/* news.css */
+
+/* clear browser default margins*/
+h1, h2, h3, h4, img, p, span, a, ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 11px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #3D4D7A;
+}
+
+.squeeze {
+  width: 80%;
+  margin: 0 auto;
+}
+
+a, a:link, a:active, a:hover , a:focus, a:visited {
+  color: #00207A;
+  text-decoration: underline;
+}
+
+header {
+  background-color: #00207A;
+  color: #fff;
+  padding: 10px;
+}
+
+#hero {
+  margin: 0 auto 10px;
+  text-align: center;
+}
+
+.hero a, .hero h1 {
+  display: inline-block;
+  vertical-align: top;
+}
+
+h1 {
+  font-size: 3em;
+  margin: 0;
+}
+
+h2 {
+  font-style: italic;
+  margin: 12px 0 12px;
+
+}
+
+ul, li {
+  list-style: none;
+  display: inline-block;
+}
+
+#news-feed {
+  background-color: #fff;
+  padding: 5px;
+}
+
+.blurb, .read-more, .date {
+  font-family: "Times New Roman", Times, serif;
+}
+
+.headline {
+  font-size: 2em;
+  color: #990000;
+  margin: 0 0 12px;
+}
+
+.blurb, .read-more {
+  font-size: 1.4em;
+}
+
+.date {
+  margin-top: 1em;
+  font-style: italic;
+  font-size: 1.2em;
+}
+
+.article-snapshot{
+  width: 100%;
+  padding: 10px 0 ;
+  border-bottom: 2px solid rgb(128, 128, 128);
+}
+
+.article-snapshot:last-child{
+  border: 0;
+}

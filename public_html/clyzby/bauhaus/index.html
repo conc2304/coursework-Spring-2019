@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css" type="text/css"
+        rel="stylesheet" media="screen,projection"/>
+
+</head>
+<body>
+
+<h1 class="center">Bauhaus Assignment</h1>
+
+<div id="p5-container"></div>
+<div class="container">
+
+</div>
+
+<div class="container">
+  <div class="row">
+
+
+  </div>
+</div>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.js"></script>
+<script src="/~jconchel/clyzby/files/@custom/js/bauhausElements.js"></script>
+<script src="/~jconchel/clyzby/files/@custom/js/bauhausSketch.js"></script>
+<script src="/~jconchel/clyzby/files/@custom/js/bauhausShapes.js"></script>
+<script>
+  window.addEventListener("keydown", function(e) {
+    // space and arrow keys
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+      e.preventDefault();
+    }
+  }, false);
+</script>
+
+</body>
+</html>
+
+<style>
+
+  p.description {
+    text-indent: 30px;
+  }
+
+  .img-container {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  #p5-container {
+    margin: 0 auto;
+    text-align: center;
+  }
+</style>
+

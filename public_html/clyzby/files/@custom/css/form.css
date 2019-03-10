@@ -1,0 +1,21 @@
+fieldset {
+  background-color: #c7facc;
+}
+
+/*indicate that we are closed*/
+fieldset.closed-color {
+  background-color: #eba3a6;
+}
+
+legend {
+  font-size: 2em;
+}
+
+.price-total {
+  width: 50%;
+  margin: 0 auto 1em;
+}
+
+.table-totals {
+  text-align: right;
+}

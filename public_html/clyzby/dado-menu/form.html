@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Dado Tea | Lunch Specials</title>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <meta name="author" content="Jose Conchello">
+  <meta name="description" content="Assignment: Basic HTML5 Markup">
+  <meta name="keywords" content="html,Markup">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css" type="text/css"
+        rel="stylesheet" media="screen"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="/~jconchel/clyzby/files/@custom/css/form.css" rel="stylesheet" media="screen">
+
+</head>
+<body>
+
+
+<section id="header-wrapper" class="section teal teal-lighten-2">
+  <header class="containe white-text">
+    <br><br>
+    <h1 class="center">Dado Tea</h1>
+    <h5 class="center">Lunch Specials</h5>
+    <p class="center">Monday through Friday 11:00 AM - 3:00 PM</p>
+    <p class="center specials-price">$
+      <span id="base-price">9.95</span>
+      <small> + tax</small>
+      Includes : Sandwich, Snack, and Drink
+    </p>
+  </header>
+</section>
+
+<section class="section">
+  <div class="closed hide container center red-text">
+    <h3 id="closed-message">We are closed for the day</h3>
+    <p>Please come back when we are open</p>
+    <button id="dado-opener" class="btn waves-effect waves-light center">Open Restaurant</button>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container form-wrapper">
+    <form id="dado-lunch-order-form" action="https://cscie12.dce.harvard.edu/echo" method="post">
+
+      <fieldset id="order-info">
+        <legend>Order Information</legend>
+        <div class="input-field col s6 m6 l6">
+          <input placeholder="A Hungry Person" id="name" name="name" type="text" class="validate" required>
+          <label for="name">Name</label>
+        </div>
+
+        <p>
+          <label>
+            <input name="order-type" value="Here" type="radio" class="validate" data-price="0" required/>
+            <span>Here</span>
+          </label>
+        </p>
+        <p>
+          <label>
+            <input name="order-type" value="To Go" type="radio" class="validate" data-price="0" required/>
+            <span>To Go</span>
+          </label>
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sandwiches</legend>
+
+        <div class="daily-special" data-day-num="1">
+          <h6>Monday</h6><span class="red-text availability hide">Not Available Today</span>
+          <p>
+            <label>
+              <input name="daily-special-choice" value="Tomato Mozzarella" type="radio" class="validate"
+                     data-price="9.95" required/>
+              <span>Tomato Mozzarella</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input name="daily-special-choice" value="Chicken Salad" type="radio" class="validate" data-price="9.95"
+                     required/>
+              <span>Chicken Salad</span>
+            </label>
+          </p>
+        </div>
+
+        <div class="daily-special" data-day-num="2">
+          <h6>Tuesday</h6><span class="red-text availability hide">Not Available Today</span>
+          <p>
+            <label>
+              <input name="daily-special-choice" value="Greek Salad Wrap" type="radio" class="validate"
+                     data-price="9.95" required/>
+              <span>Greek Salad Wrap</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input name="daily-special-choice" value="Toto Wrap" type="radio" class="validate" data-price="9.95"
+                     required/>
+              <span>Toto Wrap</span>
+            </label>
+          </p>
+        </div>
+
+        <div class="daily-special" data-day-num="3">
+          <h6>Wednesday</h6><span class="red-text availability hide">Not Available Today</span>
+          <p>
+            <label>
+              <input name="daily-special-choice" value="Red Pepper Hummus" type="radio" class="validate"
+                     data-price="9.95" required/>
+              <span>Red Pepper Hummus</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input name="daily-special-choice" value="Roasted Turkey" type="radio" class="validate" data-price="9.95"
+                     required/>
+              <span>Roasted Turkey</span>
+            </label>
+          </p>
+        </div>
+
+        <div class="daily-special" data-day-num="4">
+          <h6>Thursday</h6><span class="red-text availability hide">Not Available Today</span>
+          <p>
+            <label>
+              <input name="daily-special-choice" value="Carrot-Ginger Hummus Wrap" type="radio" class="validate"
+                     data-price="9.95" required/>
+              <span>Carrot-Ginger Hummus Wrap</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input name="daily-special-choice" value="Egg Salad" type="radio" class="validate" data-price="9.95"
+                     required/>
+              <span>Egg Salad</span>
+            </label>
+          </p>
+        </div>
+
+        <div class="daily-special" data-day-num="5">
+          <h6>Friday</h6><span class="red-text availability hide">Not Available Today</span>
+          <p>
+            <label>
+              <input name="daily-special-choice" value="Dado Wrap" type="radio" class="validate" data-price="9.95"
+                     required/>
+              <span>Dado Wrap</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input name="daily-special-choice" value="Tuna Salad" type="radio" class="validate" data-price="9.95"
+                     required/>
+              <span>Tuna Salad</span>
+            </label>
+          </p>
+        </div>
+
+        <hr>
+
+        <p>
+          <label>
+            <input name="gf-bread" type="checkbox" data-price="0.75"/>
+            <span>Gluten Free Bread <small>75&#65504; extra</small></span>
+          </label>
+        </p>
+
+
+      </fieldset>
+
+      <fieldset>
+        <legend>Snacks</legend>
+        <p>
+          <label>
+            <input name="snack-choice" value="Apple" type="radio" class="validate" data-price="0.00" required/>
+            <span>Apple</span>
+          </label>
+        </p>
+        <p>
+          <label>
+            <input name="snack-choice" value="Banana" type="radio" class="validate" data-price="0.00" required/>
+            <span>Banana</span>
+          </label>
+        </p>
+        <p>
+          <label>
+            <input name="snack-choice" value="Potato Chips" type="radio" class="validate" data-price="0.00" required/>
+            <span>Potato Chips</span>
+          </label>
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Drinks</legend>
+
+        <span>
+          <label>
+            <input name="drink-size" value="medium drink" type="radio" class="validate" data-price="0.00" checked required/>
+            <span>Medium</span>
+          </label>
+        </span>
+
+        <span>
+          <label>
+            <input name="drink-size" value="large drink" type="radio" class="validate" data-price="0.75" required/>
+            <span>Large <small>75&#65504; extra</small></span>
+          </label>
+        </span>
+
+        <div class="input-field">
+          <select id="drink-dropdown" name="drink-choice" size="5" required>
+            <optgroup label="Coffee">
+              <option value="Hot Regular Coffee" data-price="0.00" selected>Hot Regular Coffee</option>
+              <option value="Hot Decaf Coffee" data-price="0.00">Hot Decaf Coffee</option>
+              <option value="Iced Decaf Coffee" data-price="0.00">Iced Regular Coffee</option>
+              <option value="Iced Decaf Coffee" data-price="0.00">Iced Decaf Coffee</option>
+            </optgroup>
+            <optgroup label="Tea">
+              <option value="Hot Organic Peppermint" data-price="0.00">Hot Organic Peppermint</option>
+              <option value="Hot Sencha Green Tea" data-price="0.00">Hot Sencha Green Tea</option>
+              <option value="Hot Keemun Black Tea" data-price="0.00">Hot Keemun Black Tea</option>
+              <option value="Iced Sencha Green Tea" data-price="0.00">Iced Sencha Green Tea</option>
+              <option value="Iced Keemun Black Tea" data-price="10">Iced Keemun Black Tea</option>
+            </optgroup>
+            <optgroup label="Bubble Tea ($1.50 extra)">
+              <option value="Bubble Tea" data-price="1.50">Bubble Tea</option>
+            </optgroup>
+          </select>
+          <label>Drink Choices</label>
+        </div>
+
+      </fieldset>
+
+      <p class="red-text center"> * No Substitutions Allowed *</p>
+
+      <div class="price-total center">
+        <table>
+          <tbody>
+            <tr>
+              <td>Subtotal</td>
+              <td>
+                <h6 class="table-totals"><span>$</span><span id="cart-subtotal">0.00</span></h6>
+                <input class="hide" id="form-cart-subtotal" name="sub-total" value="0" type="text" readonly></td>
+            </tr>
+            <tr>
+              <td>tax (6.25%)</td>
+              <td>
+                <h6 class="table-totals"><span>$</span><span id="cart-tax">0.00</span></h6>
+                <input class="hide" id="form-cart-tax" name="tax" value="0" type="text" readonly></td>
+            </tr>
+            <tr>
+              <td>Total</td>
+              <td>
+                <h5 class="table-totals"><span>$</span><span id="cart-total">0.00</span></h5>
+                <input class="hide" id="form-cart-total" name="total" value="0" type="text" readonly></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <div class="button-wrapper center">
+        <button class="btn waves-effect waves-light center" type="submit" name="action">Place Order</button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!-- Material depends on Jquery to load -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.js"></script>
+<script src="/~jconchel/clyzby/files/@custom/js/dadoForm.js"></script>
+
+</body>
+</html>
+
+
+

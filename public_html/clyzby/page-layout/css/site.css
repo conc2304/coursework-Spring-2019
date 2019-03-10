@@ -1,0 +1,167 @@
+/* put your style below! */
+
+/* bad browser! stop being annoying*/
+* {
+  margin : 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+
+.right { float: right; }
+.left { float: left; }
+.clear { clear: both; }
+.center { text-align: center; }
+
+.column {
+  float: left;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 0.75rem;
+  min-height: 1px;
+  margin-left: auto;
+  left: auto;
+  right: auto;
+}
+
+.col3 { width: 25%;}
+.col4 { width: 33%;}
+.col6 { width: 50%;}
+.col12 { width: 100%;}
+
+
+/*justify and distribute the elements across the parent div*/
+.stretch-container {
+  text-align: justify;
+}
+
+.stretch-container:after {
+  content: '';
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0
+}
+
+li.stretch {
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+}
+
+.strech-container > li {
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+
+header {
+  width: 100%;
+  background-color: #cdfecd;
+  padding: 20px
+}
+
+nav {
+  width: 80%;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 1.7em;
+  margin-bottom: .75em;
+}
+
+h3 {
+  font-size: 1.2em;
+  margin-bottom: .5em;
+}
+
+
+aside {
+  padding: 5em
+}
+
+.aside-list {
+  padding: 1.5em;
+}
+
+.aside-list li {
+  margin: 0 0 .75em .75em;
+}
+
+
+article {
+  padding: 5em;
+}
+
+.plant-img {
+  padding: .75em ;
+}
+
+section {
+  padding-bottom: 1em;
+}
+
+p {
+  margin-bottom: .5em;
+}
+
+.footer-wrapper {
+  padding: .75em 2em;
+}
+
+footer {
+  border-bottom: 2em solid darkgreen;
+}
+
+/* ================================= */
+/* below are styles I've provided for the navigation bar and the footer.  No need to change these  */
+nav.sitenav ul {
+  list-style: none;
+}
+
+nav.sitenav li {
+  display: inline-block;
+  width: 8em;
+  text-align: center;
+}
+
+nav.sitenav a {
+  display: block;
+  font-weight: bold;
+}
+
+nav.sitenav a:link,
+nav.sitenav a:visited,
+nav.sitenav a:hover,
+nav.sitenav a:active {
+  color: green;
+  text-decoration: none;
+  border-bottom: thin solid transparent;
+}
+
+nav.sitenav a:hover {
+  border-bottom: thin solid green;
+}
+
+nav.sitenav li.youarehere a {
+  background-color: #cdfecd;
+  border-bottom: thin solid green;
+}
+
+footer {
+  border-top: thin solid green;
+}
