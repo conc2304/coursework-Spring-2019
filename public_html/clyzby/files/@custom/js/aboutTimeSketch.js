@@ -66,33 +66,19 @@ let myp5 = function (sketch) {
 
 
   sketch.setup = function () {
-    sketch.frameRate(60);
     sketch.createCanvas(cnv.w, cnv.h, sketch.WEBGL);
     sketch.rectMode(sketch.CENTER);
-    sketch.textureMode(sketch.NORMAL);  // needed for vertexes in WEBGL
   };
 
   sketch.preload = function () {
-    allRectangles = createRectangles(numRectangles, rectOffsets, rectRanges);
-    allBoxes = createBoxes(numBoxes, boxOffsets, boxRanges);
+
   }; // end preload()
 
   sketch.draw = function () {
 
-    sketch.background(20);
-    s.orbitControl(10, 10);
-
-    arrowControls();
-    drawParametric(parametric1);
-    for (let i = 0; i < numBoxes; i++) {
-      drawBoxes(allBoxes[i])
-    }
-
-    for (let i = 0; i < numRectangles; i++) {
-      drawRect(allRectangles[i]);
-    }
   };
 
 };
 
 let s = new p5(myp5, window.document.getElementById('p5-container'));
+
