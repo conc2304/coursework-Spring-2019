@@ -1,0 +1,6 @@
+# Project/OS files to ignore
+.idea/*
+.DS_Store
+bak
+!.gitkeep
+*~
