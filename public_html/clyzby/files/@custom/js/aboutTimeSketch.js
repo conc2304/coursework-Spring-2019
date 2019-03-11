@@ -45,7 +45,7 @@ let tally = {
   height: 20,
   weight: 2,
   spacingX: 10,
-  spacingY: 30,
+  spacingY: 20,
   padding: 20,
   max: 5,
 };
@@ -67,16 +67,12 @@ function drawTallies(numTallies) {
 
   for (let i = 1; i <= numTallies; i++) {
 
-
-    if (i == 31) {
-      let stop = true;
-    }
-
-    rowIndex = Math.floor(i / (maxTalliesPerRow));  // bc 20/20 evals to 1 and not row 0
-    if ( i % maxTalliesPerRow === 0 && i === maxTalliesPerRow ) {  // this is the last group of the row
+    rowIndex = Math.floor(i / (maxTalliesPerRow));  //
+    if (i % maxTalliesPerRow === 0) {  // this is the last group of the row
+      // bc 20/20 evals to 1 and not row 0
       rowIndex--;
     }
-    rowMult = rowIndex * tally.spacingY;
+    rowMult = rowIndex * (tally.height + tally.spacingY);
 
     if ( i % tally.max === 0) {  // the diagonal tally
       tallyPos = {
@@ -96,8 +92,6 @@ function drawTallies(numTallies) {
       if (i % tally.max === 1) {
         // this is the first of the group
         // save its start point for the sake of the fifth/diagonal tally
-
-        // this might be where things are fucking up
         groupOrigin = {
           x: tallyPos.x1,
           y: tallyPos.y1,
@@ -109,8 +103,9 @@ function drawTallies(numTallies) {
     s.strokeWeight(tally.weight);
     s.line(tallyPos.x1, tallyPos.y1, tallyPos.x2, tallyPos.y2);
 
+    // for debugging the starting points of the line
     s.stroke(0, 255, 0);
-    s.strokeWeight(tally.weight * 2);
+    s.strokeWeight(tally.weight + 1);
     s.point(tallyPos.x1, tallyPos.y1);
 
   }
