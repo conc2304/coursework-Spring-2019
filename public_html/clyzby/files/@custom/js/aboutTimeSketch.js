@@ -1,84 +1,105 @@
 
 
-// Grading Rubric (out of 20 points)
-//
-// Comment your code well = 1 points
-// Link to the image = 1 point
-// Cite original work = 1 point
+let myp5;
+let tallyCount = 0;
 
 let cnv = {
-  w: 1024,
-  h: 768,
+  w : 800,
+  h : 500,
 };
 
-let chaosMode = 'interactive';
-const CHAOS_TYPES = ['auto', 'interactive'];
-const FPB = 26;  // frames per beat
+myp5 = function(sketch) {
 
-/**
- * Create p5 sketch in instance mode
- * @param sketch
- */
-let myp5 = function (sketch) {
-
-  let numRectangles = 7;
-  let numBoxes = 11;
-  let allRectangles = {};
-  let allBoxes = {};
-
-  let rectRanges = {
-    x: {
-      min : -cnv.w * .5,
-      max : cnv.w * .5,
-    },
-    y: {
-      min : -cnv.h/1.5,
-      max : cnv.h/1.5,
-    },
-    z: {
-      min: -600,
-      max: 600,
-    },
+  sketch.setup = function() {
+    sketch.createCanvas(cnv.w, cnv.h);
+    sketch.background(20);
   };
 
-  let rectOffsets = {
-    shade: Math.floor(255 / numRectangles - 1), // max divided evenly between the number of shapes
-    position: {
-      x: getDistribution(rectRanges.x, numRectangles),
-      y: getDistribution(rectRanges.y, numRectangles),
-      z: getDistribution(rectRanges.z, numRectangles)
-    },
-    size: 12,
+  sketch.preload = function() {
   };
 
-  let boxRanges = {
-    y: {
-      min: -1100,
-      max: 500,
-    },
+  sketch.draw = function() {
+    sketch.background(20);
+
+    if (sketch.keyIsPressed) {
+      tallyCount = 0;
+    }
+
+    drawTallies(tallyCount);
   };
-
-  let boxOffsets = {
-    position: {
-      y: getDistribution(boxRanges.y, numRectangles)
-    },
-  };
-
-
-  sketch.setup = function () {
-    sketch.createCanvas(cnv.w, cnv.h, sketch.WEBGL);
-    sketch.rectMode(sketch.CENTER);
-  };
-
-  sketch.preload = function () {
-
-  }; // end preload()
-
-  sketch.draw = function () {
-
-  };
-
 };
 
 let s = new p5(myp5, window.document.getElementById('p5-container'));
+
+
+
+// on click create a tally in the box
+s.mouseClicked = function(e) {
+  tallyCount ++;
+  console.log(tallyCount)
+  e.preventDefault();
+};
+
+
+let tally = {
+  height: 20,
+  weight: 2,
+  spacingX: 10,
+  spacingY: 30,
+  padding: 20,
+};
+
+let padding = 20;
+let groupOrigin;
+let groupWidth = 5 * (tally.spacingX + tally.weight);
+let maxGroupsPerRow =  Math.floor((cnv.w - (2 * padding)) / groupWidth);
+let maxTalliesPerRow = (maxGroupsPerRow * 5);
+
+function drawTallies(numTallies) {
+
+  s.stroke(255, 0, 0);
+  s.strokeWeight(tally.weight);
+
+  let tallyPos = {};
+
+  for (let i = 1; i <= numTallies; i++) {
+    let rowIndex = Math.floor(i / (maxTalliesPerRow));  // bc 20/20 evals to 1 and not row 0
+    let rowMult = rowIndex * tally.spacingY;
+
+    if ( i % 5 === 0) {  // the diagonal tally
+      tallyPos = {
+        x1 : groupOrigin.x - (tally.spacingX + tally.weight),
+        y1 : groupOrigin.y,
+        x2 : groupOrigin.x + (groupWidth - tally.spacingX),
+        y2 : padding + tally.height,
+      }
+    } else {  // standard tally
+      tallyPos = {
+        x1 : padding + i * (tally.spacingX + tally.weight),
+        y1 : padding,
+        x2 : padding + i * (tally.spacingX + tally.weight),
+        y2 : padding + tally.height,
+      };
+
+      if (i % 5 === 1) {
+        // this is the first of the group
+        // save its start point for the sake of the fifth/diagonal tally
+        groupOrigin = {
+          x: tallyPos.x1,
+          y: tallyPos.y1,
+        };
+      }
+    }
+
+    if (i == 31) {
+      let stop = true;
+    }
+
+    s.line(tallyPos.x1, tallyPos.y1, tallyPos.x2, tallyPos.y2);
+
+  }
+
+
+
+}
 
