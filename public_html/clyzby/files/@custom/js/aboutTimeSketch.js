@@ -4,7 +4,7 @@ let myp5;
 let tallyCount = 0;
 
 let cnv = {
-  w : 800,
+  w : 300,
   h : 500,
 };
 
@@ -47,6 +47,7 @@ let tally = {
   spacingX: 10,
   spacingY: 30,
   padding: 20,
+  max: 5,
 };
 
 let padding = 20;
@@ -61,29 +62,42 @@ function drawTallies(numTallies) {
   s.strokeWeight(tally.weight);
 
   let tallyPos = {};
+  let rowMult;
+  let rowIndex;
 
   for (let i = 1; i <= numTallies; i++) {
-    let rowIndex = Math.floor(i / (maxTalliesPerRow));  // bc 20/20 evals to 1 and not row 0
-    let rowMult = rowIndex * tally.spacingY;
 
-    if ( i % 5 === 0) {  // the diagonal tally
+
+    if (i == 31) {
+      let stop = true;
+    }
+
+    rowIndex = Math.floor(i / (maxTalliesPerRow));  // bc 20/20 evals to 1 and not row 0
+    if ( i % maxTalliesPerRow === 0 && i === maxTalliesPerRow ) {  // this is the last group of the row
+      rowIndex--;
+    }
+    rowMult = rowIndex * tally.spacingY;
+
+    if ( i % tally.max === 0) {  // the diagonal tally
       tallyPos = {
         x1 : groupOrigin.x - (tally.spacingX + tally.weight),
         y1 : groupOrigin.y,
         x2 : groupOrigin.x + (groupWidth - tally.spacingX),
-        y2 : padding + tally.height,
+        y2 : padding + tally.height + rowMult,
       }
     } else {  // standard tally
       tallyPos = {
-        x1 : padding + i * (tally.spacingX + tally.weight),
-        y1 : padding,
-        x2 : padding + i * (tally.spacingX + tally.weight),
-        y2 : padding + tally.height,
+        x1 : padding + (i % maxTalliesPerRow) * (tally.spacingX + tally.weight),
+        y1 : padding + rowMult ,
+        x2 : padding + (i % maxTalliesPerRow) * (tally.spacingX + tally.weight),
+        y2 : padding + tally.height + rowMult ,
       };
 
-      if (i % 5 === 1) {
+      if (i % tally.max === 1) {
         // this is the first of the group
         // save its start point for the sake of the fifth/diagonal tally
+
+        // this might be where things are fucking up
         groupOrigin = {
           x: tallyPos.x1,
           y: tallyPos.y1,
@@ -91,11 +105,13 @@ function drawTallies(numTallies) {
       }
     }
 
-    if (i == 31) {
-      let stop = true;
-    }
-
+    s.stroke(255, 0, 0);
+    s.strokeWeight(tally.weight);
     s.line(tallyPos.x1, tallyPos.y1, tallyPos.x2, tallyPos.y2);
+
+    s.stroke(0, 255, 0);
+    s.strokeWeight(tally.weight * 2);
+    s.point(tallyPos.x1, tallyPos.y1);
 
   }
 
