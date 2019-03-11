@@ -5,7 +5,7 @@ let tallyCount = 0;
 
 let cnv = {
   w : 300,
-  h : 500,
+  h : 200,
 };
 
 myp5 = function(sketch) {
@@ -52,7 +52,7 @@ let tally = {
 
 let padding = 20;
 let groupOrigin;
-let groupWidth = 5 * (tally.spacingX + tally.weight);
+let groupWidth = tally.max * (tally.spacingX + tally.weight);
 let maxGroupsPerRow =  Math.floor((cnv.w - (2 * padding)) / groupWidth);
 let maxTalliesPerRow = (maxGroupsPerRow * 5);
 
