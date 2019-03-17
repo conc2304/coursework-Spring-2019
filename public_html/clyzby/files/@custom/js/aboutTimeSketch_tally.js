@@ -4,7 +4,7 @@ let myp5;
 let tallyCount = 0;
 
 let cnv = {
-  w : 300,
+  w : 350,
   h : 200,
 };
 
@@ -29,8 +29,7 @@ myp5 = function(sketch) {
   };
 };
 
-let s = new p5(myp5, window.document.getElementById('p5-container'));
-
+let s = new p5(myp5, window.document.getElementById('about-time-tally'));
 
 
 // on click create a tally in the box
@@ -51,9 +50,9 @@ let tally = {
   groupPadding: 10,
 };
 
-let padding = 20;
+let padding = 40;
 let groupOrigin;
-let groupWidth = tally.max * (tally.spacingX + tally.weight);
+let groupWidth = tally.max * (tally.spacingX + tally.weight) ;
 let maxGroupsPerRow =  Math.floor((cnv.w - (2 * padding)) / groupWidth);
 let maxTalliesPerRow = (maxGroupsPerRow * 5);
 
@@ -67,6 +66,7 @@ function drawTallies(numTallies) {
   let rowIndex;
   let groupPadding;
   let groupIndex;
+  let groupRowIndex
 
   for (let i = 1; i <= numTallies; i++) {
 
@@ -79,12 +79,12 @@ function drawTallies(numTallies) {
 
     groupIndex = Math.floor(i / tally.max);
     // get the index of the group relative to the row (ie first, second.. last group of row)
-    let groupRowPos = groupIndex % maxGroupsPerRow;
+    groupRowIndex = groupIndex % maxGroupsPerRow;
     if (i % tally.max === 0) {
-      groupRowPos --;
+      groupRowIndex --;
     }
 
-    groupPadding = groupRowPos * tally.groupPadding;
+    groupPadding = groupRowIndex * tally.groupPadding;
 
     if ( i % tally.max === 0) {  // the diagonal tally
       tallyPos = {
