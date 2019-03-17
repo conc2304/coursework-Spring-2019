@@ -48,6 +48,7 @@ let tally = {
   spacingY: 20,
   padding: 20,
   max: 5,
+  groupPadding: 10,
 };
 
 let padding = 20;
@@ -64,15 +65,26 @@ function drawTallies(numTallies) {
   let tallyPos = {};
   let rowMult;
   let rowIndex;
+  let groupPadding;
+  let groupIndex;
 
   for (let i = 1; i <= numTallies; i++) {
 
     rowIndex = Math.floor(i / (maxTalliesPerRow));  //
     if (i % maxTalliesPerRow === 0) {  // this is the last group of the row
-      // bc 20/20 evals to 1 and not row 0
+      // bc 20/20 evaluates to 1 and not row 0
       rowIndex--;
     }
     rowMult = rowIndex * (tally.height + tally.spacingY);
+
+    groupIndex = Math.floor(i / tally.max);
+    // get the index of the group relative to the row (ie first, second.. last group of row)
+    let groupRowPos = groupIndex % maxGroupsPerRow;
+    if (i % tally.max === 0) {
+      groupRowPos --;
+    }
+
+    groupPadding = groupRowPos * tally.groupPadding;
 
     if ( i % tally.max === 0) {  // the diagonal tally
       tallyPos = {
@@ -83,9 +95,9 @@ function drawTallies(numTallies) {
       }
     } else {  // standard tally
       tallyPos = {
-        x1 : padding + (i % maxTalliesPerRow) * (tally.spacingX + tally.weight),
+        x1 : padding + (i % maxTalliesPerRow) * (tally.spacingX + tally.weight) + groupPadding,
         y1 : padding + rowMult ,
-        x2 : padding + (i % maxTalliesPerRow) * (tally.spacingX + tally.weight),
+        x2 : padding + (i % maxTalliesPerRow) * (tally.spacingX + tally.weight) + groupPadding,
         y2 : padding + tally.height + rowMult ,
       };
 
@@ -103,14 +115,11 @@ function drawTallies(numTallies) {
     s.strokeWeight(tally.weight);
     s.line(tallyPos.x1, tallyPos.y1, tallyPos.x2, tallyPos.y2);
 
-    // for debugging the starting points of the line
+    // for debugging - the starting points of the line
     s.stroke(0, 255, 0);
     s.strokeWeight(tally.weight + 1);
     s.point(tallyPos.x1, tallyPos.y1);
 
   }
-
-
-
 }
 
