@@ -1,6 +1,6 @@
 
 
-let myp5;
+let myp5Tally;
 let tallyCount = 0;
 
 let cnv = {
@@ -8,7 +8,7 @@ let cnv = {
   h : 200,
 };
 
-myp5 = function(sketch) {
+myp5Tally = function(sketch) {
 
   sketch.setup = function() {
     sketch.createCanvas(cnv.w, cnv.h);
@@ -29,11 +29,11 @@ myp5 = function(sketch) {
   };
 };
 
-let s = new p5(myp5, window.document.getElementById('about-time-tally'));
+let sTally = new p5(myp5Tally, window.document.getElementById('about-time-tally'));
 
 
 // on click create a tally in the box
-s.mouseClicked = function(e) {
+sTally.mouseClicked = function(e) {
   tallyCount ++;
   console.log(tallyCount)
   e.preventDefault();
@@ -58,8 +58,8 @@ let maxTalliesPerRow = (maxGroupsPerRow * 5);
 
 function drawTallies(numTallies) {
 
-  s.stroke(255, 0, 0);
-  s.strokeWeight(tally.weight);
+  sTally.stroke(255, 0, 0);
+  sTally.strokeWeight(tally.weight);
 
   let tallyPos = {};
   let rowMult;
@@ -111,14 +111,14 @@ function drawTallies(numTallies) {
       }
     }
 
-    s.stroke(255, 0, 0);
-    s.strokeWeight(tally.weight);
-    s.line(tallyPos.x1, tallyPos.y1, tallyPos.x2, tallyPos.y2);
+    sTally.stroke(255, 0, 0);
+    sTally.strokeWeight(tally.weight);
+    sTally.line(tallyPos.x1, tallyPos.y1, tallyPos.x2, tallyPos.y2);
 
     // for debugging - the starting points of the line
-    s.stroke(0, 255, 0);
-    s.strokeWeight(tally.weight + 1);
-    s.point(tallyPos.x1, tallyPos.y1);
+    sTally.stroke(0, 255, 0);
+    sTally.strokeWeight(tally.weight + 1);
+    sTally.point(tallyPos.x1, tallyPos.y1);
 
   }
 }

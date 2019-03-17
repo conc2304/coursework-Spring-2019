@@ -1,125 +1,181 @@
+let myp5Clock;
 
+let r = 200;
 
-let myp5;
-let tallyCount = 0;
-
-let cnv = {
-  w : 350,
-  h : 200,
+let cnvClock = {
+  w: r * 2.2,
+  h: r * 2.2,
 };
 
-myp5 = function(sketch) {
+let center = {
+  x: cnvClock.w / 2,
+  y: cnvClock.h / 2,
+};
 
-  sketch.setup = function() {
-    sketch.createCanvas(cnv.w, cnv.h);
-    sketch.background(20);
+let clock = {
+  d: 2 * r,
+  hands: {
+    second: {
+      length: r * .9,
+      width: 1,
+    },
+    minute: {
+      length: r * .7,
+      width: 2,
+    },
+    hour: {
+      length: r * .5,
+      width: 4,
+    },
+  }
+};
+
+myp5Clock = function (sketch) {
+
+  sketch.setup = function () {
+    sketch.createCanvas(cnvClock.w, cnvClock.h);
+    sketch.background(0, 159, 0);
   };
 
-  sketch.preload = function() {
+  sketch.preload = function () {
   };
 
-  sketch.draw = function() {
-    sketch.background(20);
+  sketch.draw = function () {
+    sketch.background(100);
 
-    if (sketch.keyIsPressed) {
-      tallyCount = 0;
-    }
+    drawClockFace();
+    drawClockHands();
 
-    drawTallies(tallyCount);
+    // center point
+    sClock.stroke(0);
+    sClock.strokeWeight(20);
+    sClock.point(center.x, center.y);
   };
 };
 
-let s = new p5(myp5, window.document.getElementById('about-time-tally'));
+let sClock = new p5(myp5Clock, window.document.getElementById('about-time-clock'));
 
+let hashSpacing = 360 / 60;
+let red, green, blue;
 
-// on click create a tally in the box
-s.mouseClicked = function(e) {
-  tallyCount ++;
-  console.log(tallyCount)
-  e.preventDefault();
-};
+function drawClockFace() {
 
+  sClock.fill(230);
+  sClock.strokeWeight(30);
+  sClock.stroke(0);
+  sClock.ellipse(center.x, center.y, clock.d, clock.d);
+  myClear();
 
-let tally = {
-  height: 20,
-  weight: 2,
-  spacingX: 10,
-  spacingY: 20,
-  padding: 20,
-  max: 5,
-  groupPadding: 10,
-};
+  // minute hashes
+  for (let degree = 0; degree < 360; degree += hashSpacing) {
 
-let padding = 40;
-let groupOrigin;
-let groupWidth = tally.max * (tally.spacingX + tally.weight) ;
-let maxGroupsPerRow =  Math.floor((cnv.w - (2 * padding)) / groupWidth);
-let maxTalliesPerRow = (maxGroupsPerRow * 5);
+    let frequency = 1;
+    red = Math.sin(frequency * degree + (sClock.second() % 255)) * 127 + 128;
+    green = Math.sin(frequency * degree + (sClock.minute() % 255)) * 127 + 128;
+    blue = Math.sin(frequency * degree + (sClock.hour() % 255)) * 127 + 128;
 
-function drawTallies(numTallies) {
-
-  s.stroke(255, 0, 0);
-  s.strokeWeight(tally.weight);
-
-  let tallyPos = {};
-  let rowMult;
-  let rowIndex;
-  let groupPadding;
-  let groupIndex;
-  let groupRowIndex
-
-  for (let i = 1; i <= numTallies; i++) {
-
-    rowIndex = Math.floor(i / (maxTalliesPerRow));  //
-    if (i % maxTalliesPerRow === 0) {  // this is the last group of the row
-      // bc 20/20 evaluates to 1 and not row 0
-      rowIndex--;
+    let pos = sClock.radians(degree);
+    let x = center.x + Math.cos(pos) * (r);
+    let y = center.x + Math.sin(pos) * (r);
+    // 15 interval
+    sClock.stroke(red, green, blue);
+    if (degree % 15) {
+      sClock.strokeWeight(2);
+    } else {
+      sClock.strokeWeight(7);
     }
-    rowMult = rowIndex * (tally.height + tally.spacingY);
-
-    groupIndex = Math.floor(i / tally.max);
-    // get the index of the group relative to the row (ie first, second.. last group of row)
-    groupRowIndex = groupIndex % maxGroupsPerRow;
-    if (i % tally.max === 0) {
-      groupRowIndex --;
-    }
-
-    groupPadding = groupRowIndex * tally.groupPadding;
-
-    if ( i % tally.max === 0) {  // the diagonal tally
-      tallyPos = {
-        x1 : groupOrigin.x - (tally.spacingX + tally.weight),
-        y1 : groupOrigin.y,
-        x2 : groupOrigin.x + (groupWidth - tally.spacingX),
-        y2 : padding + tally.height + rowMult,
-      }
-    } else {  // standard tally
-      tallyPos = {
-        x1 : padding + (i % maxTalliesPerRow) * (tally.spacingX + tally.weight) + groupPadding,
-        y1 : padding + rowMult ,
-        x2 : padding + (i % maxTalliesPerRow) * (tally.spacingX + tally.weight) + groupPadding,
-        y2 : padding + tally.height + rowMult ,
-      };
-
-      if (i % tally.max === 1) {
-        // this is the first of the group
-        // save its start point for the sake of the fifth/diagonal tally
-        groupOrigin = {
-          x: tallyPos.x1,
-          y: tallyPos.y1,
-        };
-      }
-    }
-
-    s.stroke(255, 0, 0);
-    s.strokeWeight(tally.weight);
-    s.line(tallyPos.x1, tallyPos.y1, tallyPos.x2, tallyPos.y2);
-
-    // for debugging - the starting points of the line
-    s.stroke(0, 255, 0);
-    s.strokeWeight(tally.weight + 1);
-    s.point(tallyPos.x1, tallyPos.y1);
-
+    sClock.point(x, y);
   }
 }
 
+
+function drawClockHand(handPos, width) {
+  sClock.strokeWeight(width);
+  sClock.line(center.x, center.y, handPos.x, handPos.y);
+
+  sClock.strokeWeight(width * 2)
+  sClock.point(handPos.x, handPos.y);
+}
+
+
+function getTimeInRadians() {
+  return {
+    second : sClock.map(sClock.second(), 0, 60, 0, sClock.TWO_PI) - sClock.HALF_PI,
+    minute : sClock.map(sClock.minute() + sClock.norm(sClock.second(), 0, 60), 0, 60, 0, sClock.TWO_PI) - sClock.HALF_PI,
+    hour : sClock.map(sClock.hour() + sClock.norm(sClock.minute(), 0, 60), 0, 24, 0, sClock.TWO_PI * 2) - sClock.HALF_PI,
+  };
+}
+
+function getHandPosXY(angles) {
+  let handPos = {
+    second : {},
+    minute : {},
+    hour : {},
+  };
+
+  for (let hand in clock.hands) {
+    handPos[hand].x = center.x + Math.cos(angles[hand]) * clock.hands[hand].length;
+    handPos[hand].y = center.y + Math.sin(angles[hand]) * clock.hands[hand].length;
+  }
+
+  return handPos;
+}
+
+function drawClockHands() {
+
+  // shift starting point to be 12 and not 3 by subtracting half pi
+  let angles = getTimeInRadians();
+  let handPos = getHandPosXY(angles);
+
+
+  sClock.noFill();
+  sClock.stroke(100);
+  sClock.strokeWeight(1);
+
+  sClock.beginShape();
+  sClock.vertex(center.x, center.y);
+  sClock.vertex(center.x, center.y);
+  for (let hand in handPos) {
+    sClock.curveVertex(handPos[hand].x, handPos[hand].y);
+    console.log(hand);
+  }
+  sClock.vertex(center.x, center.y);
+  sClock.vertex(center.x, center.y);
+  sClock.endShape();
+
+
+
+  sClock.stroke(10);
+  for (let hand in clock.hands) {
+    drawClockHand(handPos[hand], clock.hands[hand].width );
+  }
+  myClear();
+
+}
+
+function myClear() {
+  sClock.noStroke();
+  sClock.noFill();
+}
+
+
+function drawExtraShit() {
+
+
+  sClock.noFill();
+  sClock.stroke(100);
+  sClock.strokeWeight(1);
+
+  sClock.beginShape();
+  sClock.vertex(center.x, center.y);
+  sClock.vertex(center.x, center.y);
+  for (let hand in handPos) {
+    sClock.curveVertex(handPos[hand].x, handPos[hand].y);
+    console.log(hand);
+  }
+  sClock.vertex(center.x, center.y);
+  sClock.vertex(center.x, center.y);
+  sClock.endShape();
+
+
+}
