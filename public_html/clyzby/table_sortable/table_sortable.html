@@ -6,21 +6,17 @@
   <link rel="stylesheet" href="css/theme.black-ice.css">
   <script src="js/jquery-3.3.1.js"></script>
   <script src="js/jquery.tablesorter.js"></script>
-  <script src="js/jquery.tablesorter.widgets.js"></script>
 
   <script id="js">
+    // initialize the sorting table
     $(function () {
 
-      // call the tablesorter plugin
       $("table").tablesorter({
-        theme: 'blackgit ice',
-        // initialize zebra striping of the table
+        theme: 'blackice',
+        sortList: [[0,0]],
         widgets: ["zebra"],
-        // change the default striping class names
-        // updated in v2.1 to use widgetOptions.zebra = ["even", "odd"]
-        // widgetZebra: { css: [ "normal-row", "alt-row" ] } still works
         widgetOptions: {
-          zebra: ["normal-row", "alt-row"]
+          zebra: ["even", "odd"]
         }
       });
 
