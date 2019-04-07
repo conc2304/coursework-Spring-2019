@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I Need Validation</title>
+  <meta name="description" content="These are photos of things">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat%7cOswald" rel="stylesheet">
+  <link rel="stylesheet" href="../css/gallery_form.css" type="text/css">
+  <script src="../js/jquery-3.1.1.js"></script>
+  <script src="../js/jquery.validate.js"></script>
+</head>
+<body>
+
+<header class="center">
+  <h1>This is form.</h1>
+  <p>It makes sweet sweet validations</p>
+</header>
+
+<section id="form-wrapper" class="content">
+  <form id="cool-form-bro" method="post" action=" https://cscie12.dce.harvard.edu/echo">
+    <fieldset>
+      <legend>Please give me all of your data<br><sub> it will be sold to facebook for $$$</sub></legend>
+      <p>
+        <label for="name">Name (required, at least 2 characters)</label>
+        <input id="name" name="name" minlength="2" type="text" required>
+      </p>
+      <p>
+        <label for="email">E-Mail (required)</label>
+        <input id="email" type="email" name="email" required>
+      </p>
+      <p>
+        <label for="comments">Your comment (required)</label>
+        <textarea id="comments" name="comments" required></textarea>
+      </p>
+      <input class="cool-submit submit" type="submit" value="Submit">
+    </fieldset>
+  </form>
+
+</section>
+
+<footer class="column center">
+  <h3>Have you been validated today?</h3>
+</footer>
+
+<script>
+//  hit em with the validations
+  $().ready(function() {
+    $("#cool-form-bro").validate({
+      rules: {
+        name: "required",
+        email: {
+          required: true,
+          email: true
+        },
+        comments: "required",
+      },
+      messages: {
+        name: "Please enter your super cool name.",
+        email: "Please enter a valid but super cool email address.",
+        comments: "Tell me how much you love form validation"
+      }
+    });
+  });
+</script>
+</body>
+</html>

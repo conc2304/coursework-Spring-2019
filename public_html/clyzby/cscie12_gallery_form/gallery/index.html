@@ -6,8 +6,9 @@
   <title>My Photo Gallery</title>
   <meta name="description" content="These are photos of things">
   <link href="https://fonts.googleapis.com/css?family=Montserrat%7cOswald" rel="stylesheet">
-  <link rel="stylesheet" href="../css/gallery.css" type="text/css">
+  <link rel="stylesheet" href="../css/gallery_form.css" type="text/css">
   <link rel="stylesheet" href="../css/lightbox.css">
+  <script src="../js/lightbox-plus-jquery.js"></script>
 </head>
 <body>
 
@@ -83,13 +84,10 @@
   <h3>Don't you feel better after seeing gallery pictures?</h3>
 </footer>
 
-
-<script src="../js/lightbox-plus-jquery.js"></script>
-
 <script>
   $(function () {
     lightbox.option({
-      'resizeDuration': 2,
+      'resizeDuration': 10,
       'wrapAround': true,
       'albumLabel': "Glacier Pic %1 / %2"
     });
