@@ -129,6 +129,11 @@ footer.column {
   margin-bottom: 10px;
 }
 
+#cool-form-bro textarea, #cool-form-bro input {
+  width: 250px;
+  margin: 0 10px;
+}
+
 #cool-form-bro .error {
   color: #aa0000;
   font-size: .8em;
