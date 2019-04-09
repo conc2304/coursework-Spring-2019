@@ -13,15 +13,14 @@ let s = function (sketch) {
   let outerWaves;
   let threeDWave;
   let sliders = {};
+  let domCtrl;
 
-  let waves = [];
-
-  sketch.preload = () => {
+  sketch.preload = function () {
     objects.lambo = myp5.loadModel('files/3d_obj/lp670.obj', true);
     objects.glock = myp5.loadModel('files/3d_obj/Glock 3d.obj', true);
   };
 
-  sketch.setup = ()=> {
+  sketch.setup = function() {
     this.getCenterWave = () => centerWave;
     this.getOuterWaves = () => outerWaves;
     this.getThreeDWave = () => threeDWave;
@@ -32,6 +31,9 @@ let s = function (sketch) {
     centerWave = new CenterWave(sketch.windowWidth, sketch.windowHeight);
     outerWaves = new OuterWaves(sketch.windowWidth, sketch.windowHeight);
     threeDWave = new ThreeDWave(sketch.windowWidth, sketch.windowHeight);
+
+    // domCtrl = myp5.createDiv();
+    // domCtrl.attribute('id', 'settings-menu');
 
     sliders = createSliders([centerWave, outerWaves, threeDWave]);
   };
@@ -127,7 +129,8 @@ let createSliders = (waves) => {
     button.position( offsetX + (sliderW/4) + 10, 10);
     button.style('background-color', '#fff');
     button.attribute('id', waveName + '-toggle');
-    button.mousePressed(() => {
+    button.mousePressed(function() {
+
       $("." + this.html() + "-input").toggleClass('hide');
     });
 
@@ -164,7 +167,6 @@ let createSliders = (waves) => {
       }
 
       offsetY =  30 + (i * 20);
-
       if (wave[prop].attrType === "variable" && wave[prop].options.length) {
         sliders[waveName][prop] = myp5.createRadio();
 
