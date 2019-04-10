@@ -1,6 +1,5 @@
 /*jshint esversion: 6 */
 
-let v = Math.random(255);
 
 let objects = {
   glock: null,
@@ -20,7 +19,8 @@ let s = function (sketch) {
     objects.glock = myp5.loadModel('files/3d_obj/Glock 3d.obj', true);
   };
 
-  sketch.setup = function() {
+  sketch.setup = function () {
+    console.log('stuff');
     this.getCenterWave = () => centerWave;
     this.getOuterWaves = () => outerWaves;
     this.getThreeDWave = () => threeDWave;
@@ -32,13 +32,10 @@ let s = function (sketch) {
     outerWaves = new OuterWaves(sketch.windowWidth, sketch.windowHeight);
     threeDWave = new ThreeDWave(sketch.windowWidth, sketch.windowHeight);
 
-    // domCtrl = myp5.createDiv();
-    // domCtrl.attribute('id', 'settings-menu');
-
     sliders = createSliders([centerWave, outerWaves, threeDWave]);
   };
 
-  sketch.windowResized =  () => {
+  sketch.windowResized = () => {
     sketch.resizeCanvas(sketch.windowWidth, sketch.windowHeight);
     centerWave.width = sketch.windowWidth;
     centerWave.waveWidth = sketch.windowWidth + 200;
@@ -88,7 +85,7 @@ let setSliderValues = (sliders, waves) => {
     waveName = wave.constructor.name;
 
     for (let prop in wave) {
-      if (!wave.hasOwnProperty(prop) || !wave[prop].hasOwnProperty('targetValue')|| wave[prop].attrType !== "numeric" || !sliders[waveName].hasOwnProperty(prop)) {
+      if (!wave.hasOwnProperty(prop) || !wave[prop].hasOwnProperty('targetValue') || !sliders[waveName].hasOwnProperty(prop)) {
         continue;
       }
       wave[prop].targetValue = sliders[waveName][prop].value();
@@ -97,97 +94,101 @@ let setSliderValues = (sliders, waves) => {
 };
 
 
-let createSliders = (waves) => {
+let createSliders = function (waves) {
 
-  let sliders = {};
-  let button;
-  let label;
   if (!waves.length) {
     return;
   }
 
+  let sliders = {};
+  let button;
+  let label;
   let j = 0;
+  let i = 0;
+  let sliderW = 150;
+  let waveName;
+  let wrapperID;
+  let step = 0;
+
+  // loop through each of the waves objects and create settings controllers based on
+  // the property's attribute type
   for (let wave in waves) {
     if (!waves.hasOwnProperty(wave)) {
       continue;
     }
 
-    let i = 0;
-    let offsetX;
-    let offsetY;
-    let sliderW = 150;
-    let waveName = '';
-    let step = 0;
-
     wave = waves[wave];
     waveName = wave.constructor.name;
     sliders[waveName] = {};
-    offsetX = 10 + j * myp5.windowWidth / 3; // shift the column to the right
+    wrapperID = waveName + '-settings';
 
-    // create a button to toggle the slider visibility
+    // create a div for each of the different waves
+    domCtrl = myp5.createDiv();
+    domCtrl.attribute('id', wrapperID);
+    domCtrl.attribute('class', 'wave-settings');
+    domCtrl.parent('settings-inner-wrap');
+
+    // create a button to toggle the settings sliders visibility
     button = myp5.createButton(waveName, '1');
-    button.position( offsetX + (sliderW/4) + 10, 10);
-    button.style('background-color', '#fff');
+    button.style('position', 'relative');
     button.attribute('id', waveName + '-toggle');
-    button.mousePressed(function() {
-
+    button.mousePressed(function () {
       $("." + this.html() + "-input").toggleClass('hide');
     });
 
+    button.parent(wrapperID);
     for (let prop in wave) {
       if (!wave.hasOwnProperty(prop) || !wave[prop].hasOwnProperty('attrType')) {
         continue;
       }
 
       if (wave[prop].attrType === 'numeric') {
-        offsetY =  30 + (i * 20);
+        label = myp5.createElement('p', prop);
+        label.attribute('class', waveName + '-input hide');
+        label.style('position', 'relative');
+        label.parent(wrapperID);
 
         // slider to control the individual property
         sliders[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
-        sliders[waveName][prop].position(offsetX, offsetY);
         sliders[waveName][prop].style('width', sliderW + 'px');
         sliders[waveName][prop].attribute('class', waveName + '-input hide');
+        sliders[waveName][prop].parent(wrapperID);
 
-        if (wave[prop].max - wave[prop].min < 1) { // if the difference between min and max is 1 or less
+        if (wave[prop].max - wave[prop].min < 10) {
+          // if the difference between min and max is 1 or less
           step = (wave[prop].max - wave[prop].min) / 100;
         }
-
-        label = myp5.createElement('p', prop);
-        label.position( offsetX + sliderW + 10, offsetY - 15);
-        label.attribute('class', waveName + '-input hide');
-        label.style('color', '#fff');
         i++;
       }
     }
 
-    // loop through again and create radio for all variable attribute types
+    // loop through again (so that re radios come last in the group)
+    // and create radio for all variable attribute types
     for (let prop in wave) {
       if (!wave.hasOwnProperty(prop)) {
         continue;
       }
 
-      offsetY =  30 + (i * 20);
       if (wave[prop].attrType === "variable" && wave[prop].options.length) {
+        label = myp5.createElement('p', prop);
+        label.attribute('class', waveName + '-input hide');
+        label.style('position', 'relative');
+        label.parent(wrapperID);
+
         sliders[waveName][prop] = myp5.createRadio();
 
         for (let o in wave[prop].options) {
-          console.log(wave[prop].options[o]);
           if (!wave[prop].options.hasOwnProperty(o)) {
             continue;
           }
+
           sliders[waveName][prop].option(wave[prop].options[o], wave[prop].options[o]);
-          sliders[waveName][prop].position(offsetX, offsetY);
+          sliders[waveName][prop].style('width', sliderW + 'px');
           sliders[waveName][prop].attribute('class', waveName + '-input hide');
-
-          label = myp5.createElement('p', prop);
-          label.position( offsetX + sliderW + 10, offsetY - 15);
-          label.attribute('class', waveName + '-input hide');
-          label.style('color', '#fff');
+          sliders[waveName][prop].parent(wrapperID);
         }
-
         i++;
       }
-
     }
     j++;
   }

@@ -34,30 +34,96 @@
 
       #settings-menu {
         position: absolute;
-        width: 25%;
+        width: auto;
         top: 0;
         bottom: 0;
         left: 0;
-        background-color: #2B81AF;
+        background-color: #fff;
         opacity: .7;
-        border-right: 3px solid #5c9898;
+        overflow-y: scroll;
+        border-right: 3px solid #0ba031;
       }
 
       #settings-inner-wrap {
         position: relative;
-        overflow-x: scroll;
+        padding: 30px 20px 0;
       }
 
+      #settings-open {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 24px;
+        color: #ffffff;
+        padding: 15px;
+        float: left;
+      }
+
+      #settings-close {
+        z-index: 2;
+        font-size: 24px;
+        padding: 15px;
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      
+      .wave-settings{
+        display: block;
+        position: relative;
+        color: #000;
+      }
+      
+      .wave-settings input {
+        position: relative;
+        color: #000;
+      }
+
+      #settings-menu button{
+        display: block;
+        margin: 20px auto;
+      }
+
+      #settings-menu p {
+        text-align: center;
+      }
+      #settings-menu label {
+        margin-left: 5px
+      }
+
+      #settings-menu input[type="radio"] {
+        margin-left: 10px
+      }
     </style>
 
   </head>
   <body>
 
     <div id="sketch-container"></div>
-    <div id="settings-menu">
-      <div id="settings-inner-wrap">
 
+    <div id="settings-open">☰</div>
+    <div id="settings-menu">
+      <div id="settings-close">✕</div>
+      <div id="settings-inner-wrap">
       </div>
     </div>
+
   </body>
+
+<script>
+  $(function(){
+    $("#settings-close").click(function(){
+      $("#settings-menu").fadeOut();
+      $("#settings-open").fadeIn();
+    });
+
+    $("#settings-open").click(function(){
+      $("#settings-menu").fadeIn();
+      $("#settings-open").fadeOut();
+
+    });
+  })
+</script>
 </html>
