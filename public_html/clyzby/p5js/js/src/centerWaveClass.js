@@ -14,7 +14,8 @@ class CenterWave {
       resetValue : 'sin',
       currentValue : 'sin',
       targetValue : null,
-      options : ['sin', 'cos', 'tan', 'orbit'],
+      options : ['sin', 'cos', 'tan'],
+      // options : ['sin', 'cos', 'tan', 'orbit'],
       attrType : 'variable',
     };
     this.xSpacing = {

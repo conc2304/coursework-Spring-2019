@@ -10,7 +10,10 @@
         overflow: hidden;
       }
     </style>
-    
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat%7cOswald" rel="stylesheet">
+    <link href="css/p5js_wave-sketch.css" rel="stylesheet">
+
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"></script>-->
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.js"></script>-->
 
@@ -26,77 +29,8 @@
     <script src="js/src/threeDWaveClass.js"></script>
     <script src="js/src/midiService.js"></script>
     <script src="js/src/midiCtrl.js"></script>
+    <script src="js/src/midiCtrl.js"></script>
 
-    <style>
-      .hide {
-        display: none;
-      }
-
-      #settings-menu {
-        position: absolute;
-        width: auto;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        background-color: #fff;
-        opacity: .7;
-        overflow-y: scroll;
-        border-right: 3px solid #0ba031;
-      }
-
-      #settings-inner-wrap {
-        position: relative;
-        padding: 30px 20px 0;
-      }
-
-      #settings-open {
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        font-size: 24px;
-        color: #ffffff;
-        padding: 15px;
-        float: left;
-      }
-
-      #settings-close {
-        z-index: 2;
-        font-size: 24px;
-        padding: 15px;
-        display: inline-block;
-        position: absolute;
-        top: 0;
-        right: 0;
-      }
-      
-      .wave-settings{
-        display: block;
-        position: relative;
-        color: #000;
-      }
-      
-      .wave-settings input {
-        position: relative;
-        color: #000;
-      }
-
-      #settings-menu button{
-        display: block;
-        margin: 20px auto;
-      }
-
-      #settings-menu p {
-        text-align: center;
-      }
-      #settings-menu label {
-        margin-left: 5px
-      }
-
-      #settings-menu input[type="radio"] {
-        margin-left: 10px
-      }
-    </style>
 
   </head>
   <body>
@@ -122,7 +56,6 @@
     $("#settings-open").click(function(){
       $("#settings-menu").fadeIn();
       $("#settings-open").fadeOut();
-
     });
   })
 </script>

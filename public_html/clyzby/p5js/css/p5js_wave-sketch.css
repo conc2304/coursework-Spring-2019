@@ -1,0 +1,124 @@
+.hide {
+  display: none;
+}
+
+#settings-menu {
+  position: absolute;
+  width: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #000;
+  opacity: .7;
+  overflow-y: scroll;
+  border-right: 1px solid #292929;
+}
+
+#settings-inner-wrap {
+  position: relative;
+  padding: 30px 20px;
+}
+
+#settings-open {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 24px;
+  color: #ffffff;
+  padding: 15px;
+  float: left;
+}
+
+#settings-close {
+  z-index: 2;
+  font-size: 24px;
+  padding: 15px;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #0e83cd;
+}
+
+.wave-settings{
+  display: block;
+  position: relative;
+  color: #000;
+}
+
+.wave-settings input {
+  position: relative;
+  color: #000;
+}
+
+#settings-menu button{
+  display: block;
+  margin: 20px auto;
+
+  font-family: 'Oswald', sans-serif;
+  border: 3px solid #fff;
+  color: #fff;
+
+  font-size: 18px;
+  background: none;
+  cursor: pointer;
+  padding: 25px 80px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  outline: none;
+  position: relative;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+
+
+#settings-menu button:after {
+  width: 101%;
+  height: 0;
+  top: 50%;
+  left: 50%;
+  background: #fff;
+  opacity: 0;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+#settings-menu button:hover,
+#settings-menu button:active {
+  color: #0e83cd;
+}
+
+#settings-menu button:hover:after {
+  height: 75%;
+  opacity: 1;
+}
+
+#settings-menu button:active:after {
+  height: 130%;
+  opacity: 1;
+}
+
+
+
+#settings-menu p {
+  color: #fff;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+}
+#settings-menu label {
+  margin-left: 5px;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+}
+
+#settings-menu input[type="radio"] {
+  margin-left: 10px;
+  color: #fff;
+}
