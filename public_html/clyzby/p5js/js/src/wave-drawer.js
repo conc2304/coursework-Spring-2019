@@ -73,6 +73,7 @@ let s = (sketch) => {
 
 
 let renderPolygon = function (x, y, radius, numPoints) {
+  'use strict';
   let angle = myp5.TWO_PI / numPoints;
   myp5.beginShape();
   for (let a = 0; a < myp5.TWO_PI; a += angle) {

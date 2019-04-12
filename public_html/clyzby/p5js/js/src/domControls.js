@@ -1,6 +1,13 @@
-
-
 /*jshint esversion: 6 */
+
+/**
+ *  - Assignment 3 - DOM, DOM, DOM -
+ *
+ *  create an element BESIDES a canvas element
+ *  use value() to either retrieve the value of an element for use in your P5 sketch or to assign a new value to an element in the DOM
+ *  style() a DOM element with CSS from within P5
+ *  make use of parent() or child() to reorganize elements on the page
+ */
 
 
 /**
@@ -61,7 +68,7 @@ let createDOMControls = (waves) => {
       if (!wave.hasOwnProperty(prop)) {
         continue;
       }
-      console.log(prop)
+      console.log(prop);
 
       if (wave[prop].attrType === 'numeric') {
         label = myp5.createElement('p', prop);
