@@ -7,11 +7,12 @@ class OuterWaves {
     this.origin = 0;
 
     this.numWaves = {
+      displayLabel : 'Number of Waves',
       resetValue : 1,
       currentValue : 2,
       targetValue : null,
       min : 0,
-      max : 4,
+      max : 10,
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -24,6 +25,7 @@ class OuterWaves {
 
     // wave attributes
     this.waveType = {
+      displayLabel : 'Wave Type',
       resetValue : 'sin',
       currentValue : 'sin',
       targetValue : null,
@@ -31,6 +33,7 @@ class OuterWaves {
       attrType : 'variable',
     };
     this.xSpacing = {
+      displayLabel : 'X Spacing',
       resetValue : 40,
       currentValue : 40,
       targetValue : null,
@@ -45,6 +48,7 @@ class OuterWaves {
       easingMin : 0,
     };
     this.ySpacing = {
+      displayLabel : 'Y Spacing',
       resetValue : 30,
       currentValue : 40,
       targetValue : null,
@@ -58,6 +62,7 @@ class OuterWaves {
       easingMin : 0,
     };
     this.velocity = {
+      displayLabel : 'Velocity',
       resetValue : 0.025,
       currentValue : 0.025,
       targetValue : null,
@@ -72,6 +77,7 @@ class OuterWaves {
       easingMin : 0,
     };
     this.amplitude = {
+      displayLabel : 'Amplitude',
       resetValue : 75,
       currentValue : 75,
       targetValue : null,
@@ -86,6 +92,7 @@ class OuterWaves {
       easingMin : 0,
     };
     this.period = {
+      displayLabel : 'Period',
       resetValue : 500,
       currentValue : 500,
       targetValue : null,

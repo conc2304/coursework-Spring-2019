@@ -11,6 +11,7 @@ class ThreeDWave {
 
     // wave attributes
     this.waveType = {
+      displayLabel : 'Wave Type',
       resetValue : 'sin',
       currentValue : 'sin',
       targetValue : null,
@@ -18,6 +19,7 @@ class ThreeDWave {
       attrType : 'variable',
     };
     this.xSpacing = {
+      displayLabel : 'X Spacing',
       resetValue : 100,
       currentValue : 100,
       targetValue : null,
@@ -32,6 +34,7 @@ class ThreeDWave {
       easingMin : 0,
     };
     this.velocity = {
+      displayLabel : 'Velocity',
       resetValue : 0.01,
       currentValue : 0.01,
       targetValue : null,
@@ -46,6 +49,7 @@ class ThreeDWave {
       easingMin : 0,
     };
     this.amplitude = {
+      displayLabel : 'Amplitude',
       resetValue : 75,
       currentValue : 75,
       targetValue : null,
@@ -60,6 +64,7 @@ class ThreeDWave {
       easingMin : 0,
     };
     this.period = {
+      displayLabel : 'Period',
       resetValue : 500,
       currentValue : 500,
       targetValue : null,
@@ -83,6 +88,7 @@ class ThreeDWave {
 
     // painting and rendering attributes
     this.radius = {
+      displayLabel : 'Size',
       resetValue : 20,
       currentValue : 20,
       targetValue : null,
@@ -97,6 +103,7 @@ class ThreeDWave {
       easingMin : 0,
     };
     this.stroke = {
+      displayLabel : 'Stroke and Fill',
       resetValue : 'stroke_no_fill',
       currentValue : 'stroke_no_fill',
       targetValue : null,
@@ -104,6 +111,7 @@ class ThreeDWave {
       options : ['stroke_no_fill', 'stroke_w_fill',]
     };
     this.colorR = {
+      displayLabel : 'Color Red',
       resetValue : 100,
       currentValue : 100,
       targetValue : null,
@@ -118,6 +126,7 @@ class ThreeDWave {
       easingMin : 0,
     };
     this.colorG = {
+      displayLabel : 'Color Green',
       resetValue : 100,
       currentValue : 100,
       targetValue : null,
@@ -132,6 +141,7 @@ class ThreeDWave {
       easingMin : 0,
     };
     this.colorB = {
+      displayLabel : 'Color Blue',
       resetValue : 100,
       currentValue : 100,
       targetValue : null,
@@ -149,6 +159,7 @@ class ThreeDWave {
 
     // wave movement
     this.rotateX = {
+      displayLabel : 'Rotate Shape X',
       resetValue : 0,
       currentValue : 0,
       targetValue : null,
@@ -163,6 +174,7 @@ class ThreeDWave {
       easingMin : 0,
     };
     this.rotateY = {
+      displayLabel : 'Rotate Shape Y',
       resetValue : 0,
       currentValue : 0,
       targetValue : null,
@@ -177,6 +189,7 @@ class ThreeDWave {
       easingMin : 0,
     };
     this.rotateZ = {
+      displayLabel : 'Rotate Shape Z',
       resetValue : 0,
       currentValue : 0,
       targetValue : null,
@@ -192,6 +205,7 @@ class ThreeDWave {
     };
 
     this.waveRotateX = {
+      displayLabel : 'Rotate Wave X',
       resetValue : 0,
       currentValue : 0,
       targetValue : null,
@@ -206,6 +220,7 @@ class ThreeDWave {
       easingMin : 0,
     };
     this.waveRotateY = {
+      displayLabel : 'Rotate Wave Y',
       resetValue : 0,
       currentValue : 0,
       targetValue : null,
@@ -220,6 +235,7 @@ class ThreeDWave {
       easingMin : 0,
     };
     this.waveRotateZ = {
+      displayLabel : 'Rotate Wave Z',
       resetValue : 0,
       currentValue : 0,
       targetValue : null,
@@ -235,6 +251,7 @@ class ThreeDWave {
     };
 
     this.translateZ = {
+      displayLabel : 'Translate Z',
       resetValue : 0,
       currentValue : 0,
       targetValue : null,
@@ -250,6 +267,7 @@ class ThreeDWave {
     };
 
     this.translateX = {
+      displayLabel : 'Translate X',
       resetValue : 0,
       currentValue : 0,
       targetValue : null,
@@ -265,6 +283,7 @@ class ThreeDWave {
     };
 
     this.translateY = {
+      displayLabel : 'Translate Y',
       resetValue : 0,
       currentValue : 0,
       targetValue : null,

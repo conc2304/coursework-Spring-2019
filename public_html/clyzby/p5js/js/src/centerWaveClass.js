@@ -11,6 +11,7 @@ class CenterWave {
 
     // wave attributes
     this.waveType = {
+      displayLabel : 'Wave Type',
       resetValue : 'sin',
       currentValue : 'sin',
       targetValue : null,
@@ -19,6 +20,7 @@ class CenterWave {
       attrType : 'variable',
     };
     this.xSpacing = {
+      displayLabel : 'X Spacing',
       resetValue : 40,
       currentValue : 40,
       targetValue : null,
@@ -33,6 +35,7 @@ class CenterWave {
       easingMin : 0,
     };
     this.velocity = {
+      displayLabel : 'Velocity',
       resetValue : 0.025,
       currentValue : 0.025,
       targetValue : null,
@@ -47,6 +50,7 @@ class CenterWave {
       easingMin : 0,
     };
     this.amplitude = {
+      displayLabel : 'Amplitude',
       resetValue : 75,
       currentValue : 75,
       targetValue : null,
@@ -61,6 +65,7 @@ class CenterWave {
       easingMin : 0,
     };
     this.period = {
+      displayLabel : 'Period',
       resetValue : 500,
       currentValue : 500,
       targetValue : null,
@@ -93,6 +98,7 @@ class CenterWave {
 
     // painting and rendering attributes
     this.radius = {
+      displayLabel : 'Size',
       resetValue : 20,
       currentValue : 20,
       targetValue : null,
@@ -107,6 +113,7 @@ class CenterWave {
       easingMin : 0,
     };
     this.shape = {
+      displayLabel : 'Shape',
       resetValue : 'ellipse',
       currentValue : 'ellipse',
       targetValue : null,
@@ -114,6 +121,7 @@ class CenterWave {
       attrType : 'variable',
     };
     this.stroke = {
+      displayLabel : 'Stroke and Fill',
       resetValue : 'stroke_no_fill',
       currentValue : 'stroke_no_fill',
       targetValue : null,
@@ -121,6 +129,7 @@ class CenterWave {
       options : ['stroke_no_fill', 'stroke_w_fill', 'no_stroke_fill']
     };
     this.colorR = {
+      displayLabel : 'Color Red',
       resetValue : 100,
       currentValue : 200,
       targetValue : null,
@@ -135,6 +144,7 @@ class CenterWave {
       easingMin : 0,
     };
     this.colorG = {
+      displayLabel : 'Color Green',
       resetValue : 100,
       currentValue : 200,
       targetValue : null,
@@ -149,6 +159,7 @@ class CenterWave {
       easingMin : 0,
     };
     this.colorB = {
+      displayLabel : 'Color Blue',
       resetValue : 100,
       currentValue : 200,
       targetValue : null,

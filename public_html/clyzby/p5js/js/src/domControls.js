@@ -34,6 +34,7 @@ let createDOMControls = (waves) => {
   let wrapperID;
   let step = 0;
   let domCtrl;
+  let inputWrapper;
 
   // loop through each of the waves objects and create settings controllers based on
   // the property's attribute type
@@ -68,18 +69,17 @@ let createDOMControls = (waves) => {
       if (!wave.hasOwnProperty(prop)) {
         continue;
       }
-      console.log(prop);
 
       if (wave[prop].attrType === 'numeric') {
-        label = myp5.createElement('p', prop);
-        label.attribute('class', waveName + '-input hide');
+        label = myp5.createElement('p', wave[prop].displayLabel);
+        label.attribute('class', `${waveName}-input hide`);
         label.style('position', 'relative');
         label.parent(wrapperID);
 
         // slider to control the individual property
         controls[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
         controls[waveName][prop].style('width', sliderW + 'px');
-        controls[waveName][prop].attribute('class', waveName + '-input hide');
+        controls[waveName][prop].attribute('class', `${waveName}-input hide`);
         controls[waveName][prop].parent(wrapperID);
 
         if (wave[prop].max - wave[prop].min < 10) {
@@ -98,8 +98,8 @@ let createDOMControls = (waves) => {
       }
 
       if (wave[prop].attrType === "variable" && wave[prop].options.length) {
-        label = myp5.createElement('p', prop);
-        label.attribute('class', waveName + '-input hide');
+        label = myp5.createElement('p', wave[prop].displayLabel);
+        label.attribute('class', `${waveName}-input hide`);
         label.style('position', 'relative');
         label.parent(wrapperID);
 
@@ -112,11 +112,12 @@ let createDOMControls = (waves) => {
 
           controls[waveName][prop].option(wave[prop].options[o]);
           controls[waveName][prop].style('width', sliderW + 'px');
-          controls[waveName][prop].attribute('class', waveName + '-input hide');
-          controls[waveName][prop].attribute('id', waveName + '- hide');
+          controls[waveName][prop].attribute('class', `${waveName}-input hide`);
+          controls[waveName][prop].attribute('id', `${waveName}-${wave[prop].options[o]}`);
           controls[waveName][prop].parent(wrapperID);
         }
         controls[waveName][prop].selected(wave[prop].currentValue);
+
 
         i++;
       }
