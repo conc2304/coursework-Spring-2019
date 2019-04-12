@@ -1,59 +1,52 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
-    <style> 
-      body {
-        padding: 0; 
-        margin: 0; 
-        overflow: hidden;
-      }
-    </style>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+  <meta title="P5js Wavey Thing">
 
-    <link href="https://fonts.googleapis.com/css?family=Montserrat%7cOswald" rel="stylesheet">
-    <link href="css/p5js_wave-sketch.css" rel="stylesheet">
+  <title>P5js Wavey Thing</title>
 
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"></script>-->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.js"></script>-->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat%7cOswald" rel="stylesheet">
+  <link href="css/p5js_wave-sketch.css" rel="stylesheet">
 
-    <script src="js/libraries/p5.js"></script>
-    <script src="js/libraries/p5.dom.js"></script>
-    <script src="js/libraries/jquery-3.3.1.js"></script>
-    <script src="js/libraries/webmidi.js"></script>
-    <script src="js/src/easeInto.js"></script>
-    <script src="js/src/midiCtrlConfig.js"></script>
-    <script src="js/src/wave-drawer.js"></script>
-    <script src="js/src/centerWaveClass.js"></script>
-    <script src="js/src/outerWavesClass.js"></script>
-    <script src="js/src/threeDWaveClass.js"></script>
-    <script src="js/src/midiService.js"></script>
-    <script src="js/src/midiCtrl.js"></script>
-    <script src="js/src/midiCtrl.js"></script>
+  <script src="js/libraries/p5.js"></script>
+  <script src="js/libraries/p5.dom.js"></script>
+  <script src="js/libraries/jquery-3.3.1.js"></script>
+  <script src="js/libraries/webmidi.js"></script>
 
+  <script src="js/src/easeInto.js"></script>
+  <script src="js/src/midiCtrlConfig.js"></script>
+  <script src="js/src/wave-drawer.js"></script>
+  <script src="js/src/centerWaveClass.js"></script>
+  <script src="js/src/outerWavesClass.js"></script>
+  <script src="js/src/threeDWaveClass.js"></script>
+  <script src="js/src/midiService.js"></script>
+  <script src="js/src/midiCtrl.js"></script>
+  <script src="js/src/domControls.js"></script>
 
-  </head>
-  <body>
+</head>
+<body>
 
-    <div id="sketch-container"></div>
+<div id="sketch-container"></div>
 
-    <div id="settings-open">☰</div>
-    <div id="settings-menu">
-      <div id="settings-close">✕</div>
-      <div id="settings-inner-wrap">
-      </div>
-    </div>
+<div id="settings-open">☰</div>
+<div id="settings-menu">
+  <div id="settings-close">✕</div>
+  <div id="settings-inner-wrap">
+  </div>
+</div>
 
-  </body>
+</body>
 
 <script>
-  $(function(){
-    $("#settings-close").click(function(){
+  $(function () {
+    $("#settings-close").click(function () {
       $("#settings-menu").fadeOut();
       $("#settings-open").fadeIn();
     });
 
-    $("#settings-open").click(function(){
+    $("#settings-open").click(function () {
       $("#settings-menu").fadeIn();
       $("#settings-open").fadeOut();
     });

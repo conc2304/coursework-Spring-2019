@@ -1,3 +1,5 @@
+
+
 /*jshint esversion: 6 */
 
 
@@ -54,16 +56,12 @@ let createDOMControls = (waves) => {
 
     button.parent(wrapperID);
 
-    if (wave.length) {
 
-    }
     for (let prop in wave) {
-      if (wave.hasOwnProperty(prop)) {
+      if (!wave.hasOwnProperty(prop)) {
         continue;
       }
-      if (wave.hasOwnProperty('attrType')) {
-        continue;
-      }
+      console.log(prop)
 
       if (wave[prop].attrType === 'numeric') {
         label = myp5.createElement('p', prop);
