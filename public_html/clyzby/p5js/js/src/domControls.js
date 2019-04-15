@@ -133,7 +133,6 @@ let createDOMControls = (waves) => {
         }
         controls[waveName][prop].selected(wave[prop].currentValue);
 
-
         i++;
       }
     }
@@ -178,25 +177,13 @@ let setDOMControlValues = (controls, waves) => {
   }
 };
 
-
-// make
-let rangeSlider = function(){
-  let slider = $('.range-slider');
-  let value = $('.range-slider__value');
-
-  slider.each(function(){
-    value.each(function(){
-      let value = $(this).prev().attr('value');
-      $(this).html(value);
-    });
-  });
-};
-
-rangeSlider();
-
+/**
+ * Bind the range slider to the display value
+ * Called oninput via the html bc the dom elements aren't created until after the dom is ready
+ * @param range
+ */
 let updateRange = function(range) {
   "use strict";
   let value = $(range).val();
-  // console.log($(range).parents('.range-slider'));
   $(range).parents('.range-slider').children('.range-slider__value').html(Number(value).toFixed(2));
 };
