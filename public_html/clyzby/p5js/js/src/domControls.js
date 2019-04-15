@@ -35,6 +35,9 @@ let createDOMControls = (waves) => {
   let step = 0;
   let domCtrl;
   let inputWrapper;
+  let displayVal;
+
+
 
   // loop through each of the waves objects and create settings controllers based on
   // the property's attribute type
@@ -71,16 +74,28 @@ let createDOMControls = (waves) => {
       }
 
       if (wave[prop].attrType === 'numeric') {
+
+
+        inputWrapper = myp5.createElement('div');
+        inputWrapper.attribute('class', `${waveName}-input hide range-slider`);
+        inputWrapper.parent(wrapperID);
+
         label = myp5.createElement('p', wave[prop].displayLabel);
-        label.attribute('class', `${waveName}-input hide`);
+        // label.attribute('class', `${waveName}-input hide`);
         label.style('position', 'relative');
-        label.parent(wrapperID);
+        label.parent(inputWrapper);
 
         // slider to control the individual property
         controls[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
         controls[waveName][prop].style('width', sliderW + 'px');
-        controls[waveName][prop].attribute('class', `${waveName}-input hide`);
-        controls[waveName][prop].parent(wrapperID);
+        controls[waveName][prop].attribute('class', `${waveName}-input hide range-slider__range`);
+        controls[waveName][prop].attribute('oninput', 'updateRange(this)');
+        controls[waveName][prop].parent(inputWrapper);
+
+        displayVal = myp5.createElement('span', wave[prop].currentValue.toString());
+        displayVal.attribute('class', `range-slider__value`);
+        displayVal.parent(inputWrapper);
+
 
         if (wave[prop].max - wave[prop].min < 10) {
           // if the difference between min and max is 1 or less
@@ -147,9 +162,13 @@ let setDOMControlValues = (controls, waves) => {
     waveName = wave.constructor.name;
 
     for (let prop in wave) {
-      if (!wave.hasOwnProperty(prop) || !wave[prop].hasOwnProperty('targetValue') || !controls[waveName].hasOwnProperty(prop)) {
+      if (!wave.hasOwnProperty(prop)) {
         continue;
       }
+      if (!wave[prop].hasOwnProperty('targetValue') || !controls[waveName].hasOwnProperty(prop)) {
+        continue;
+      }
+
       if (wave[prop].attrType === "numeric") {
         wave[prop].targetValue = controls[waveName][prop].value();
       } else if (wave[prop].attrType === "variable") {
@@ -157,4 +176,27 @@ let setDOMControlValues = (controls, waves) => {
       }
     }
   }
+};
+
+
+// make
+let rangeSlider = function(){
+  let slider = $('.range-slider');
+  let value = $('.range-slider__value');
+
+  slider.each(function(){
+    value.each(function(){
+      let value = $(this).prev().attr('value');
+      $(this).html(value);
+    });
+  });
+};
+
+rangeSlider();
+
+let updateRange = function(range) {
+  "use strict";
+  let value = $(range).val();
+  // console.log($(range).parents('.range-slider'));
+  $(range).parents('.range-slider').children('.range-slider__value').html(Number(value).toFixed(2));
 };
