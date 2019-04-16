@@ -4,6 +4,10 @@ body {
   overflow: hidden;
 }
 
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
 .hide {
   display: none;
 }
@@ -53,24 +57,41 @@ body {
   color: #0eb1ff;
 }
 
-#piano-mode {
+
+button#piano-mode {
+  background-color: transparent;
+  border: none;
   float: right;
-  width: 24px;
   z-index: 2;
   margin: 15px;
 }
 
-#piano-mode path {
-  fill: #0e83cd;
+button#piano-mode:focus {
+  outline: none;
 }
 
-#piano-mode path:hover {
+button#piano-mode.enabled path {
+  fill: #fff;
+}
+
+button#piano-mode:hover path {
   fill: #0eb1ff;
 }
 
-#piano-mode.enabled path {
-  fill: #fff;
+#piano-mode-svg {
+  width: 24px;
+  display: inline;
 }
+
+
+#piano-mode-svg path {
+  fill: #0e83cd;
+}
+
+#piano-mode-svg path:hover {
+}
+
+
 
 .wave-settings{
   display: block;
@@ -83,7 +104,28 @@ body {
   color: #000;
 }
 
-#settings-menu button{
+.wave-settings .piano-mode input {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  display: inline-block;
+  position: relative;
+  border: 1px solid #d4d4d4;
+  color: #fff;
+  line-height: 20px;
+  text-align: center;
+  padding: 5px 0;
+  background-color: black;
+}
+
+.wave-settings .piano-mode input:last-child {
+  margin-left: 8px;
+}
+
+.settings-wrapper > div {
+  margin-top : 20px;
+}
+
+#settings-menu button.settings-toggle-button{
   display: block;
   margin: 20px auto;
 
@@ -135,6 +177,14 @@ body {
   opacity: 1;
 }
 
+.radio-option-wrap {
+  display: block;
+}
+
+label.radio-input:after {
+  content: '';
+  display: block;
+}
 
 
 #settings-menu p,  #settings-menu span{
@@ -155,11 +205,6 @@ body {
 }
 
 
-
-
-*, *:before, *:after {
-  box-sizing: border-box;
-}
 
 
 .range-slider {
@@ -221,9 +266,11 @@ body {
   display: inline-block;
   position: relative;
   width: 60px;
-  border: 1px solid #d4d4d4;
+  height: 60px;
+  border: 1px solid #656565;
+  border-radius: 50%;
   color: #fff;
-  line-height: 20px;
+  line-height: 49px;
   text-align: center;
   padding: 5px 0;
   margin-left: 8px;

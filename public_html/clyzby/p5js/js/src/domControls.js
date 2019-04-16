@@ -31,6 +31,7 @@ let createDOMControls = (waves) => {
   let label, button, inputWrapper, displayVal, wrapperID, waveName;
   let pianoWrapper, pianoInput;
 
+  let waveSettingWrapper;
 
   // loop through each of the waves objects and create settings controllers based on
   // the property's attribute type
@@ -50,15 +51,25 @@ let createDOMControls = (waves) => {
     domCtrl.attribute('class', 'wave-settings');
     domCtrl.parent('settings-inner-wrap');
 
+
+
     // create a button to toggle the settings sliders visibility
     button = myp5.createButton(waveName, '1');
     button.style('position', 'relative');
     button.attribute('id', waveName + '-toggle');
+    button.attribute('class', 'settings-toggle-button');
     button.mousePressed(function () {  // todo  figure out how to pass a 'lexical this' with es6 arrow functions
-      $("." + this.html() + "-input").toggleClass('hide');
+      console.log(this);
+      $(`#${this.html()}-wrapper`).toggleClass('hide');
     });
 
     button.parent(wrapperID);
+
+    waveSettingWrapper = myp5.createElement('div');
+    waveSettingWrapper.attribute('id', `${waveName}-wrapper`);
+    waveSettingWrapper.attribute('class', `hide settings-wrapper`);
+    waveSettingWrapper.parent(wrapperID);
+
 
 
     for (let prop in wave) {
@@ -69,34 +80,23 @@ let createDOMControls = (waves) => {
       if (wave[prop].attrType === 'numeric') {
 
         inputWrapper = myp5.createElement('div');
-        inputWrapper.attribute('class', `${waveName}-input hide range-slider`);
-        inputWrapper.parent(wrapperID);
+        // inputWrapper.attribute('class', `${waveName}-input hide range-slider`);
+        inputWrapper.attribute('class', `range-slider`);
+        inputWrapper.parent(waveSettingWrapper);
 
         label = myp5.createElement('p', wave[prop].displayLabel);
         label.style('position', 'relative');
         label.parent(inputWrapper);
 
-        // slider to control the individual property
-        controls[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
-        controls[waveName][prop].style('width', sliderW + 'px');
-        controls[waveName][prop].attribute('class', `${waveName}-input hide range-slider__range`);
-        controls[waveName][prop].attribute('oninput', 'updateRange(this)');
-        controls[waveName][prop].parent(inputWrapper);
-
-        displayVal = myp5.createElement('span', wave[prop].currentValue.toString());
-        displayVal.attribute('class', `range-slider__value`);
-        displayVal.parent(inputWrapper);
-
-
         // wrapper to toggle piano mode
         pianoWrapper = myp5.createElement('div');
-        pianoWrapper.attribute('class', `${waveName}-input hide piano-mode`);
+        // pianoWrapper.attribute('class', `${waveName}-input hide piano-mode`);
+        pianoWrapper.attribute('class', `piano-mode`);
         pianoWrapper.parent(inputWrapper);
 
 
         // input to set which keyboard key plays that element
         pianoInput = myp5.createInput();
-        // console.log(pianoInput);
         pianoInput.attribute('data-wave', waveName);
         pianoInput.attribute('data-prop', prop);
         pianoInput.elt.placeholder = "Control Key";
@@ -110,6 +110,23 @@ let createDOMControls = (waves) => {
         pianoInput.value(wave[prop].currentValue);
         pianoInput.elt.max = wave[prop].max;
         pianoInput.parent(pianoWrapper);
+
+
+
+        // slider to control the individual property
+        controls[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
+        controls[waveName][prop].style('width', sliderW + 'px');
+        controls[waveName][prop].attribute('class', `range-slider__range`);
+        // controls[waveName][prop].attribute('class', `${waveName}-input hide range-slider__range`);
+        controls[waveName][prop].attribute('oninput', 'updateRange(this)');
+        controls[waveName][prop].parent(inputWrapper);
+
+        displayVal = myp5.createElement('span', wave[prop].currentValue.toString());
+        displayVal.attribute('class', `range-slider__value`);
+        displayVal.parent(inputWrapper);
+
+
+
 
         if (wave[prop].max - wave[prop].min < 10) {
           // if the difference between min and max is 1 or less
@@ -126,10 +143,18 @@ let createDOMControls = (waves) => {
       }
 
       if (wave[prop].attrType === "variable" && wave[prop].options.length) {
+
+        inputWrapper = myp5.createElement('div');
+        inputWrapper.attribute('class', `radio-option-wrap ${waveName}-${prop}`);
+        // inputWrapper.style('width', sliderW + 'px');
+
+        inputWrapper.parent(waveSettingWrapper);
+
         label = myp5.createElement('p', wave[prop].displayLabel);
-        label.attribute('class', `${waveName}-input hide`);
+        // label.attribute('class', `${waveName}-input hide`);
+        // label.attribute('class', `${waveName}-input hide`);
         label.style('position', 'relative');
-        label.parent(wrapperID);
+        label.parent(inputWrapper);
 
         controls[waveName][prop] = myp5.createRadio();
 
@@ -140,9 +165,10 @@ let createDOMControls = (waves) => {
 
           controls[waveName][prop].option(wave[prop].options[o]);
           controls[waveName][prop].style('width', sliderW + 'px');
-          controls[waveName][prop].attribute('class', `${waveName}-input hide`);
-          controls[waveName][prop].attribute('id', `${waveName}-${wave[prop].options[o]}`);
-          controls[waveName][prop].parent(wrapperID);
+          controls[waveName][prop].attribute('class', `radio-input`);
+          // controls[waveName][prop].attribute('class', `${waveName}-input hide radio-input`);
+          // controls[waveName][prop].attribute('id', `${waveName}-${wave[prop].options[o]}`);
+          controls[waveName][prop].parent(inputWrapper);
         }
         controls[waveName][prop].selected(wave[prop].currentValue);
 
@@ -219,13 +245,22 @@ let updateRange = function(range) {
 
 
 // todo  fix this - click not being caputred by svg
-$('#piano-mode, #piano-mode path').click(function(){
+$(function() {
   "use strict";
+  $('#piano-mode').click(function(){
+    "use strict";
 
-  console.log('click');
 
-  $('.piano-mode').toggleClass('hide');
-  $('#piano-mode').toggleClass('enabled');
+    console.log('click');
 
+    $('.piano-mode').toggleClass('hide');
+    $('#piano-mode').toggleClass('enabled');
+
+  });
 });
+
+
+
+
+
 
