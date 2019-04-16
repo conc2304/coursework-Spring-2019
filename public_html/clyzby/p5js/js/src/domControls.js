@@ -25,18 +25,11 @@ let createDOMControls = (waves) => {
   }
 
   let controls = {};
-  let button;
-  let label;
-  let j = 0;
-  let i = 0;
   let sliderW = 300;
-  let waveName;
-  let wrapperID;
   let step = 0;
   let domCtrl;
-  let inputWrapper;
-  let displayVal;
-
+  let label, button, inputWrapper, displayVal, wrapperID, waveName;
+  let pianoWrapper, pianoInput;
 
 
   // loop through each of the waves objects and create settings controllers based on
@@ -75,13 +68,11 @@ let createDOMControls = (waves) => {
 
       if (wave[prop].attrType === 'numeric') {
 
-
         inputWrapper = myp5.createElement('div');
         inputWrapper.attribute('class', `${waveName}-input hide range-slider`);
         inputWrapper.parent(wrapperID);
 
         label = myp5.createElement('p', wave[prop].displayLabel);
-        // label.attribute('class', `${waveName}-input hide`);
         label.style('position', 'relative');
         label.parent(inputWrapper);
 
@@ -97,11 +88,33 @@ let createDOMControls = (waves) => {
         displayVal.parent(inputWrapper);
 
 
+        // wrapper to toggle piano mode
+        pianoWrapper = myp5.createElement('div');
+        pianoWrapper.attribute('class', `${waveName}-input hide piano-mode`);
+        pianoWrapper.parent(inputWrapper);
+
+
+        // input to set which keyboard key plays that element
+        pianoInput = myp5.createInput();
+        // console.log(pianoInput);
+        pianoInput.attribute('data-wave', waveName);
+        pianoInput.attribute('data-prop', prop);
+        pianoInput.elt.placeholder = "Control Key";
+        pianoInput.elt.onkeypress = setKeyboardControl;
+        pianoInput.elt.maxLength = 1;
+
+
+        // input to set what the value will be for that element on that key press
+        pianoInput.parent(pianoWrapper);
+        pianoInput = myp5.createInput(wave[prop].currentValue.toString(), 'number');
+        pianoInput.value(wave[prop].currentValue);
+        pianoInput.elt.max = wave[prop].max;
+        pianoInput.parent(pianoWrapper);
+
         if (wave[prop].max - wave[prop].min < 10) {
           // if the difference between min and max is 1 or less
           step = (wave[prop].max - wave[prop].min) / 100;
         }
-        i++;
       }
     }
 
@@ -133,14 +146,29 @@ let createDOMControls = (waves) => {
         }
         controls[waveName][prop].selected(wave[prop].currentValue);
 
-        i++;
       }
     }
-    j++;
   }
 
   return controls;
 };
+
+
+// TODO  - create a keyboard to controller map
+// when the user enters a key, lets
+let setKeyboardControl = function(e) {
+  "use strict";
+  console.log(e);
+  console.log(this);
+  let wave = $(this).attr('data-wave');
+  let prop = $(this).attr('data-prop');
+  console.log(`${wave} - ${prop}`);
+
+  let waveN = myp5[`get${wave}()`];
+  console.log(waveN);
+  
+  // console.log(myp5.getCenterWave());
+}
 
 /**
  * On draw loop, check the value of all of our controls
@@ -187,3 +215,17 @@ let updateRange = function(range) {
   let value = $(range).val();
   $(range).parents('.range-slider').children('.range-slider__value').html(Number(value).toFixed(2));
 };
+
+
+
+// todo  fix this - click not being caputred by svg
+$('#piano-mode, #piano-mode path').click(function(){
+  "use strict";
+
+  console.log('click');
+
+  $('.piano-mode').toggleClass('hide');
+  $('#piano-mode').toggleClass('enabled');
+
+});
+

@@ -110,6 +110,7 @@ class OuterWaves {
 
     // painting and rendering attributes
     this.radius = {
+      displayLabel : 'Radius',
       resetValue : 10,
       currentValue : 10,
       targetValue : null,
@@ -124,6 +125,7 @@ class OuterWaves {
       easingMin : 0,
     };
     this.stroke = {
+      displayLabel : 'Stroke',
       resetValue : 'stroke_no_fill',
       currentValue : 'stroke_no_fill',
       targetValue : 'stroke_no_fill',
@@ -131,6 +133,7 @@ class OuterWaves {
       options : ['stroke_no_fill', 'stroke_w_fill', 'no_stroke_fill']
     };
     this.shape = {
+      displayLabel : 'Shape',
       resetValue : 'ellipse',
       currentValue : 'ellipse',
       targetValue : null,
@@ -138,6 +141,7 @@ class OuterWaves {
       attrType : 'variable',
     };
     this.colorR = {
+      displayLabel : 'Color Red',
       resetValue : 100,
       currentValue : 50,
       targetValue : null,
@@ -152,6 +156,7 @@ class OuterWaves {
       easingMin : 0,
     };
     this.colorG = {
+      displayLabel : 'Color Green',
       resetValue : 100,
       currentValue : 50,
       targetValue : null,
@@ -166,6 +171,7 @@ class OuterWaves {
       easingMin : 0,
     };
     this.colorB = {
+      displayLabel : 'Color Blue',
       resetValue : 100,
       currentValue : 50,
       targetValue : null,

@@ -8,6 +8,10 @@ body {
   display: none;
 }
 
+.clear {
+  clear: both;
+}
+
 #settings-menu {
   position: absolute;
   width: auto;
@@ -15,14 +19,14 @@ body {
   bottom: 0;
   left: 0;
   background-color: #000;
-  opacity: .7;
+  background-color: #000000bd;
   overflow-y: scroll;
   border-right: 1px solid #292929;
 }
 
 #settings-inner-wrap {
   position: relative;
-  padding: 30px 20px;
+  padding: 0 20px 30px;
 }
 
 #settings-open {
@@ -41,10 +45,31 @@ body {
   font-size: 24px;
   padding: 15px;
   display: inline-block;
-  position: absolute;
-  top: 0;
-  right: 0;
+  float: right;
   color: #0e83cd;
+}
+
+#settings-close:hover {
+  color: #0eb1ff;
+}
+
+#piano-mode {
+  float: right;
+  width: 24px;
+  z-index: 2;
+  margin: 15px;
+}
+
+#piano-mode path {
+  fill: #0e83cd;
+}
+
+#piano-mode path:hover {
+  fill: #0eb1ff;
+}
+
+#piano-mode.enabled path {
+  fill: #fff;
 }
 
 .wave-settings{
