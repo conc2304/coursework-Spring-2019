@@ -57,7 +57,6 @@ body {
   color: #0eb1ff;
 }
 
-
 button#piano-mode {
   background-color: transparent;
   border: none;
@@ -83,7 +82,6 @@ button#piano-mode:hover path {
   display: inline;
 }
 
-
 #piano-mode-svg path {
   fill: #0e83cd;
 }
@@ -91,9 +89,7 @@ button#piano-mode:hover path {
 #piano-mode-svg path:hover {
 }
 
-
-
-.wave-settings{
+.wave-settings {
   display: block;
   position: relative;
   color: #000;
@@ -122,10 +118,10 @@ button#piano-mode:hover path {
 }
 
 .settings-wrapper > div {
-  margin-top : 20px;
+  margin-top: 20px;
 }
 
-#settings-menu button.settings-toggle-button{
+#settings-menu button.settings-toggle-button {
   display: block;
   margin: 20px auto;
 
@@ -147,7 +143,6 @@ button#piano-mode:hover path {
   transition: all 0.3s;
   overflow: hidden;
 }
-
 
 #settings-menu button:after {
   width: 101%;
@@ -186,13 +181,13 @@ label.radio-input:after {
   display: block;
 }
 
-
-#settings-menu p,  #settings-menu span{
+#settings-menu p, #settings-menu span {
   color: #fff;
   text-align: center;
   font-family: 'Montserrat', sans-serif;
-  font-size: 12px;
+  font-size: 16px;
 }
+
 #settings-menu label {
   margin-left: 5px;
   color: #fff;
@@ -203,9 +198,6 @@ label.radio-input:after {
   margin-left: 10px;
   color: #fff;
 }
-
-
-
 
 .range-slider {
   width: 100%;
@@ -221,6 +213,7 @@ label.radio-input:after {
   padding: 0;
   margin: 0;
 }
+
 .range-slider__range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -232,12 +225,15 @@ label.radio-input:after {
   cursor: pointer;
   transition: background .15s ease-in-out;
 }
+
 .range-slider__range::-webkit-slider-thumb:hover {
   background: #0e83cd;
 }
+
 .range-slider__range:active::-webkit-slider-thumb {
   background: #0e83cd;
 }
+
 .range-slider__range::-moz-range-thumb {
   width: 20px;
   height: 20px;
@@ -247,12 +243,15 @@ label.radio-input:after {
   cursor: pointer;
   transition: background .15s ease-in-out;
 }
+
 .range-slider__range::-moz-range-thumb:hover {
   background: #0e83cd;
 }
+
 .range-slider__range:active::-moz-range-thumb {
   background: #0e83cd;
 }
+
 .range-slider__range:focus::-webkit-slider-thumb {
   box-shadow: 0 0 0 3px #000, 0 0 0 6px #0e83cd;
 }
@@ -279,5 +278,46 @@ label.radio-input:after {
 ::-moz-range-track {
   background: #d7dcdf;
   border: 0;
+}
+
+
+/*  Radio Buttons */
+input[type="radio"].radio-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: inline-block;
+  position: relative;
+  background-color: #095c8f;
+  color: #fff;
+  top: 10px;
+  height: 30px;
+  width: 30px;
+  border: 0;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-right: 7px;
+  outline: none;
+}
+
+input[type="radio"].radio-input:checked::before {
+  position: absolute;
+  font: 13px/1 'Open Sans', sans-serif;
+  left: 11px;
+  top: 7px;
+  content: '\02143';
+  transform: rotate(40deg);
+}
+
+input[type="radio"].radio-input:hover {
+  box-shadow: inset 0 0 5px #fff;
+}
+
+input[type="radio"].radio-input:checked {
+  background-color: #0e83cd;
+}
+
+input[type="radio"].radio-input, label.radio-input{
+  vertical-align: bottom;
 }
 

@@ -17,6 +17,8 @@
  * @param waves
  * @returns {{}}
  */
+
+// TODO  -  this function is way to damn long
 let createDOMControls = (waves) => {
   "use strict";
 
@@ -52,7 +54,6 @@ let createDOMControls = (waves) => {
     domCtrl.parent('settings-inner-wrap');
 
 
-
     // create a button to toggle the settings sliders visibility
     button = myp5.createButton(waveName, '1');
     button.style('position', 'relative');
@@ -69,7 +70,6 @@ let createDOMControls = (waves) => {
     waveSettingWrapper.attribute('id', `${waveName}-wrapper`);
     waveSettingWrapper.attribute('class', `hide settings-wrapper`);
     waveSettingWrapper.parent(wrapperID);
-
 
 
     for (let prop in wave) {
@@ -90,7 +90,6 @@ let createDOMControls = (waves) => {
 
         // wrapper to toggle piano mode
         pianoWrapper = myp5.createElement('div');
-        // pianoWrapper.attribute('class', `${waveName}-input hide piano-mode`);
         pianoWrapper.attribute('class', `piano-mode`);
         pianoWrapper.parent(inputWrapper);
 
@@ -112,20 +111,16 @@ let createDOMControls = (waves) => {
         pianoInput.parent(pianoWrapper);
 
 
-
         // slider to control the individual property
         controls[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
         controls[waveName][prop].style('width', sliderW + 'px');
         controls[waveName][prop].attribute('class', `range-slider__range`);
-        // controls[waveName][prop].attribute('class', `${waveName}-input hide range-slider__range`);
         controls[waveName][prop].attribute('oninput', 'updateRange(this)');
         controls[waveName][prop].parent(inputWrapper);
 
         displayVal = myp5.createElement('span', wave[prop].currentValue.toString());
         displayVal.attribute('class', `range-slider__value`);
         displayVal.parent(inputWrapper);
-
-
 
 
         if (wave[prop].max - wave[prop].min < 10) {
@@ -146,13 +141,9 @@ let createDOMControls = (waves) => {
 
         inputWrapper = myp5.createElement('div');
         inputWrapper.attribute('class', `radio-option-wrap ${waveName}-${prop}`);
-        // inputWrapper.style('width', sliderW + 'px');
-
         inputWrapper.parent(waveSettingWrapper);
 
         label = myp5.createElement('p', wave[prop].displayLabel);
-        // label.attribute('class', `${waveName}-input hide`);
-        // label.attribute('class', `${waveName}-input hide`);
         label.style('position', 'relative');
         label.parent(inputWrapper);
 
@@ -163,11 +154,9 @@ let createDOMControls = (waves) => {
             continue;
           }
 
-          controls[waveName][prop].option(wave[prop].options[o]);
+          controls[waveName][prop].option(ucFirst(wave[prop].options[o]), wave[prop].options[o]);
           controls[waveName][prop].style('width', sliderW + 'px');
           controls[waveName][prop].attribute('class', `radio-input`);
-          // controls[waveName][prop].attribute('class', `${waveName}-input hide radio-input`);
-          // controls[waveName][prop].attribute('id', `${waveName}-${wave[prop].options[o]}`);
           controls[waveName][prop].parent(inputWrapper);
         }
         controls[waveName][prop].selected(wave[prop].currentValue);
@@ -182,7 +171,7 @@ let createDOMControls = (waves) => {
 
 // TODO  - create a keyboard to controller map
 // when the user enters a key, lets
-let setKeyboardControl = function(e) {
+let setKeyboardControl = function (e) {
   "use strict";
   console.log(e);
   console.log(this);
@@ -192,7 +181,7 @@ let setKeyboardControl = function(e) {
 
   let waveN = myp5[`get${wave}()`];
   console.log(waveN);
-  
+
   // console.log(myp5.getCenterWave());
 }
 
@@ -236,31 +225,24 @@ let setDOMControlValues = (controls, waves) => {
  * Called oninput via the html bc the dom elements aren't created until after the dom is ready
  * @param range
  */
-let updateRange = function(range) {
+let updateRange = function (range) {
   "use strict";
   let value = $(range).val();
   $(range).parents('.range-slider').children('.range-slider__value').html(Number(value).toFixed(2));
 };
 
 
-
-// todo  fix this - click not being caputred by svg
-$(function() {
+$(function () {
   "use strict";
-  $('#piano-mode').click(function(){
-    "use strict";
-
-
-    console.log('click');
-
+  $('#piano-mode').click(function () {
     $('.piano-mode').toggleClass('hide');
     $('#piano-mode').toggleClass('enabled');
-
   });
 });
 
 
-
-
-
+let ucFirst = (string) => {
+  "use strict";
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
 
