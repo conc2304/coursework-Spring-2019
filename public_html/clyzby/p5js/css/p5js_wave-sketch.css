@@ -18,7 +18,7 @@ body {
 
 #settings-menu {
   position: absolute;
-  width: auto;
+  width: 450px;
   top: 0;
   bottom: 0;
   left: 0;
@@ -28,9 +28,27 @@ body {
   border-right: 1px solid #292929;
 }
 
-#settings-inner-wrap {
+
+#settings-menu-inner-wrap {
+ position: relative;
+}
+
+#sub-wrap {
   position: relative;
-  padding: 0 20px 30px;
+  z-index: 20;
+  top: 0;
+}
+
+#sub-menu {
+  width: 449px;
+  position: fixed;
+  background: rgb(0,0,0);
+  background: linear-gradient(180deg, rgba(0,0,0,1) 66%, rgba(0,0,0,0) 100%);
+}
+
+#wave-control-panel {
+  position: relative;
+  padding: 100px 20px 30px;
 }
 
 #settings-open {

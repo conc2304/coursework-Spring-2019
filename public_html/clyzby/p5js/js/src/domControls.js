@@ -27,7 +27,6 @@ let createDOMControls = (waves) => {
   }
 
   let controls = {};
-  let sliderW = 300;
   let step = 0;
   let domCtrl;
   let label, button, inputWrapper, displayVal, wrapperID, waveName;
@@ -51,7 +50,7 @@ let createDOMControls = (waves) => {
     domCtrl = myp5.createDiv();
     domCtrl.attribute('id', wrapperID);
     domCtrl.attribute('class', 'wave-settings');
-    domCtrl.parent('settings-inner-wrap');
+    domCtrl.parent('wave-control-panel');
 
 
     // create a button to toggle the settings sliders visibility
@@ -113,7 +112,6 @@ let createDOMControls = (waves) => {
 
         // slider to control the individual property
         controls[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
-        controls[waveName][prop].style('width', sliderW + 'px');
         controls[waveName][prop].attribute('class', `range-slider__range`);
         controls[waveName][prop].attribute('oninput', 'updateRange(this)');
         controls[waveName][prop].parent(inputWrapper);
@@ -155,7 +153,6 @@ let createDOMControls = (waves) => {
           }
 
           controls[waveName][prop].option(ucFirst(wave[prop].options[o]), wave[prop].options[o]);
-          controls[waveName][prop].style('width', sliderW + 'px');
           controls[waveName][prop].attribute('class', `radio-input`);
           controls[waveName][prop].parent(inputWrapper);
         }
@@ -169,21 +166,7 @@ let createDOMControls = (waves) => {
 };
 
 
-// TODO  - create a keyboard to controller map
-// when the user enters a key, lets
-let setKeyboardControl = function (e) {
-  "use strict";
-  console.log(e);
-  console.log(this);
-  let wave = $(this).attr('data-wave');
-  let prop = $(this).attr('data-prop');
-  console.log(`${wave} - ${prop}`);
 
-  let waveN = myp5[`get${wave}()`];
-  console.log(waveN);
-
-  // console.log(myp5.getCenterWave());
-}
 
 /**
  * On draw loop, check the value of all of our controls
@@ -244,5 +227,32 @@ $(function () {
 let ucFirst = (string) => {
   "use strict";
   return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+// TODO  - create a keyboard to controller map
+// when the user enters a key, lets
+let keyboardCtrl = {};
+let setKeyboardControl = function (e) {
+  "use strict";
+
+  keyboardCtrl = keyboardCtrl || {};
+
+  console.log(e);
+  console.log(this);
+  console.log($(this));
+
+  let charCode = this.value.charCodeAt(0);
+
+
+  keyboardCtrl[charCode] = [`${wave}`, `${prop}`];
+
+  let wave = $(this).attr('data-wave');
+  let prop = $(this).attr('data-prop');
+  console.log(`${wave} - ${prop}`);
+
+  // let waveN = myp5[`get${wave}()`];
+  // console.log(waveN);
+
+  // console.log(myp5.getCenterWave());
 };
 
