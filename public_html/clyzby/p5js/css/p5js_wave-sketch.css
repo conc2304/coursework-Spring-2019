@@ -129,6 +129,7 @@ button#piano-mode:hover path {
   text-align: center;
   padding: 5px 0;
   background-color: black;
+  text-transform: uppercase;
 }
 
 .wave-settings .piano-mode input:last-child {

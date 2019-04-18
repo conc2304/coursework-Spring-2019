@@ -59,7 +59,6 @@ let createDOMControls = (waves) => {
     button.attribute('id', waveName + '-toggle');
     button.attribute('class', 'settings-toggle-button');
     button.mousePressed(function () {  // todo  figure out how to pass a 'lexical this' with es6 arrow functions
-      console.log(this);
       $(`#${this.html()}-wrapper`).toggleClass('hide');
     });
 
@@ -235,20 +234,23 @@ let keyboardCtrl = {};
 let setKeyboardControl = function (e) {
   "use strict";
 
+  if (e.charCode === "Enter") {
+    return;
+  }
+
   keyboardCtrl = keyboardCtrl || {};
 
-  console.log(e);
-  console.log(this);
   console.log($(this));
-
-  let charCode = this.value.charCodeAt(0);
-
-
-  keyboardCtrl[charCode] = [`${wave}`, `${prop}`];
+  console.log(e);
+  $(this).val(e.key)
+  let charCode = e.charCode;
 
   let wave = $(this).attr('data-wave');
   let prop = $(this).attr('data-prop');
   console.log(`${wave} - ${prop}`);
+
+  keyboardCtrl[charCode] = [`${wave}`, `${prop}`, ];
+
 
   // let waveN = myp5[`get${wave}()`];
   // console.log(waveN);
