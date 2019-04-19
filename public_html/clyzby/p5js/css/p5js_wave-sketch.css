@@ -48,7 +48,7 @@ body {
 
 #wave-control-panel {
   position: relative;
-  padding: 100px 20px 30px;
+  padding: 60px 20px 30px;
 }
 
 #settings-open {
@@ -130,6 +130,7 @@ button#piano-mode:hover path {
   padding: 5px 0;
   background-color: black;
   text-transform: uppercase;
+  width: 120px;
 }
 
 .wave-settings .piano-mode input:last-child {
@@ -222,7 +223,7 @@ label.radio-input:after {
   width: 100%;
 }
 
-.range-slider__range {
+.range-slider-wrapper {
   -webkit-appearance: none;
   width: calc(100% - (73px));
   height: 10px;
@@ -233,7 +234,7 @@ label.radio-input:after {
   margin: 0;
 }
 
-.range-slider__range::-webkit-slider-thumb {
+.range-slider-wrapper::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 20px;
@@ -245,15 +246,15 @@ label.radio-input:after {
   transition: background .15s ease-in-out;
 }
 
-.range-slider__range::-webkit-slider-thumb:hover {
+.range-slider-wrapper::-webkit-slider-thumb:hover {
   background: #0e83cd;
 }
 
-.range-slider__range:active::-webkit-slider-thumb {
+.range-slider-wrapper:active::-webkit-slider-thumb {
   background: #0e83cd;
 }
 
-.range-slider__range::-moz-range-thumb {
+.range-slider-wrapper::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border: 0;
@@ -263,15 +264,15 @@ label.radio-input:after {
   transition: background .15s ease-in-out;
 }
 
-.range-slider__range::-moz-range-thumb:hover {
+.range-slider-wrapper::-moz-range-thumb:hover {
   background: #0e83cd;
 }
 
-.range-slider__range:active::-moz-range-thumb {
+.range-slider-wrapper:active::-moz-range-thumb {
   background: #0e83cd;
 }
 
-.range-slider__range:focus::-webkit-slider-thumb {
+.range-slider-wrapper:focus::-webkit-slider-thumb {
   box-shadow: 0 0 0 3px #000, 0 0 0 6px #0e83cd;
 }
 

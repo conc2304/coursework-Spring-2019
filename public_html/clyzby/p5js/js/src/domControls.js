@@ -23,38 +23,33 @@ let createDOMControls = (waves) => {
   "use strict";
 
   if (!waves.length) {
-    return;
+    return {};
   }
-
-  let controls = {};
-  let step = 0;
-  let domCtrl;
-  let label, button, inputWrapper, displayVal, wrapperID, waveName;
-  let pianoWrapper, pianoInput;
-
-  let waveSettingWrapper;
 
   // loop through each of the waves objects and create settings controllers based on
   // the property's attribute type
+  let controls = {};
+
   for (let wave in waves) {
     if (!waves.hasOwnProperty(wave)) {
       continue;
     }
 
     wave = waves[wave];
-    waveName = wave.constructor.name;
+    let waveName = wave.constructor.name;
+    let  wrapperID = waveName + '-settings';
     controls[waveName] = {};
-    wrapperID = waveName + '-settings';
+
 
     // create a div for each of the different waves
-    domCtrl = myp5.createDiv();
+    let domCtrl = myp5.createDiv();
     domCtrl.attribute('id', wrapperID);
     domCtrl.attribute('class', 'wave-settings');
     domCtrl.parent('wave-control-panel');
 
 
     // create a button to toggle the settings sliders visibility
-    button = myp5.createButton(waveName, '1');
+    let button = myp5.createButton(waveName, '1');
     button.style('position', 'relative');
     button.attribute('id', waveName + '-toggle');
     button.attribute('class', 'settings-toggle-button');
@@ -64,7 +59,7 @@ let createDOMControls = (waves) => {
 
     button.parent(wrapperID);
 
-    waveSettingWrapper = myp5.createElement('div');
+    let waveSettingWrapper = myp5.createElement('div');
     waveSettingWrapper.attribute('id', `${waveName}-wrapper`);
     waveSettingWrapper.attribute('class', `hide settings-wrapper`);
     waveSettingWrapper.parent(wrapperID);
@@ -77,53 +72,62 @@ let createDOMControls = (waves) => {
 
       if (wave[prop].attrType === 'numeric') {
 
-        inputWrapper = myp5.createElement('div');
-        // inputWrapper.attribute('class', `${waveName}-input hide range-slider`);
+        // wrapper to hold individual range sliders
+        let inputWrapper = myp5.createElement('div');
         inputWrapper.attribute('class', `range-slider`);
         inputWrapper.parent(waveSettingWrapper);
 
-        label = myp5.createElement('p', wave[prop].displayLabel);
-        label.style('position', 'relative');
-        label.parent(inputWrapper);
+
+        let title = myp5.createElement('p', wave[prop].displayLabel);
+        title.style('position', 'relative');
+        title.parent(inputWrapper);
 
         // wrapper to toggle piano mode
-        pianoWrapper = myp5.createElement('div');
+        let pianoWrapper = myp5.createElement('div');
         pianoWrapper.attribute('class', `piano-mode`);
         pianoWrapper.parent(inputWrapper);
 
 
         // input to set which keyboard key plays that element
-        pianoInput = myp5.createInput();
+        let pianoInput = myp5.createInput();
         pianoInput.attribute('data-wave', waveName);
         pianoInput.attribute('data-prop', prop);
+        pianoInput.attribute('data-type', 'key-set');
         pianoInput.elt.placeholder = "Control Key";
-        pianoInput.elt.onkeypress = setKeyboardControl;
+        pianoInput.elt.onchange = setKeyboardControl;
         pianoInput.elt.maxLength = 1;
+        pianoInput.parent(pianoWrapper);
 
 
         // input to set what the value will be for that element on that key press
-        pianoInput.parent(pianoWrapper);
         pianoInput = myp5.createInput(wave[prop].currentValue.toString(), 'number');
         pianoInput.value(wave[prop].currentValue);
-        pianoInput.elt.max = wave[prop].max;
+        pianoInput.elt.max = wave[prop].max + (wave[prop].max + wave[prop].min) / 2;  // not sure if i want to set a max or min
+        pianoInput.elt.min = wave[prop].min - (wave[prop].max + wave[prop].min) / 2;  // not sure if i want to set a max or min
+        pianoInput.attribute('data-type', 'value-set')
+        pianoInput.attribute('data-wave', waveName);
+        pianoInput.attribute('data-prop', prop);
+
+        pianoInput.elt.onchange = setKeyboardControl;
+        pianoInput.elt.step = Number((wave[prop].max - wave[prop].min) / 200).toFixed(3);
         pianoInput.parent(pianoWrapper);
 
+        let step = 0;
+        if (wave[prop].max - wave[prop].min < 10) {
+          // if the difference between min and max is 10 or less
+          step = (wave[prop].max - wave[prop].min) / 100;
+        }
 
         // slider to control the individual property
         controls[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
-        controls[waveName][prop].attribute('class', `range-slider__range`);
+        controls[waveName][prop].attribute('class', `range-slider-wrapper`);
         controls[waveName][prop].attribute('oninput', 'updateRange(this)');
         controls[waveName][prop].parent(inputWrapper);
 
-        displayVal = myp5.createElement('span', wave[prop].currentValue.toString());
-        displayVal.attribute('class', `range-slider__value`);
-        displayVal.parent(inputWrapper);
+        let displayValue = myp5.createElement('span', wave[prop].currentValue.toString());
+        displayValue.attribute('class', `range-slider__value`);
+        displayValue.parent(inputWrapper);
 
-
-        if (wave[prop].max - wave[prop].min < 10) {
-          // if the difference between min and max is 1 or less
-          step = (wave[prop].max - wave[prop].min) / 100;
-        }
       }
     }
 
@@ -136,11 +140,11 @@ let createDOMControls = (waves) => {
 
       if (wave[prop].attrType === "variable" && wave[prop].options.length) {
 
-        inputWrapper = myp5.createElement('div');
+        let inputWrapper = myp5.createElement('div');
         inputWrapper.attribute('class', `radio-option-wrap ${waveName}-${prop}`);
         inputWrapper.parent(waveSettingWrapper);
 
-        label = myp5.createElement('p', wave[prop].displayLabel);
+        let label = myp5.createElement('p', wave[prop].displayLabel);
         label.style('position', 'relative');
         label.parent(inputWrapper);
 
@@ -228,33 +232,66 @@ let ucFirst = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-// TODO  - create a keyboard to controller map
 // when the user enters a key, lets
 let keyboardCtrl = {};
+let wavePropToKeyMap = {};
 let setKeyboardControl = function (e) {
   "use strict";
+  // console.log(e);
+  // console.log($(this));
 
-  if (e.charCode === "Enter") {
-    return;
+  let inputValue = e.target.value;
+  let type = e.target.dataset.type;
+  let wave = e.target.dataset.wave;
+  let prop = e.target.dataset.prop;
+  let charCode;
+  let propValue;
+
+  if (type === 'key-set') {
+    propValue = e.target.nextSibling.value;
+    charCode = Number(inputValue.charCodeAt(0));
+  }
+  if (type === 'value-set') {
+    propValue = Number(e.target.value);
+    charCode = Number(e.target.previousSibling.value.charCodeAt(0));
   }
 
-  keyboardCtrl = keyboardCtrl || {};
+  if (typeof charCode === "number" && wave && prop && propValue) {
 
-  console.log($(this));
-  console.log(e);
-  $(this).val(e.key)
-  let charCode = e.charCode;
+    // only update the keyboard control if we have a key to control it with
+    keyboardCtrl[charCode] = keyboardCtrl[charCode] || {};
+    keyboardCtrl[charCode][wave] = keyboardCtrl[charCode][wave] || {};
+    keyboardCtrl[charCode][wave][prop] = Number(propValue);
 
-  let wave = $(this).attr('data-wave');
-  let prop = $(this).attr('data-prop');
-  console.log(`${wave} - ${prop}`);
+    wavePropToKeyMap[wave] = wavePropToKeyMap[wave] || {};
+    wavePropToKeyMap[wave][prop] = charCode;
+  } else {
 
-  keyboardCtrl[charCode] = [`${wave}`, `${prop}`, ];
+    // TODO FIX THIS  it isnt cleaning up correctly
+    if (wavePropToKeyMap[wave][prop]) {
+      let keyToClean = wavePropToKeyMap[wave][prop];
 
+      delete keyboardCtrl[keyToClean][wave][prop];
+      if (Object.size(keyboardCtrl[keyToClean][wave]) === 0) {
+        delete keyboardCtrl[keyToClean][wave];
+      }
 
-  // let waveN = myp5[`get${wave}()`];
-  // console.log(waveN);
+      if (Object.size(keyboardCtrl[keyToClean]) === 0) {
+        delete keyboardCtrl[keyToClean];
+      }
+    }
+  }
 
-  // console.log(myp5.getCenterWave());
+  console.log(keyboardCtrl);
+  console.log(wavePropToKeyMap);
 };
 
+Object.size = (obj) => {
+  let size = 0, key;
+  for (key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      size++;
+    }
+  }
+  return size;
+};
