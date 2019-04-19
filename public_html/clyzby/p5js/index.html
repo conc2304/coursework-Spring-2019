@@ -26,6 +26,7 @@
   <script src="js/src/midiService.js"></script>
   <script src="js/src/midiCtrl.js"></script>
   <script src="js/src/domControls.js"></script>
+  <script src="js/src/keyboardControls.js"></script>
 
 </head>
 <body>
@@ -38,6 +39,10 @@
   <div id="sub-menu">
     <div id="settings-close">✕</div>
     <button id="piano-mode" class="editing">
+      <span class="tooltip">
+        Set keyboard keys to control wave elements.<br>
+        When done editing the controls, click me to exit out of editing mode.
+      </span>
       <svg version="1.1" id="piano-mode-svg"
      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      x="0px" y="0px" viewBox="0 0 500 500"
@@ -51,25 +56,41 @@
   </div>
 
   <!-- populated by p5 -->
-  <!--<form>-->
   <div id="wave-control-panel"></div>
-  <!--</form>-->
 
 </div>
 
 </body>
 
 <script>
-  $(function () {
-    $("#settings-close").click(function () {
+  $(() => {
+    $("#settings-close").click(() => {
       $("#settings-menu").fadeOut();
       $("#settings-open").fadeIn();
     });
 
-    $("#settings-open").click(function () {
+    $("#settings-open").click(() => {
       $("#settings-menu").fadeIn();
       $("#settings-open").fadeOut();
     });
+
   });
+
+  Object.size = (obj) => {
+    "use strict";
+
+    let size = 0, key;
+    for (key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        size++;
+      }
+    }
+    return size;
+  };
+
+  let ucFirst = (string) => {
+    "use strict";
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 </script>
 </html>

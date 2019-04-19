@@ -111,9 +111,12 @@ let createDOMControls = (waves) => {
         pianoInput.parent(pianoWrapper);
 
         let step = 0;
-        if (wave[prop].max - wave[prop].min < 10) {
+        if ((wave[prop].max - wave[prop].min) < 10) {
           // if the difference between min and max is 10 or less
           step = (wave[prop].max - wave[prop].min) / 100;
+        }
+        if (Number.isInteger(wave[prop].currentValue)) {
+          step = 1;
         }
 
         // slider to control the individual property
@@ -207,35 +210,21 @@ let setDOMControlValues = (controls, waves) => {
  * Called oninput via the html bc the dom elements aren't created until after the dom is ready
  * @param range
  */
-let updateRangeDisplay = function (range) {
+let updateRangeDisplay = (range) => {
   "use strict";
   let value = $(range).val();
-  $(range).parents('.range-slider-wrapper').children('.range-slider-value').html(Number(value).toFixed(2));
+  Math.round(value*100)/100;
+  $(range).parents('.range-slider-wrapper').children('.range-slider-value').html(value);
 };
 
-let editingPiano = true;  // Don't play 'piano' keys while in editing mode;
-$(function () {
-  "use strict";
-  $('#piano-mode').click(function () {
-    $('.piano-mode').toggleClass('hide');
-    $('#piano-mode').toggleClass('editing');
-    editingPiano = !editingPiano;
-  });
-});
 
-
-let ucFirst = (string) => {
-  "use strict";
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
-
-// when the user enters a key, lets
+// when the user enters a key into the input
+// save it to a key to controller map
 let keyboardCtrl = {};
 let wavePropToKeyMap = {};
-let setKeyboardControl = function (e) {
+let setKeyboardControl = (e) => {
   "use strict";
   // console.log(e);
-  // console.log($(this));
 
   let inputValue = e.target.value;
   let type = e.target.dataset.type;
@@ -296,65 +285,4 @@ let setKeyboardControl = function (e) {
 };
 
 
-Object.size = (obj) => {
-  "use strict";
-
-  let size = 0, key;
-  for (key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      size++;
-    }
-  }
-  return size;
-};
-
-/**
- *   For each of the properties associated with that key
- *   set the targetValue to the value associated to that key press
- *   on release set it back to the reset value
- * @param key
- * @param pressed
- */
-
-// TODO - we need to update the domControls too
-let playPianoKey = (key, pressed) => {
-  "use strict";
-
-  if (editingPiano) {
-    return null;
-  }
-
-  let waveHandlers = keyboardCtrl[key];
-  let waveCtrl;
-  console.log(waveHandlers);
-
-
-  for (let waveName in waveHandlers) {
-    if (!waveHandlers.hasOwnProperty(waveName)) {
-      continue;
-    }
-
-    waveCtrl = getCtrlElement(waveName);
-    for (let waveProp in waveHandlers[waveName]) {
-      if (!waveHandlers[waveName].hasOwnProperty(waveProp)) {
-        continue;
-      }
-
-      let waveClass = `.range-slider.${waveName}-${waveProp}`;
-      console.log(waveClass);
-      console.log($(waveClass));
-      console.log(`set ${waveProp} to ${waveHandlers[waveName][waveProp]}`);
-
-      let pianoValue;
-      if (pressed) {
-        pianoValue = waveHandlers[waveName][waveProp];
-      } else {
-        pianoValue = waveCtrl[waveProp].resetValue;
-      }
-
-      $(waveClass).val(pianoValue);
-      updateRangeDisplay($(waveClass));
-    }
-  }
-};
 
