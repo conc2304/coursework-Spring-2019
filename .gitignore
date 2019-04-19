@@ -1,5 +1,7 @@
 # Project/OS files to ignore
 .idea/*
+*/.idea
+*.swp
 .DS_Store
 bak
 !.gitkeep
