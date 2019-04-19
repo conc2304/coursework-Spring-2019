@@ -111,13 +111,14 @@ let createDOMControls = (waves) => {
         pianoInput.parent(pianoWrapper);
 
         let step = 0;
+        if (Number.isInteger(wave[prop].currentValue)) {
+          step = 1;
+        }
         if ((wave[prop].max - wave[prop].min) < 10) {
           // if the difference between min and max is 10 or less
           step = (wave[prop].max - wave[prop].min) / 100;
         }
-        if (Number.isInteger(wave[prop].currentValue)) {
-          step = 1;
-        }
+
 
         // slider to control the individual property
         controls[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
@@ -271,9 +272,9 @@ let setKeyboardControl = (e) => {
       if (Object.size(keyboardCtrl[keyToClean]) === 0) {
         delete keyboardCtrl[keyToClean];
       }
+      delete wavePropToKeyMap[waveName][property];
     }
 
-    delete wavePropToKeyMap[waveName][property];
 
     if (Object.size(wavePropToKeyMap[waveName]) === 0) {
       delete wavePropToKeyMap[waveName];
