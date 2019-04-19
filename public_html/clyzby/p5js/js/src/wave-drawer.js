@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 
 
 let objects = {
@@ -68,6 +67,14 @@ let s = (sketch) => {
     threeDWave.yPoints = new Array(Math.floor(threeDWave.waveWidth / threeDWave.xSpacing.currentValue));
     threeDWave.calcWave();
     threeDWave.render(sketch.frameCount);
+  };
+
+  sketch.keyPressed = () => {
+    playPianoKey(sketch.keyCode, true);
+  };
+
+  sketch.keyReleased = () => {
+    playPianoKey(sketch.keyCode, false);
   };
 };
 

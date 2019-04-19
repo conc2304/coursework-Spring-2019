@@ -2,6 +2,7 @@ body {
   padding: 0;
   margin: 0;
   overflow: hidden;
+  background-color: #000;
 }
 
 *, *:before, *:after {
@@ -16,6 +17,33 @@ body {
   clear: both;
 }
 
+#settings-menu::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #F5F5F5;
+  border-radius: 10px;
+}
+
+#settings-menu::-webkit-scrollbar {
+  width: 10px;
+  background-color: #F5F5F5;
+}
+
+#settings-menu::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #000;
+  background-color: #000000bd;
+  background-image: -webkit-gradient(linear,
+  40% 0%,
+  75% 84%,
+  from(#000000bd),
+  to(#0c6b98),
+  color-stop(.9, #0e83cd));
+}
+
+#settings-menu::-webkit-scrollbar-track{
+  background-color: #000;
+}
+
 #settings-menu {
   position: absolute;
   width: 450px;
@@ -28,22 +56,16 @@ body {
   border-right: 1px solid #292929;
 }
 
-
 #settings-menu-inner-wrap {
- position: relative;
-}
-
-#sub-wrap {
   position: relative;
-  z-index: 20;
-  top: 0;
 }
 
 #sub-menu {
   width: 449px;
   position: fixed;
-  background: rgb(0,0,0);
-  background: linear-gradient(180deg, rgba(0,0,0,1) 66%, rgba(0,0,0,0) 100%);
+  z-index: 5;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 66%, rgba(0, 0, 0, 0) 100%);
 }
 
 #wave-control-panel {
@@ -87,7 +109,7 @@ button#piano-mode:focus {
   outline: none;
 }
 
-button#piano-mode.enabled path {
+button#piano-mode.editing path {
   fill: #fff;
 }
 
@@ -219,11 +241,11 @@ label.radio-input:after {
   color: #fff;
 }
 
-.range-slider {
+.range-slider-wrapper {
   width: 100%;
 }
 
-.range-slider-wrapper {
+.range-slider {
   -webkit-appearance: none;
   width: calc(100% - (73px));
   height: 10px;
@@ -234,7 +256,7 @@ label.radio-input:after {
   margin: 0;
 }
 
-.range-slider-wrapper::-webkit-slider-thumb {
+.range-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 20px;
@@ -246,15 +268,15 @@ label.radio-input:after {
   transition: background .15s ease-in-out;
 }
 
-.range-slider-wrapper::-webkit-slider-thumb:hover {
+.range-slider::-webkit-slider-thumb:hover {
   background: #0e83cd;
 }
 
-.range-slider-wrapper:active::-webkit-slider-thumb {
+.range-slider:active::-webkit-slider-thumb {
   background: #0e83cd;
 }
 
-.range-slider-wrapper::-moz-range-thumb {
+.range-slider::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border: 0;
@@ -264,15 +286,15 @@ label.radio-input:after {
   transition: background .15s ease-in-out;
 }
 
-.range-slider-wrapper::-moz-range-thumb:hover {
+.range-slider::-moz-range-thumb:hover {
   background: #0e83cd;
 }
 
-.range-slider-wrapper:active::-moz-range-thumb {
+.range-slider:active::-moz-range-thumb {
   background: #0e83cd;
 }
 
-.range-slider-wrapper:focus::-webkit-slider-thumb {
+.range-slider:focus::-webkit-slider-thumb {
   box-shadow: 0 0 0 3px #000, 0 0 0 6px #0e83cd;
 }
 
@@ -281,7 +303,7 @@ label.radio-input:after {
   margin-bottom: 10px;
 }
 
-.range-slider__value {
+.range-slider-value {
   display: inline-block;
   position: relative;
   width: 60px;
@@ -299,7 +321,6 @@ label.radio-input:after {
   background: #d7dcdf;
   border: 0;
 }
-
 
 /*  Radio Buttons */
 input[type="radio"].radio-input {
@@ -337,7 +358,7 @@ input[type="radio"].radio-input:checked {
   background-color: #0e83cd;
 }
 
-input[type="radio"].radio-input, label.radio-input{
+input[type="radio"].radio-input, label.radio-input {
   vertical-align: bottom;
 }
 

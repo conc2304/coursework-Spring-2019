@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 /**
  *  - Assignment 3 - DOM, DOM, DOM -
  *
@@ -37,7 +35,7 @@ let createDOMControls = (waves) => {
 
     wave = waves[wave];
     let waveName = wave.constructor.name;
-    let  wrapperID = waveName + '-settings';
+    let wrapperID = waveName + '-settings';
     controls[waveName] = {};
 
 
@@ -54,7 +52,7 @@ let createDOMControls = (waves) => {
     button.attribute('id', waveName + '-toggle');
     button.attribute('class', 'settings-toggle-button');
     button.mousePressed(function () {  // todo  figure out how to pass a 'lexical this' with es6 arrow functions
-      $(`#${this.html()}-wrapper`).toggleClass('hide');
+      $('#' + this.html() + "-wrapper").toggleClass('hide');
     });
 
     button.parent(wrapperID);
@@ -74,7 +72,7 @@ let createDOMControls = (waves) => {
 
         // wrapper to hold individual range sliders
         let inputWrapper = myp5.createElement('div');
-        inputWrapper.attribute('class', `range-slider`);
+        inputWrapper.attribute('class', `range-slider-wrapper`);
         inputWrapper.parent(waveSettingWrapper);
 
 
@@ -101,10 +99,10 @@ let createDOMControls = (waves) => {
 
         // input to set what the value will be for that element on that key press
         pianoInput = myp5.createInput(wave[prop].currentValue.toString(), 'number');
-        pianoInput.value(wave[prop].currentValue);
-        pianoInput.elt.max = wave[prop].max + (wave[prop].max + wave[prop].min) / 2;  // not sure if i want to set a max or min
-        pianoInput.elt.min = wave[prop].min - (wave[prop].max + wave[prop].min) / 2;  // not sure if i want to set a max or min
-        pianoInput.attribute('data-type', 'value-set')
+        pianoInput.value(wave[prop].currentValue * 2);  // default it 2x so that they have something to play with
+        pianoInput.elt.max = wave[prop].max;  // not sure if i want to set a max or min
+        pianoInput.elt.min = wave[prop].min;  // not sure if i want to set a max or min
+        pianoInput.attribute('data-type', 'value-set');
         pianoInput.attribute('data-wave', waveName);
         pianoInput.attribute('data-prop', prop);
 
@@ -120,12 +118,12 @@ let createDOMControls = (waves) => {
 
         // slider to control the individual property
         controls[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
-        controls[waveName][prop].attribute('class', `range-slider-wrapper`);
-        controls[waveName][prop].attribute('oninput', 'updateRange(this)');
+        controls[waveName][prop].attribute('class', `range-slider ${waveName}-${prop}`);
+        controls[waveName][prop].attribute('oninput', 'updateRangeDisplay(this)');
         controls[waveName][prop].parent(inputWrapper);
 
         let displayValue = myp5.createElement('span', wave[prop].currentValue.toString());
-        displayValue.attribute('class', `range-slider__value`);
+        displayValue.attribute('class', `range-slider-value`);
         displayValue.parent(inputWrapper);
 
       }
@@ -169,8 +167,6 @@ let createDOMControls = (waves) => {
 };
 
 
-
-
 /**
  * On draw loop, check the value of all of our controls
  * and apply those values to our config objects
@@ -211,18 +207,19 @@ let setDOMControlValues = (controls, waves) => {
  * Called oninput via the html bc the dom elements aren't created until after the dom is ready
  * @param range
  */
-let updateRange = function (range) {
+let updateRangeDisplay = function (range) {
   "use strict";
   let value = $(range).val();
-  $(range).parents('.range-slider').children('.range-slider__value').html(Number(value).toFixed(2));
+  $(range).parents('.range-slider-wrapper').children('.range-slider-value').html(Number(value).toFixed(2));
 };
 
-
+let editingPiano = true;  // Don't play 'piano' keys while in editing mode;
 $(function () {
   "use strict";
   $('#piano-mode').click(function () {
     $('.piano-mode').toggleClass('hide');
-    $('#piano-mode').toggleClass('enabled');
+    $('#piano-mode').toggleClass('editing');
+    editingPiano = !editingPiano;
   });
 });
 
@@ -242,43 +239,55 @@ let setKeyboardControl = function (e) {
 
   let inputValue = e.target.value;
   let type = e.target.dataset.type;
-  let wave = e.target.dataset.wave;
-  let prop = e.target.dataset.prop;
+  let waveName = e.target.dataset.wave;
+  let property = e.target.dataset.prop;
   let charCode;
   let propValue;
 
   if (type === 'key-set') {
     propValue = e.target.nextSibling.value;
-    charCode = Number(inputValue.charCodeAt(0));
+    // apparently p5 can only understand keys as uppercase on key press ...
+    charCode = inputValue.toUpperCase().charCodeAt(0);
   }
   if (type === 'value-set') {
-    propValue = Number(e.target.value);
-    charCode = Number(e.target.previousSibling.value.charCodeAt(0));
+    propValue = e.target.value;
+    // apparently p5 can only understand keys as uppercase on key press ...
+    charCode = e.target.previousSibling.value.toUpperCase().charCodeAt(0);
   }
 
-  if (typeof charCode === "number" && wave && prop && propValue) {
+  if (!Number.isNaN(charCode) && waveName && property && propValue) {
 
+    console.log('setting value');
+    console.log([inputValue, charCode, waveName, property, propValue]);
     // only update the keyboard control if we have a key to control it with
     keyboardCtrl[charCode] = keyboardCtrl[charCode] || {};
-    keyboardCtrl[charCode][wave] = keyboardCtrl[charCode][wave] || {};
-    keyboardCtrl[charCode][wave][prop] = Number(propValue);
+    keyboardCtrl[charCode][waveName] = keyboardCtrl[charCode][waveName] || {};
+    keyboardCtrl[charCode][waveName][property] = Number(propValue);
 
-    wavePropToKeyMap[wave] = wavePropToKeyMap[wave] || {};
-    wavePropToKeyMap[wave][prop] = charCode;
+    wavePropToKeyMap[waveName] = wavePropToKeyMap[waveName] || {};
+    wavePropToKeyMap[waveName][property] = charCode;
   } else {
 
-    // TODO FIX THIS  it isnt cleaning up correctly
-    if (wavePropToKeyMap[wave][prop]) {
-      let keyToClean = wavePropToKeyMap[wave][prop];
+    console.log('cleaning ');
+    if (wavePropToKeyMap[waveName] && wavePropToKeyMap[waveName][property]) {
 
-      delete keyboardCtrl[keyToClean][wave][prop];
-      if (Object.size(keyboardCtrl[keyToClean][wave]) === 0) {
-        delete keyboardCtrl[keyToClean][wave];
+      let keyToClean = wavePropToKeyMap[waveName][property];
+      console.log(keyToClean);
+
+      delete keyboardCtrl[keyToClean][waveName][property];
+      if (Object.size(keyboardCtrl[keyToClean][waveName]) === 0) {
+        delete keyboardCtrl[keyToClean][waveName];
       }
 
       if (Object.size(keyboardCtrl[keyToClean]) === 0) {
         delete keyboardCtrl[keyToClean];
       }
+    }
+
+    delete wavePropToKeyMap[waveName][property];
+
+    if (Object.size(wavePropToKeyMap[waveName]) === 0) {
+      delete wavePropToKeyMap[waveName];
     }
   }
 
@@ -286,7 +295,10 @@ let setKeyboardControl = function (e) {
   console.log(wavePropToKeyMap);
 };
 
+
 Object.size = (obj) => {
+  "use strict";
+
   let size = 0, key;
   for (key in obj) {
     if (obj.hasOwnProperty(key)) {
@@ -295,3 +307,54 @@ Object.size = (obj) => {
   }
   return size;
 };
+
+/**
+ *   For each of the properties associated with that key
+ *   set the targetValue to the value associated to that key press
+ *   on release set it back to the reset value
+ * @param key
+ * @param pressed
+ */
+
+// TODO - we need to update the domControls too
+let playPianoKey = (key, pressed) => {
+  "use strict";
+
+  if (editingPiano) {
+    return null;
+  }
+
+  let waveHandlers = keyboardCtrl[key];
+  let waveCtrl;
+  console.log(waveHandlers);
+
+
+  for (let waveName in waveHandlers) {
+    if (!waveHandlers.hasOwnProperty(waveName)) {
+      continue;
+    }
+
+    waveCtrl = getCtrlElement(waveName);
+    for (let waveProp in waveHandlers[waveName]) {
+      if (!waveHandlers[waveName].hasOwnProperty(waveProp)) {
+        continue;
+      }
+
+      let waveClass = `.range-slider.${waveName}-${waveProp}`;
+      console.log(waveClass);
+      console.log($(waveClass));
+      console.log(`set ${waveProp} to ${waveHandlers[waveName][waveProp]}`);
+
+      let pianoValue;
+      if (pressed) {
+        pianoValue = waveHandlers[waveName][waveProp];
+      } else {
+        pianoValue = waveCtrl[waveProp].resetValue;
+      }
+
+      $(waveClass).val(pianoValue);
+      updateRangeDisplay($(waveClass));
+    }
+  }
+};
+

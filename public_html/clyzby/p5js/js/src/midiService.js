@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 
 
 let midiAvailable = false;
@@ -19,6 +18,8 @@ if (navigator.requestMIDIAccess) {
  * @param midiAccess
  */
 function onMIDISuccess(midiAccess) {
+  "use strict";
+
   console.log(midiAccess);
   for (let input of midiAccess.inputs.values()) {
     console.log(input);

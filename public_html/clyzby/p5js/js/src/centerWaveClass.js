@@ -3,9 +3,9 @@
 class CenterWave {
   constructor(windowWidth, windowHeight) {
 
-    this.windowWidth = windowWidth;
-    this.windowHeight = windowHeight;
-    this.waveWidth = windowWidth + 200;  // have some of it go off the page
+    this.windowWidth = myp5.windowWidth;
+    this.windowHeight = myp5.windowHeight;
+    this.waveWidth = myp5.windowWidth + 200;  // have some of it go off the page
     this.origin = 0;
 
 
