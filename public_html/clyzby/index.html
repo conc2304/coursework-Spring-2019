@@ -36,7 +36,7 @@
   </nav>
 
 
-  <section id="hero-section" class="section no-pad-bot" id="index-banner">
+  <section id="hero-section index-banner" class="section no-pad-bot">
     <div class="container">
       <br><br>
       <h1 class="header center red-text text-darken-4">Harvard University
@@ -45,7 +45,7 @@
         <h5 class="header col s12 light">The Harvard Division of Continuing Education in the Faculty of Arts & Sciences comprises several entities, including:</h5>
       </div>
     </div>
-  </div>
+  </section>
 
 
   <div class="container">
@@ -103,7 +103,15 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <!-- Material depends on Jquery to load -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.js"></script>   <!-- Init depends on Materialize to load -->
-  <script src="files/vendor/materialize/js/init.js"></script>
+  <script>
+    (function($){
+      $(function(){
+
+        $('.sidenav').sidenav();
+
+      }); // end of document ready
+    })(jQuery); // end of jQuery name space
+  </script>
 
   </body>
 </html>
