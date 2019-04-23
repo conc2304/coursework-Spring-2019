@@ -1,3 +1,4 @@
+/*  TODO  make it scroll on mobile - by adding*/
 body {
   padding: 0;
   margin: 0;
@@ -26,6 +27,15 @@ body {
 #settings-menu::-webkit-scrollbar {
   width: 10px;
   background-color: #F5F5F5;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  #settings-menu::-webkit-scrollbar {
+    width: 20px;
+  }
+  #settings-menu {
+    padding-left: 35px;
+  }
 }
 
 #settings-menu::-webkit-scrollbar-thumb {
@@ -251,14 +261,9 @@ button#piano-mode:hover path {
   color: #0e83cd;
 }
 
-#settings-menu button:hover:after {
-  height: 75%;
-  opacity: 1;
-}
 
-#settings-menu button:active:after {
-  height: 130%;
-  opacity: 1;
+#settings-menu button.settings-toggle-button.open {
+  border : 3px solid #0e83cd;
 }
 
 .radio-option-wrap {

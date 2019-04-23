@@ -52,7 +52,9 @@ let createDOMControls = (waves) => {
     button.attribute('id', waveName + '-toggle');
     button.attribute('class', 'settings-toggle-button');
     button.mousePressed(function () {  // todo  figure out how to pass a 'lexical this' with es6 arrow functions
-      $('#' + this.html() + "-wrapper").toggleClass('hide');
+      $('#' + this.html() + "-wrapper").toggleClass('hide'); // p5 makes it so incredibly dubm to get any sort of information
+      $(`#${this.html()}-toggle`).toggleClass('open');
+
     });
 
     button.parent(wrapperID);
