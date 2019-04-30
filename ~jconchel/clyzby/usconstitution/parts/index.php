@@ -1,10 +1,8 @@
 <?php
 
-$url = $_SERVER['REQUEST_URI'];
-$q = parse_url($url, PHP_URL_QUERY);
-
-if (!$q) {
-  $q = 'i';
+$article = $_GET['article'];
+if (!$article) {
+  $article = 'i';
 }
 
 $constitution = array(
@@ -37,17 +35,18 @@ $constitution = array(
     'link'  => 'vii.php',
   ),
   'amendments' => array(
-    'title' => 'Amendements',
+    'title' => 'Amendments',
     'link'  => 'amendments.php',
   ),
 );
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title>The United States Constitution: Article I</title>
+  <title>The United States Constitution: <?php print $constitution[$article]['title']; ?></title>
   <?php include("includes/htmlhead.php"); ?>
 </head>
 
@@ -56,7 +55,7 @@ $constitution = array(
   <?php include("includes/header.php"); ?>
   <div class="row">
     <?php include("includes/navigation.php"); ?>
-    <?php include($constitution[$q]['link']); ?>
+    <?php include($constitution[$article]['link']); ?>
   </div>
 
   <?php include("includes/footer.php"); ?>

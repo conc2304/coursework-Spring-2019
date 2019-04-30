@@ -14,4 +14,3 @@
     <p>The United States shall guarantee to every State in this Union a Republican Form of Government, and shall protect each of them against Invasion; and on Application of the Legislature, or of the Executive (when the Legislature cannot be convened) against domestic Violence.</p>
   </main>
 </div>
-</div>
