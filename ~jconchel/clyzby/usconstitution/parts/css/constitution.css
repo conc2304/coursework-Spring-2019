@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+header {margin-top: 1em;}
+header h1 { padding-left: 160px; padding-top: 20px; background-image: url(../images/flag.png); background-repeat: no-repeat; background-position: left; min-height: 70px; background-color: #eeeeff;}
+
+footer { font-size: smaller; background-color: #eeeeff;}
+footer p { padding: 1em; }
+
+nav ul {list-style: none; padding: 0;}
+nav ul li a {display: block;text-decoration: none; padding: 0.5em 0 0.5em 1em; border: thin solid navy; font-weight: bold;}
+nav ul li a:link {display: block;}
+nav ul li a:visited {display: block;}
+nav ul li a:hover {display: block; border: thin solid white; background-color: navy; color: white;}
+nav ul li a:active {display: block;}
+
+nav ul li#iamhere a,
+nav ul li#iamhere a:link,
+nav ul li#iamhere a:visited,
+nav ul li#iamhere a:hover { color: #ff0000; background-color: #ffffff; border: thin solid navy;}
+
+nav ul li { margin-bottom: 0; margin-top: 0; padding-top: 0; padding-bottom: 0;}

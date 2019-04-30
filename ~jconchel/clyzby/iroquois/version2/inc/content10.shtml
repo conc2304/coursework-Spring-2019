@@ -1,0 +1,30 @@
+
+<h3>Rights and Powers of War</h3>
+
+<p>79. Skanawatih shall be vested with a double office, duty and with double authority. One-half of his being shall hold the Lordship title and the other half shall hold the title of War Chief. In the event of war he shall notify the five War Chiefs of the Confederacy and command them to prepare for war and have their men ready at the appointed time and place for engagement with the enemy of the Great Peace.</p>
+<p>80. When the Confederate Council of the Five Nations has for its object the establishment of the Great Peace among the people of an outside nation and that nation refuses to accept the Great Peace, then by such refusal they bring a declaration of war upon themselves from the Five Nations. Then shall the Five Nations seek to establish the Great Peace by a conquest of the rebellious nation.</p>
+<p>81. When the men of the Five Nations, now called forth to become warriors, are ready for battle with an obstinate opposing nation that has refused to accept the Great Peace, then one of the five War Chiefs shall be chosen by the warriors of the Five Nations to lead the army into battle. It shall be the duty of the War Chief so chosen to come before his warriors and address them. His aim shall be to impress upon them the necessity of good behavior and strict obedience to all the commands of the War Chiefs. He shall deliver an oration exhorting them with great zeal to be brave and courageous and never to be guilty of cowardice. At the conclusion of his oration he shall march forward and commence the War Song and he shall sing:</p>
+<blockquote>
+<p>Now I am greatly surprised<br />
+And, therefore I shall use it -<br />
+The power of my War Song.<br />
+I am of the Five Nations<br />
+And I shall make supplication<br />
+To the Almighty Creator.<br />
+He has furnished this army.<br />
+My warriors shall be mighty<br />
+In the strength of the Creator.<br />
+Between him and my song they are<br />
+For it was he who gave the song<br />
+This war song that I sing!</p>
+</blockquote>
+<p>82. When the warriors of the Five Nations are on an expedition against an enemy, the War Chief shall sing the War Song as he approaches the country of the enemy and not cease until his scouts have reported that the army is near the enemies' lines when the War Chief shall approach with great caution and prepare for the attack.</p>
+<p>83. When peace shall have been established by the termination of the war against a foreign nation, then the War Chief shall cause all the weapons of war to be taken from the nation. Then shall the Great Peace be established and that nation shall observe all the rules of the Great Peace for all time to come.</p>
+<p>84. Whenever a foreign nation is conquered or has by their own will accepted the Great Peace their own system of internal government may continue, but they must cease all warfare against other nations.</p>
+<p>85. Whenever a war against a foreign nation is pushed until that nation is about exterminated because of its refusal to accept the Great Peace and if that nation shall by its obstinacy become exterminated, all their rights, property and territory shall become the property of the Five Nations.</p>
+<p>86. Whenever a foreign nation is conquered and the survivors are brought into the territory of the Five Nations' Confederacy and placed under the Great Peace the two shall be known as the Conqueror and the Conquered. A symbolic relationship shall be devised and be placed in some symbolic position. The conquered nation shall have no voice in the councils of the Confederacy in the body of the Lords.</p>
+<p>87. When the War of the Five Nations on a foreign rebellious nation is ended, peace shall be restored to that nation by a withdrawal of all their weapons of war by the War Chief of the Five Nations. When all the terms of peace shall have been agreed upon a state of friendship shall be established.</p>
+<p>88. When the proposition to establish the Great Peace is made to a foreign nation it shall be done in mutual council. The foreign nation is to be persuaded by reason and urged to come into the Great Peace. If the Five Nations fail to obtain the consent of the nation at the first council a second council shall be held and upon a second failure a third council shall be held and this third council shall end the peaceful methods of persuasion. At the third council the War Chief of the Five nations shall address the Chief of the foreign nation and request him three times to accept the Great Peace. If refusal steadfastly follows the War Chief shall let the bunch of white lake shells drop from his outstretched hand to the ground and shall bound quickly forward and club the offending chief to death. War shall thereby be declared and the War Chief shall have his warriors at his back to meet any emergency. War must continue until the contest is won by the Five Nations.</p>
+<p>89. When the Lords of the Five Nations propose to meet in conference with a foreign nation with proposals for an acceptance of the Great Peace, a large band of warriors shall conceal themselves in a secure place safe from the espionage of the foreign nation but as near at hand as possible. Two warriors shall accompany the Union Lord who carries the proposals and these warriors shall be especially cunning. Should the Lord be attacked, these warriors shall hasten back to the army of warriors with the news of the calamity which fell through the treachery of the foreign nation.</p>
+<p>90. When the Five Nations' Council declares war any Lord of the Confederacy may enlist with the warriors by temporarily renouncing his sacred Lordship title which he holds through the election of his women relatives. The title then reverts to them and they may bestow it upon another temporarily until the war is over when the Lord, if living, may resume his title and seat in the Council.</p>
+<p>91. A certain wampum belt of black beads shall be the emblem of the authority of the Five War Chiefs to take up the weapons of war and with their men to resist invasion. This shall be called a war in defense of the territory.</p>

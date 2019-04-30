@@ -36,7 +36,7 @@
     r = 1;
     textFont(font);
     textSize(300);
-    stroke(255, 0, 0);
+//    stroke(100, 0, 0);
     points = font.textToPoints("404", width / 2 - 420, height / 2);
     for (let j = 0; j < points.length; j++) {
       cs[j] = new L(points[j].x, points[j].y, 0, 0, 10, null);
@@ -63,7 +63,7 @@
       setTimeout(function () {
         background(0);
         generate();
-        r = random(50)
+        r = random(100)
 
       }, 2000)
     }
@@ -75,13 +75,13 @@
       c = cs[index];
       let choice = floor(random(4));
       if (choice === 0) {
-        l[i] = new L(random(width), 0, 0, 0, 1, c)
+        l[i] = new L(random(width * random(1, choice)), 0, 0, 0, 1, c)
       } else if (choice === 1) {
-        l[i] = new L(0, random(height), 0, 0, 1, c)
+        l[i] = new L(0, random(height * random(1, choice/2)), 0, 0, 1, c)
       } else if (choice === 2) {
-        l[i] = new L(width, random(height), 0, 0, 1, c)
+        l[i] = new L(width, random(height * random(1, choice)), 0, 0, 1, c)
       } else {
-        l[i] = new L(random(width), height, 0, 0, 1, c)
+        l[i] = new L(random(width), height * random(1, choice/2), 0, 0, 1, c)
       }
     }
   }
@@ -105,12 +105,14 @@
       let des = p5.Vector.sub(this.body.pos, this.pos);
       des.setMag(r);
       let steer = p5.Vector.sub(des, this.vel);
-      steer.limit(1);
-      // steer.add(createVector(random(-0.1, 0.1), random(-0.1, 0.1)))
-      this.acc.add(steer)
-      // this.vel.add( createVector(random(-0.3, 0.3), random(-0.3, 0.3) ) )
+      steer.limit(3);
+      let randomI = random(4);
+      steer.add(createVector(random(-randomI, randomI), random(-randomI, randomI)));
+      this.acc.add(steer);
+//      this.vel.add(createVector(noise(randomI), noise(randomI)));
     }
   };
+
   L.prototype.collision = function (b) {
     let d = p5.Vector.dist(this.pos, b.pos);
     if (d < (this.r + this.body.r) / 2) {
@@ -119,8 +121,9 @@
       return false;
     }
   };
+
   L.prototype.show = function () {
-    stroke(255, 10);
+    stroke(map(mouseY, 0, height, 0, 255, true), map(mouseX, 0, width, 0, 255, true), map(mouseY, 0, height, 0, 255, true) );
     ellipse(this.pos.x, this.pos.y, this.r)
-  }
+  };
 </script>

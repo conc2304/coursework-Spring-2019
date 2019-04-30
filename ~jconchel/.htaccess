@@ -1,6 +1,10 @@
 
+AddType application/x-httpd-php53 .php
+
+
 ## ERRORDOCUMENTS ##
 ErrorDocument 404 /~jconchel/error/404.html
+
 
 ## EXPIRES CACHING ##
 <IfModule mod_expires.c>
