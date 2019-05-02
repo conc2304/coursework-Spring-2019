@@ -332,7 +332,7 @@ let setDOMControlValues = (controls, waves) => {
 let updateRangeDisplay = (range) => {
   "use strict";
   let value = $(range).val();
-  Math.round(value*100)/100;
+  value = Math.round(value * 100) / 100;
   $(range).parents('.range-slider-wrapper').children('.range-slider-value').html(value);
 };
 
