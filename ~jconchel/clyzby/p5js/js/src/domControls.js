@@ -17,12 +17,37 @@
  */
 
 // TODO  -  this function is way to damn long
+
 let createDOMControls = (waves) => {
   "use strict";
 
   if (!waves.length) {
     return {};
   }
+
+
+  // create audio control config buttons
+  // reference - https://tympanus.net/Development/AudioVisualizers/
+
+  let audioWrapperID = "audio-control-panel";
+
+  let uploadButton = myp5.createFileInput(uploaded);
+  uploadButton.parent(audioWrapperID);
+  uploadButton.addClass("upload-button");
+  uploadButton.attribute('id', 'upload-file');
+  uploadButton.attribute('name', 'upload-file');
+
+  let label = myp5.createElement('label');
+  label.html('Upload audio');
+  label.attribute('for', 'upload-file');
+  label.addClass("audio-button");
+  label.parent(audioWrapperID);
+
+  let playButton = myp5.createButton("Play / Pause");
+  playButton.parent(audioWrapperID);
+  playButton.addClass("audio-button");
+  playButton.mousePressed(toggleAudio);
+
 
   // loop through each of the waves objects and create settings controllers based on
   // the property's attribute type
@@ -63,6 +88,7 @@ let createDOMControls = (waves) => {
     waveSettingWrapper.attribute('id', `${waveName}-wrapper`);
     waveSettingWrapper.attribute('class', `hide settings-wrapper`);
     waveSettingWrapper.parent(wrapperID);
+
 
 
     for (let prop in wave) {

@@ -5,6 +5,8 @@ let objects = {
   lambo: null,
 };
 
+let audio;
+
 let s = (sketch) => {
   'use strict';
 
@@ -13,9 +15,15 @@ let s = (sketch) => {
   let threeDWave;
   let domCtrl = {};
 
+
+  //todo add a preload animation maybe?
+
   sketch.preload = () => {
     objects.lambo = myp5.loadModel('files/3d_obj/lp670.obj', true);
     objects.glock = myp5.loadModel('files/3d_obj/Glock 3d.obj', true);
+
+    audio = myp5.loadSound('/~jconchel/clyzby/p5js/files/audio/CharlestheFirst - Chynna - The Conversation.wav')
+
   };
 
   sketch.setup = () => {
@@ -47,6 +55,7 @@ let s = (sketch) => {
     threeDWave.waveWidth = sketch.windowWidth + 200;
     threeDWave.height = sketch.windowHeight;
   };
+
 
   sketch.draw = () => {
 

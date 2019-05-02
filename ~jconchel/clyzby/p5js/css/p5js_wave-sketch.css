@@ -33,6 +33,7 @@ body {
   #settings-menu::-webkit-scrollbar {
     width: 20px;
   }
+
   #settings-menu {
     padding-left: 35px;
   }
@@ -50,7 +51,7 @@ body {
   color-stop(.9, #0e83cd));
 }
 
-#settings-menu::-webkit-scrollbar-track{
+#settings-menu::-webkit-scrollbar-track {
   background-color: #000;
 }
 
@@ -66,6 +67,12 @@ body {
   border-right: 1px solid #292929;
 }
 
+#settings-menu hr {
+  border-color: #292929;
+  margin: 0 auto;
+  width: 25%;
+}
+
 #settings-menu-inner-wrap {
   position: relative;
 }
@@ -78,7 +85,7 @@ body {
   background: linear-gradient(180deg, rgba(0, 0, 0, 1) 66%, rgba(0, 0, 0, 0) 100%);
 }
 
-#wave-control-panel {
+#wave-control-panel, #audio-control-panel {
   position: relative;
   padding: 60px 20px 30px;
 }
@@ -127,7 +134,6 @@ button#piano-mode:hover path {
   fill: #0eb1ff;
 }
 
-
 #settings-menu span.tooltip {
   position: absolute;
   top: 60%;
@@ -151,7 +157,7 @@ button#piano-mode:hover path {
   transition: all 0.3s ease-in-out;
 }
 
-#piano-mode:hover span.tooltip{
+#piano-mode:hover span.tooltip {
   top: 100%;
   opacity: 0.9;
 }
@@ -220,7 +226,8 @@ button#piano-mode:hover path {
   color: #fff;
 }
 
-#settings-menu button.settings-toggle-button {
+#settings-menu button.settings-toggle-button,
+#settings-menu .audio-button{
   display: block;
   margin: 20px auto;
 
@@ -241,29 +248,31 @@ button#piano-mode:hover path {
   -moz-transition: all 0.3s;
   transition: all 0.3s;
   overflow: hidden;
+  text-align: center;
 }
 
-#settings-menu button:after {
-  width: 101%;
-  height: 0;
-  top: 50%;
-  left: 50%;
-  background: #fff;
+/* hide the file input button bc its ugly*/
+#upload-file {
+  width: 0.1px;
+  height: 0.1px;
   opacity: 0;
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  -moz-transform: translateX(-50%) translateY(-50%);
-  -ms-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+#audio-control-panel .audio-button {
+  width: 66%;
 }
 
 #settings-menu button:hover,
-#settings-menu button:active {
+#settings-menu button:active,
+#settings-menu label.audio-button:hover {
   color: #0e83cd;
 }
 
-
 #settings-menu button.settings-toggle-button.open {
-  border : 3px solid #0e83cd;
+  border: 3px solid #0e83cd;
 }
 
 .radio-option-wrap {
@@ -274,7 +283,6 @@ label.radio-input:after {
   content: '';
   display: block;
 }
-
 
 .range-slider-wrapper {
   width: 100%;
