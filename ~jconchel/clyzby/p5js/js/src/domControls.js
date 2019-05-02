@@ -29,25 +29,7 @@ let createDOMControls = (waves) => {
   // create audio control config buttons
   // reference - https://tympanus.net/Development/AudioVisualizers/
 
-  let audioWrapperID = "audio-control-panel";
-
-  let uploadButton = myp5.createFileInput(uploaded);
-  uploadButton.parent(audioWrapperID);
-  uploadButton.addClass("upload-button");
-  uploadButton.attribute('id', 'upload-file');
-  uploadButton.attribute('name', 'upload-file');
-
-  let label = myp5.createElement('label');
-  label.html('Upload audio');
-  label.attribute('for', 'upload-file');
-  label.addClass("audio-button");
-  label.parent(audioWrapperID);
-
-  let playButton = myp5.createButton("Play / Pause");
-  playButton.parent(audioWrapperID);
-  playButton.addClass("audio-button");
-  playButton.mousePressed(toggleAudio);
-
+  createAudioCtrls();
 
   // loop through each of the waves objects and create settings controllers based on
   // the property's attribute type
@@ -95,6 +77,8 @@ let createDOMControls = (waves) => {
         continue;
       }
 
+      createSliderCtrlr(wave, prop, waveSettingWrapper, controls);
+
       if (wave[prop].attrType === 'numeric') {
 
         // wrapper to hold individual range sliders
@@ -107,8 +91,8 @@ let createDOMControls = (waves) => {
         title.style('position', 'relative');
         title.parent(inputWrapper);
 
-        createPianoDomInput(waveName, inputWrapper, prop, wave);
-        createSliderCtrl(wave, prop, waveName, inputWrapper, controls);
+        createPianoDomInput(wave, prop, inputWrapper);
+        createDomSlider(wave, prop, inputWrapper, controls);
       }
     }
 
@@ -126,17 +110,76 @@ let createDOMControls = (waves) => {
 };
 
 
+
 /**
  *
  * @param wave
  * @param prop
- * @param waveName
+ * @param parentWrapper
+ * @param controls
+ */
+let createSliderCtrlr = (wave, prop, parentWrapper, controls) => {
+  "use strict";
+
+  if (wave[prop].attrType === 'numeric') {
+
+    let waveName = wave.constructor.name;
+
+    // wrapper to hold individual range sliders
+    let inputWrapper = myp5.createElement('div');
+    inputWrapper.attribute('class', `range-slider-wrapper`);
+    inputWrapper.parent(parentWrapper);
+
+
+    let title = myp5.createElement('p', wave[prop].displayLabel);
+    title.style('position', 'relative');
+    title.parent(inputWrapper);
+
+    createPianoDomInput(waveName, inputWrapper, prop, wave);
+    createDomSlider(wave, prop, waveName, inputWrapper, controls);
+  }
+};
+
+
+
+/**
+ *
+ */
+let createAudioCtrls = () => {
+  "use strict";
+  let audioWrapperID = "audio-control-panel";
+
+  let uploadButton = myp5.createFileInput(uploaded);
+  uploadButton.parent(audioWrapperID);
+  uploadButton.addClass("upload-button");
+  uploadButton.attribute('id', 'upload-file');
+  uploadButton.attribute('name', 'upload-file');
+
+  let label = myp5.createElement('label');
+  label.html('Upload audio');
+  label.attribute('for', 'upload-file');
+  label.addClass("audio-button");
+  label.parent(audioWrapperID);
+
+  let playButton = myp5.createButton("Play / Pause");
+  playButton.parent(audioWrapperID);
+  playButton.addClass("audio-button");
+  playButton.mousePressed(toggleAudio);
+};
+
+
+
+/**
+ *
+ * @param wave
+ * @param prop
  * @param inputWrapper
  * @param controls
  */
-let createSliderCtrl = (wave, prop, waveName, inputWrapper, controls) => {
+let createDomSlider = (wave, prop, inputWrapper, controls) => {
   "use strict";
 
+  let waveName = wave.constructor.name;
 
   let step = 0;
   if (Number.isInteger(wave[prop].currentValue)) {
@@ -159,6 +202,7 @@ let createSliderCtrl = (wave, prop, waveName, inputWrapper, controls) => {
 };
 
 
+
 /**
  *
  * @param wave
@@ -167,10 +211,13 @@ let createSliderCtrl = (wave, prop, waveName, inputWrapper, controls) => {
  * @param controls
  * @param parentWrapper
  */
-let createRadioToggle = (wave, prop, waveName, controls, parentWrapper) => {
+let createRadioToggle = (wave, prop, controls, parentWrapper) => {
   "use strict";
 
   if (wave[prop].attrType === "variable" && wave[prop].options.length) {
+
+    let waveName = wave.constructor.name;
+
 
     let inputWrapper = myp5.createElement('div');
     inputWrapper.attribute('class', `radio-option-wrap ${waveName}-${prop}`);
@@ -192,21 +239,21 @@ let createRadioToggle = (wave, prop, waveName, controls, parentWrapper) => {
       controls[waveName][prop].parent(inputWrapper);
     }
     controls[waveName][prop].selected(wave[prop].currentValue);
-
   }
-
 };
+
 
 
 /**
  *
- * @param waveName
- * @param parentWrapper
- * @param prop
  * @param wave
+ * @param prop
+ * @param parentWrapper
  */
-let createPianoDomInput = (waveName, parentWrapper, prop, wave) => {
+let createPianoDomInput = (wave, prop, parentWrapper) => {
   "use strict";
+
+  let waveName = wave.constructor.name;
 
   let pianoWrapper = myp5.createElement('div');
   pianoWrapper.attribute('class', `piano-mode`);
@@ -238,6 +285,7 @@ let createPianoDomInput = (waveName, parentWrapper, prop, wave) => {
   pianoInput.parent(pianoWrapper);
 
 };
+
 
 
 /**
@@ -275,6 +323,7 @@ let setDOMControlValues = (controls, waves) => {
   }
 };
 
+
 /**
  * Bind the range slider to the display value
  * Called oninput via the html bc the dom elements aren't created until after the dom is ready
@@ -288,10 +337,15 @@ let updateRangeDisplay = (range) => {
 };
 
 
-// when the user enters a key into the input
-// save it to a key to controller map
+
+
 let keyboardCtrl = {};
 let wavePropToKeyMap = {};
+/**
+ * When the user enters a key into the input
+ * save it to a key to controller map
+ * @param e
+ */
 let setKeyboardControl = (e) => {
   "use strict";
   // console.log(e);

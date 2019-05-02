@@ -17,6 +17,7 @@ let equalizerBands = [
   [8000, 16000],
 ];
 
+// reference - https://tympanus.net/Development/AudioVisualizers/
 function uploaded(file) {
   uploadLoading = true;
   uploadedAudio = myp5.loadSound(file.data, uploadedAudioPlay);
