@@ -17,7 +17,6 @@ let s = (sketch) => {
 
 
   //todo add a preload animation maybe?
-
   sketch.preload = () => {
     objects.lambo = myp5.loadModel('files/3d_obj/lp670.obj', true);
     objects.glock = myp5.loadModel('files/3d_obj/Glock 3d.obj', true);
@@ -25,6 +24,7 @@ let s = (sketch) => {
     audio = myp5.loadSound('/~jconchel/clyzby/p5js/files/audio/CharlestheFirst - Chynna - The Conversation.wav')
 
   };
+
 
   sketch.setup = () => {
     sketch.getCenterWave = () => centerWave;
@@ -39,7 +39,12 @@ let s = (sketch) => {
     threeDWave = new ThreeDWave(sketch.windowWidth, sketch.windowHeight);
 
     domCtrl = createDOMControls([centerWave, outerWaves, threeDWave]);
+
+    fft = new p5.FFT();
+
+    audio.loop();
   };
+
 
   sketch.windowResized = () => {
     sketch.resizeCanvas(sketch.windowWidth, sketch.windowHeight);
@@ -59,6 +64,7 @@ let s = (sketch) => {
 
   sketch.draw = () => {
 
+    setAudioControlValues(audioCtrl, [centerWave, outerWaves, threeDWave])
     setDOMControlValues(domCtrl, [centerWave, outerWaves, threeDWave]);
 
     sketch.background(0);

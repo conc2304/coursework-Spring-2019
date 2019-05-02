@@ -108,35 +108,7 @@ let createDOMControls = (waves) => {
         title.style('position', 'relative');
         title.parent(inputWrapper);
 
-        // wrapper to toggle piano mode
-        let pianoWrapper = myp5.createElement('div');
-        pianoWrapper.attribute('class', `piano-mode`);
-        pianoWrapper.parent(inputWrapper);
-
-
-        // input to set which keyboard key plays that element
-        let pianoInput = myp5.createInput();
-        pianoInput.attribute('data-wave', waveName);
-        pianoInput.attribute('data-prop', prop);
-        pianoInput.attribute('data-type', 'key-set');
-        pianoInput.elt.placeholder = "Control Key";
-        pianoInput.elt.onchange = setKeyboardControl;
-        pianoInput.elt.maxLength = 1;
-        pianoInput.parent(pianoWrapper);
-
-
-        // input to set what the value will be for that element on that key press
-        pianoInput = myp5.createInput(wave[prop].currentValue.toString(), 'number');
-        pianoInput.value(wave[prop].currentValue * 2);  // default it 2x so that they have something to play with
-        pianoInput.elt.max = wave[prop].max;  // not sure if i want to set a max or min
-        pianoInput.elt.min = wave[prop].min;  // not sure if i want to set a max or min
-        pianoInput.attribute('data-type', 'value-set');
-        pianoInput.attribute('data-wave', waveName);
-        pianoInput.attribute('data-prop', prop);
-
-        pianoInput.elt.onchange = setKeyboardControl;
-        pianoInput.elt.step = Number((wave[prop].max - wave[prop].min) / 200).toFixed(3);
-        pianoInput.parent(pianoWrapper);
+        createPianoDomInput();
 
         let step = 0;
         if (Number.isInteger(wave[prop].currentValue)) {
@@ -199,6 +171,40 @@ let createDOMControls = (waves) => {
 };
 
 
+
+let createPianoDomInput = (waveName, prop, wave, parentWrapper) => {
+  // wrapper to toggle piano mode
+  let pianoWrapper = myp5.createElement('div');
+  pianoWrapper.attribute('class', `piano-mode`);
+  pianoWrapper.parent(inputWrapper);
+
+
+  // input to set which keyboard key plays that element
+  let pianoInput = myp5.createInput();
+  pianoInput.attribute('data-wave', waveName);
+  pianoInput.attribute('data-prop', prop);
+  pianoInput.attribute('data-type', 'key-set');
+  pianoInput.elt.placeholder = "Control Key";
+  pianoInput.elt.onchange = setKeyboardControl;
+  pianoInput.elt.maxLength = 1;
+  pianoInput.parent(pianoWrapper);
+
+
+  // input to set what the value will be for that element on that key press
+  pianoInput = myp5.createInput(wave[prop].currentValue.toString(), 'number');
+  pianoInput.value(wave[prop].currentValue * 2);  // default it 2x so that they have something to play with
+  pianoInput.elt.max = wave[prop].max;  // not sure if i want to set a max or min
+  pianoInput.elt.min = wave[prop].min;  // not sure if i want to set a max or min
+  pianoInput.attribute('data-type', 'value-set');
+  pianoInput.attribute('data-wave', waveName);
+  pianoInput.attribute('data-prop', prop);
+
+  pianoInput.elt.onchange = setKeyboardControl;
+  pianoInput.elt.step = Number((wave[prop].max - wave[prop].min) / 200).toFixed(3);
+  pianoInput.parent(pianoWrapper);
+}
+
+
 /**
  * On draw loop, check the value of all of our controls
  * and apply those values to our config objects
@@ -233,6 +239,7 @@ let setDOMControlValues = (controls, waves) => {
     }
   }
 };
+
 
 /**
  * Bind the range slider to the display value
