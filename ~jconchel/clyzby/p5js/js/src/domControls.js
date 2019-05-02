@@ -90,7 +90,6 @@ let createDOMControls = (waves) => {
     waveSettingWrapper.parent(wrapperID);
 
 
-
     for (let prop in wave) {
       if (!wave.hasOwnProperty(prop)) {
         continue;
@@ -108,28 +107,8 @@ let createDOMControls = (waves) => {
         title.style('position', 'relative');
         title.parent(inputWrapper);
 
-        createPianoDomInput();
-
-        let step = 0;
-        if (Number.isInteger(wave[prop].currentValue)) {
-          step = 1;
-        }
-        if ((wave[prop].max - wave[prop].min) < 10) {
-          // if the difference between min and max is 10 or less
-          step = (wave[prop].max - wave[prop].min) / 100;
-        }
-
-
-        // slider to control the individual property
-        controls[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
-        controls[waveName][prop].attribute('class', `range-slider ${waveName}-${prop}`);
-        controls[waveName][prop].attribute('oninput', 'updateRangeDisplay(this)');
-        controls[waveName][prop].parent(inputWrapper);
-
-        let displayValue = myp5.createElement('span', wave[prop].currentValue.toString());
-        displayValue.attribute('class', `range-slider-value`);
-        displayValue.parent(inputWrapper);
-
+        createPianoDomInput(waveName, inputWrapper, prop, wave);
+        createSliderCtrl(wave, prop, waveName, inputWrapper, controls);
       }
     }
 
@@ -139,31 +118,7 @@ let createDOMControls = (waves) => {
       if (!wave.hasOwnProperty(prop)) {
         continue;
       }
-
-      if (wave[prop].attrType === "variable" && wave[prop].options.length) {
-
-        let inputWrapper = myp5.createElement('div');
-        inputWrapper.attribute('class', `radio-option-wrap ${waveName}-${prop}`);
-        inputWrapper.parent(waveSettingWrapper);
-
-        let label = myp5.createElement('p', wave[prop].displayLabel);
-        label.style('position', 'relative');
-        label.parent(inputWrapper);
-
-        controls[waveName][prop] = myp5.createRadio();
-
-        for (let o in wave[prop].options) {
-          if (!wave[prop].options.hasOwnProperty(o)) {
-            continue;
-          }
-
-          controls[waveName][prop].option(ucFirst(wave[prop].options[o]), wave[prop].options[o]);
-          controls[waveName][prop].attribute('class', `radio-input`);
-          controls[waveName][prop].parent(inputWrapper);
-        }
-        controls[waveName][prop].selected(wave[prop].currentValue);
-
-      }
+      createRadioToggle(wave, prop, waveName, controls, waveSettingWrapper);
     }
   }
 
@@ -171,12 +126,91 @@ let createDOMControls = (waves) => {
 };
 
 
+/**
+ *
+ * @param wave
+ * @param prop
+ * @param waveName
+ * @param inputWrapper
+ * @param controls
+ */
+let createSliderCtrl = (wave, prop, waveName, inputWrapper, controls) => {
+  "use strict";
 
-let createPianoDomInput = (waveName, prop, wave, parentWrapper) => {
-  // wrapper to toggle piano mode
+
+  let step = 0;
+  if (Number.isInteger(wave[prop].currentValue)) {
+    step = 1;
+  }
+  if ((wave[prop].max - wave[prop].min) < 10) {
+    // if the difference between min and max is 10 or less
+    step = (wave[prop].max - wave[prop].min) / 100;
+  }
+
+  // slider to control the individual property
+  controls[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
+  controls[waveName][prop].attribute('class', `range-slider ${waveName}-${prop}`);
+  controls[waveName][prop].attribute('oninput', 'updateRangeDisplay(this)');
+  controls[waveName][prop].parent(inputWrapper);
+
+  let displayValue = myp5.createElement('span', wave[prop].currentValue.toString());
+  displayValue.attribute('class', `range-slider-value`);
+  displayValue.parent(inputWrapper);
+};
+
+
+/**
+ *
+ * @param wave
+ * @param prop
+ * @param waveName
+ * @param controls
+ * @param parentWrapper
+ */
+let createRadioToggle = (wave, prop, waveName, controls, parentWrapper) => {
+  "use strict";
+
+  if (wave[prop].attrType === "variable" && wave[prop].options.length) {
+
+    let inputWrapper = myp5.createElement('div');
+    inputWrapper.attribute('class', `radio-option-wrap ${waveName}-${prop}`);
+    inputWrapper.parent(parentWrapper);
+
+    let label = myp5.createElement('p', wave[prop].displayLabel);
+    label.style('position', 'relative');
+    label.parent(inputWrapper);
+
+    controls[waveName][prop] = myp5.createRadio();
+
+    for (let o in wave[prop].options) {
+      if (!wave[prop].options.hasOwnProperty(o)) {
+        continue;
+      }
+
+      controls[waveName][prop].option(ucFirst(wave[prop].options[o]), wave[prop].options[o]);
+      controls[waveName][prop].attribute('class', `radio-input`);
+      controls[waveName][prop].parent(inputWrapper);
+    }
+    controls[waveName][prop].selected(wave[prop].currentValue);
+
+  }
+
+};
+
+
+/**
+ *
+ * @param waveName
+ * @param parentWrapper
+ * @param prop
+ * @param wave
+ */
+let createPianoDomInput = (waveName, parentWrapper, prop, wave) => {
+  "use strict";
+
   let pianoWrapper = myp5.createElement('div');
   pianoWrapper.attribute('class', `piano-mode`);
-  pianoWrapper.parent(inputWrapper);
+  pianoWrapper.parent(parentWrapper);
 
 
   // input to set which keyboard key plays that element
@@ -202,7 +236,8 @@ let createPianoDomInput = (waveName, prop, wave, parentWrapper) => {
   pianoInput.elt.onchange = setKeyboardControl;
   pianoInput.elt.step = Number((wave[prop].max - wave[prop].min) / 200).toFixed(3);
   pianoInput.parent(pianoWrapper);
-}
+
+};
 
 
 /**
@@ -239,7 +274,6 @@ let setDOMControlValues = (controls, waves) => {
     }
   }
 };
-
 
 /**
  * Bind the range slider to the display value

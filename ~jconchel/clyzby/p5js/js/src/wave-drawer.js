@@ -14,6 +14,7 @@ let s = (sketch) => {
   let outerWaves;
   let threeDWave;
   let domCtrl = {};
+  let fft;
 
 
   //todo add a preload animation maybe?
@@ -64,7 +65,7 @@ let s = (sketch) => {
 
   sketch.draw = () => {
 
-    setAudioControlValues(audioCtrl, [centerWave, outerWaves, threeDWave])
+    // setAudioControlValues(audioCtrl, [centerWave, outerWaves, threeDWave]);
     setDOMControlValues(domCtrl, [centerWave, outerWaves, threeDWave]);
 
     sketch.background(0);
