@@ -1,28 +1,11 @@
 
+class CenterWave {
+  constructor(windowWidth, windowHeight) {
 
-class OuterWaves {
-  constructor(windowWidth, windowHeight)  {
-
-    this.windowWidth = windowWidth;
-    this.windowHeight = windowHeight;
-    this.waveWidth = windowWidth + 200;  // have some of it go off the page
+    this.windowWidth = myp5.windowWidth;
+    this.windowHeight = myp5.windowHeight;
+    this.waveWidth = myp5.windowWidth + 200;  // have some of it go off the page
     this.origin = 0;
-
-    this.numWaves = {
-      displayLabel : 'Number of Waves',
-      resetValue : 1,
-      currentValue : 2,
-      targetValue : null,
-      min : 0,
-      max : 10,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.05,
-      easingMax : 0,
-      easingMin : 0,
-    };
 
 
     // wave attributes
@@ -32,6 +15,7 @@ class OuterWaves {
       currentValue : 'sin',
       targetValue : null,
       options : ['sin', 'cos', 'tan'],
+      // options : ['sin', 'cos', 'tan', 'orbit'],
       attrType : 'variable',
     };
     this.xSpacing = {
@@ -46,20 +30,6 @@ class OuterWaves {
       lockOn : false,
       easingValue : 0.1,
       noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
-    };
-    this.ySpacing = {
-      displayLabel : 'Y Spacing',
-      resetValue : 30,
-      currentValue : 40,
-      targetValue : null,
-      min : 5,
-      max : 80,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : null,
       easingMax : 0,
       easingMin : 0,
     };
@@ -83,8 +53,8 @@ class OuterWaves {
       resetValue : 75,
       currentValue : 75,
       targetValue : null,
-      min : 0,
-      max : 500,
+      min : -2000,
+      max : 2000,
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -98,41 +68,48 @@ class OuterWaves {
       resetValue : 500,
       currentValue : 500,
       targetValue : null,
-      min : 50,
-      max : 2250,
+      min : -10250,
+      max : 10250,
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
       easingValue : 0.07,
-      noteHeldEasing : 0.01,
+      noteHeldEasing: 0.07,
       easingMax : 0,
       easingMin : 0,
     };
+    this.yPoints = new Array(Math.floor(this.waveWidth / this.xSpacing.currentValue));
 
+    // this.orbitAngle = {
+    //   resetValue : 20,
+    //   currentValue : 20,
+    //   targetValue : null,
+    //   min : -100,
+    //   max : 100,
+    //   attrType : 'numeric',
+    //   triggerSource : null,
+    //   lockOn : false,
+    //   easingValue : 0.07,
+    //   noteHeldEasing: 0.07,
+    //   easingMax : 0,
+    //   easingMin : 0,
+    // };
 
     // painting and rendering attributes
     this.radius = {
-      displayLabel : 'Radius',
-      resetValue : 10,
-      currentValue : 10,
+      displayLabel : 'Size',
+      resetValue : 20,
+      currentValue : 20,
       targetValue : null,
       min : 0,
-      max : 100,
+      max : 500,
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
-      easingValue : 0.05,
-      noteHeldEasing: 0.01,
+      easingValue : 0.7,
+      noteHeldEasing: 0.1,
       easingMax : 0,
       easingMin : 0,
-    };
-    this.stroke = {
-      displayLabel : 'Stroke',
-      resetValue : 'stroke_no_fill',
-      currentValue : 'stroke_no_fill',
-      targetValue : 'stroke_no_fill',
-      attrType : 'variable',
-      options : ['stroke_no_fill', 'stroke_w_fill', 'no_stroke_fill']
     };
     this.shape = {
       displayLabel : 'Shape',
@@ -142,10 +119,18 @@ class OuterWaves {
       options : ['line', 'triangle', 'square', 'pentagon', 'ellipse'],
       attrType : 'variable',
     };
+    this.stroke = {
+      displayLabel : 'Stroke and Fill',
+      resetValue : 'stroke_no_fill',
+      currentValue : 'stroke_no_fill',
+      targetValue : null,
+      attrType : 'variable',
+      options : ['stroke_no_fill', 'stroke_w_fill', 'no_stroke_fill']
+    };
     this.colorR = {
       displayLabel : 'Color Red',
       resetValue : 100,
-      currentValue : 50,
+      currentValue : 200,
       targetValue : null,
       min : 0,
       max : 255,
@@ -160,7 +145,7 @@ class OuterWaves {
     this.colorG = {
       displayLabel : 'Color Green',
       resetValue : 100,
-      currentValue : 50,
+      currentValue : 200,
       targetValue : null,
       min : 0,
       max : 255,
@@ -168,14 +153,14 @@ class OuterWaves {
       triggerSource : null,
       lockOn : false,
       easingValue : 0.1,
-      noteHeldEasing : 0.05,
+      noteHeldEasing : 0.1,
       easingMax : 0,
       easingMin : 0,
     };
     this.colorB = {
       displayLabel : 'Color Blue',
       resetValue : 100,
-      currentValue : 50,
+      currentValue : 200,
       targetValue : null,
       min : 0,
       max : 255,
@@ -183,26 +168,24 @@ class OuterWaves {
       triggerSource : null,
       lockOn : false,
       easingValue : 0.1,
-      noteHeldEasing : 0.05,
+      noteHeldEasing : 0.1,
       easingMax : 0,
       easingMin : 0,
     };
 
-
-    this.yPoints = new Array(Math.floor(this.waveWidth / this.xSpacing.currentValue));
-  }  // end constructor
+  }
 }
 
 
-
 // METHODS
+
 
 
 /**
  * Based on the current wave period and spacing between x points
  * get the location of the y points to be rendered in the wave
  */
-OuterWaves.prototype.calcWave = function (yOffset) {
+CenterWave.prototype.calcWave = function (yOffset) {
   let dx = (myp5.TWO_PI / this.period.currentValue ) * this.xSpacing.currentValue;
   this.waveType.currentValue = (this.waveType.options.includes(this.waveType.currentValue)) ? this.waveType.currentValue : 'sin';
   this.origin += this.velocity.currentValue;
@@ -216,45 +199,21 @@ OuterWaves.prototype.calcWave = function (yOffset) {
 /**
  * Paint the object onto the screen based on the object's attributes.
  */
-OuterWaves.prototype.render = function() {
 
-  myp5.push();
-  this.setColor();
-  let m, r, s;
-  for (let i = 0; i < this.numWaves.currentValue; i++) {
-    m = ((i + 1) * 2.5);  // multiplier so each wave is slightly closer and smaller
-    r = this.radius.currentValue - m;
-    s = this.ySpacing.currentValue * m;
+let slider =
+  CenterWave.prototype.render = function() {
 
+    myp5.push();
+    this.setColor();
     for (let x = 0; x < this.yPoints.length; x++) {
       let xPos = x * this.xSpacing.currentValue - this.windowWidth/2;
       let yPos = myp5.height/2 + this.yPoints[x] - this.windowHeight/2;
-      this.renderShape(xPos, yPos, r, s);
+
+      this.renderShape(xPos, yPos, this.radius.currentValue);
     }
-  }
-  myp5.pop();
-};
+    myp5.pop();
+  };
 
-
-/**
- * Based on user toggling, set the color profile for element to be rendered
- */
-OuterWaves.prototype.setColor = function() {
-  switch (this.stroke.currentValue) {
-    case 'stroke_no_fill':
-      myp5.stroke(this.colorB.currentValue, this.colorR.currentValue, this.colorG.currentValue);
-      myp5.noFill();
-      break;
-    case 'stroke_w_fill':
-      myp5.stroke(this.colorB.currentValue * .2, this.colorR.currentValue * .2, this.colorG.currentValue * .2);
-      myp5.fill(this.colorR.currentValue, this.colorG.currentValue, this.colorB.currentValue);
-      break;
-    case 'no_stroke_fill':
-      myp5.noStroke();
-      myp5.fill(this.colorR.currentValue, this.colorG.currentValue, this.colorB.currentValue);
-      break;
-  }
-};
 
 
 /**
@@ -262,20 +221,24 @@ OuterWaves.prototype.setColor = function() {
  * @param xPos
  * @param yPos
  * @param radius
- * @param spacing  - y space between lines
  */
-OuterWaves.prototype.renderShape = function(xPos, yPos, radius, spacing) {
+CenterWave.prototype.renderShape = function(xPos, yPos, radius) {
 
   let polygons = ['line', 'triangle', 'square', 'pentagon'];  // polygons we are allowing for set in the shape attribute
 
   if (this.shape.currentValue === 'ellipse') {
-    myp5.ellipse(xPos, yPos + spacing, radius, radius);  // one above and one below
-    myp5.ellipse(xPos, yPos - spacing, radius, radius);
+    myp5.ellipse(xPos, yPos, radius, radius);
   } else if (polygons.includes(this.shape.currentValue)) {
     let sides;
+
+    myp5.push();
+    myp5.strokeWeight(1);
+
     switch (this.shape.currentValue) {
       case 'line':
         sides = 2;
+        myp5.strokeWeight(2);
+
         break;
       case 'triangle':
         sides = 3;
@@ -287,27 +250,40 @@ OuterWaves.prototype.renderShape = function(xPos, yPos, radius, spacing) {
         sides = 5;
         break;
     }
-    myp5.push();
-    myp5.strokeWeight(3);
-    myp5.translate(xPos, yPos + spacing);
-    myp5.rotate(myp5.atan(myp5.frameCount / 50.0));
-    myp5.polygon(0, 0, radius, sides);
-    myp5.pop();
 
-    myp5.push();
-    myp5.strokeWeight(3);
-    myp5.translate(xPos, yPos - spacing);
-    myp5.rotate(myp5.atan(myp5.frameCount / -50.0));
+    myp5.translate(xPos, yPos);
+    myp5.rotate(myp5.sin(myp5.frameCount / 50.0));
     myp5.polygon(0, 0, radius, sides);
     myp5.pop();
   } else {
-    myp5.ellipse(xPos, yPos + spacing, radius, radius);  // one above and one below
-    myp5.ellipse(xPos, yPos - spacing, radius, radius);
+    myp5.ellipse(xPos, yPos, radius, radius);
   }
 };
 
-
 /**
- * For each attribute transition from the current value to the target value
+ * Based on user toggling, set the color profile for element to be rendered
  */
-OuterWaves.prototype.easeInto = easeInto;
+CenterWave.prototype.setColor = function() {
+  switch (this.stroke.currentValue) {
+    case 'stroke_no_fill':
+      myp5.strokeWeight(1);
+      myp5.stroke(this.colorB.currentValue, this.colorR.currentValue, this.colorG.currentValue);
+      myp5.noFill();
+      break;
+    case 'stroke_w_fill':
+      myp5.strokeWeight(1);
+      myp5.stroke(this.colorB.currentValue * .2, this.colorR.currentValue * .2, this.colorG.currentValue * .2);
+      myp5.fill(this.colorR.currentValue, this.colorG.currentValue, this.colorB.currentValue);
+      break;
+    case 'no_stroke_fill':
+      myp5.noStroke();
+      myp5.fill(this.colorR.currentValue, this.colorG.currentValue, this.colorB.currentValue);
+      break;
+  }
+};
+
+CenterWave.prototype.easeInto = easeInto;
+
+
+
+

@@ -1,5 +1,4 @@
 
-
 class OuterWaves {
   constructor(windowWidth, windowHeight)  {
 

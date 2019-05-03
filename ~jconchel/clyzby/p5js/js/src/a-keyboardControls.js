@@ -1,5 +1,6 @@
 
 let editingPiano = true;  // Don't play 'piano' keys while in editing mode;
+
 $(function () {
   "use strict";
   $('#piano-mode').click(function () {
@@ -20,6 +21,7 @@ $(function () {
 
 
 let playPianoKey = (key, pressed) => {
+  "use strict";
 
   if (editingPiano) {
     return null;

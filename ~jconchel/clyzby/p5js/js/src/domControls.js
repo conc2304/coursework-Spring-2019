@@ -394,7 +394,7 @@ let setKeyboardControl = (e) => {
   }
 
   console.log(keyboardCtrl);
-  console.log(wavePropToKeyMap);
+  coperformansole.log(wavePropToKeyMap);
 };
 
 
