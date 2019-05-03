@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 
 
 let uploadLoading = false;
@@ -18,12 +17,12 @@ let equalizerBands = [
 ];
 
 // reference - https://tympanus.net/Development/AudioVisualizers/
-function uploaded(file) {
+let uploaded = (file) => {
   uploadLoading = true;
   uploadedAudio = myp5.loadSound(file.data, uploadedAudioPlay);
-}
+};
 
-function uploadedAudioPlay(audioFile) {
+let uploadedAudioPlay = (audioFile) => {
 
   uploadLoading = false;
 
@@ -33,12 +32,12 @@ function uploadedAudioPlay(audioFile) {
 
   audio = audioFile;
   audio.loop();
-}
+};
 
-function toggleAudio() {
+let toggleAudio = () => {
   if (audio.isPlaying()) {
     audio.pause();
   } else {
     audio.play();
   }
-}
+};

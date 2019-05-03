@@ -18,7 +18,6 @@ $(function () {
  * @param pressed
  */
 
-// TODO - we need to update the domControls too
 let playPianoKey = (key, pressed) => {
   "use strict";
 
