@@ -77,23 +77,10 @@ let createDOMControls = (waves) => {
         continue;
       }
 
-      createSliderCtrlr(wave, prop, waveSettingWrapper, controls);
-
       if (wave[prop].attrType === 'numeric') {
-
-        // wrapper to hold individual range sliders
-        let inputWrapper = myp5.createElement('div');
-        inputWrapper.attribute('class', `range-slider-wrapper`);
-        inputWrapper.parent(waveSettingWrapper);
-
-
-        let title = myp5.createElement('p', wave[prop].displayLabel);
-        title.style('position', 'relative');
-        title.parent(inputWrapper);
-
-        createPianoDomInput(wave, prop, inputWrapper);
-        createDomSlider(wave, prop, inputWrapper, controls);
+        createSliderCtrlr(wave, prop, waveSettingWrapper, controls);
       }
+
     }
 
     // loop through again (so that the radios come last in the group)
@@ -102,7 +89,9 @@ let createDOMControls = (waves) => {
       if (!wave.hasOwnProperty(prop)) {
         continue;
       }
-      createRadioToggle(wave, prop, waveName, controls, waveSettingWrapper);
+      if (wave[prop].attrType === 'variable') {
+        createRadioToggle(wave, prop, controls, waveSettingWrapper);
+      }
     }
   }
 
@@ -135,8 +124,8 @@ let createSliderCtrlr = (wave, prop, parentWrapper, controls) => {
     title.style('position', 'relative');
     title.parent(inputWrapper);
 
-    createPianoDomInput(waveName, inputWrapper, prop, wave);
-    createDomSlider(wave, prop, waveName, inputWrapper, controls);
+    createPianoDomInput(wave, prop, inputWrapper, controls);
+    createDomSlider(wave, prop, inputWrapper, controls);
   }
 };
 
