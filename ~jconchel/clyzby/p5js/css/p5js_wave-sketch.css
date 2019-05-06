@@ -18,6 +18,14 @@ body {
   clear: both;
 }
 
+.stretch {
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0
+}
+
+
 #settings-menu::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
   background-color: #F5F5F5;
@@ -56,6 +64,7 @@ body {
 }
 
 #settings-menu {
+  display: none;
   position: absolute;
   width: 450px;
   top: 0;
@@ -91,7 +100,7 @@ body {
 }
 
 #settings-open {
-  display: none;
+  /*display: none;*/
   position: absolute;
   top: 0;
   left: 0;
@@ -262,7 +271,10 @@ button#piano-mode:hover path {
 }
 
 #audio-control-panel .audio-button {
-  width: 66%;
+  width: 150px;
+  padding: 20px 40px;
+  display: block;
+  vertical-align: middle;
 }
 
 #settings-menu button:hover,
@@ -364,6 +376,31 @@ label.radio-input:after {
   background: #d7dcdf;
   border: 0;
 }
+
+
+
+.custom-select-wrapper select{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 5px 10px;
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #095c8f;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.custom-select-wrapper select:focus {
+  outline: none;
+}
+
+.custom-select-wrapper select:hover  {
+  border: 1px solid #0e83cd;
+
+}
+
 
 /*  Radio Buttons */
 input[type="radio"].radio-input {

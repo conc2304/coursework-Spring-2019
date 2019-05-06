@@ -41,7 +41,8 @@ let s = (sketch) => {
 
     fft = new p5.FFT();
 
-    audio.loop();
+    // audio.loop();  // todo turn on
+    $("#settings-open").click();
   };
 
 

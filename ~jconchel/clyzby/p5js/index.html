@@ -19,17 +19,18 @@ git log
   <script src="js/libraries/jquery-3.3.1.js"></script>
   <script src="js/libraries/webmidi.js"></script>
 
-  <script src="js/src/easeInto.js"></script>
-  <script src="js/src/midiCtrlConfig.js"></script>
-  <script src="js/src/wave-drawer.js"></script>
-  <script src="js/src/centerWaveClass.js"></script>
-  <script src="js/src/outerWavesClass.js"></script>
-  <script src="js/src/threeDWaveClass.js"></script>
-  <script src="js/src/midiService.js"></script>
-  <script src="js/src/midiCtrl.js"></script>
-  <script src="js/src/domControls.js"></script>
-  <script src="js/src/keyboardControls.js"></script>
+  <script src="js/src/a-easeInto.js"></script>
+  <script src="js/src/a-midiCtrlConfig.js"></script>
+  <script src="js/src/a-waveDrawer.js"></script>
+  <script src="js/src/a-centerWaveClass.js"></script>
+  <script src="js/src/a-outerWavesClass.js"></script>
+  <script src="js/src/a-threeDWaveClass.js"></script>
+  <script src="js/src/a-midiService.js"></script>
+  <script src="js/src/a-midiCtrl.js"></script>
   <script src="js/src/audioControls.js"></script>
+  <script src="js/src/a-domControls.js"></script>
+  <script src="js/src/a-keyboardControls.js"></script>
+  <!--<script src="js/src/customSelectBox.js"></script>-->
 
 </head>
 <body>
@@ -68,17 +69,6 @@ git log
 </body>
 
 <script>
-  $(() => {
-    $("#settings-close").click(() => {
-      $("#settings-menu").fadeOut();
-      $("#settings-open").fadeIn();
-    });
-
-    $("#settings-open").click(() => {
-      $("#settings-menu").fadeIn();
-      $("#settings-open").fadeOut();
-    });
-  });
 
   Object.size = (obj) => {
     "use strict";
