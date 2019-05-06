@@ -20,7 +20,8 @@ let s = (sketch) => {
     objects.lambo = myp5.loadModel('files/3d_obj/lp670.obj', true);
     objects.glock = myp5.loadModel('files/3d_obj/Glock 3d.obj', true);
 
-    audio = myp5.loadSound('/~jconchel/clyzby/p5js/files/audio/CharlestheFirst - Chynna - The Conversation.wav')
+    audio = myp5.loadSound('/~jconchel/clyzby/p5js/files/audio/CharlestheFirst - Chynna - The Conversation.wav');
+    // audio.pause();
 
   };
 
@@ -62,10 +63,19 @@ let s = (sketch) => {
   };
 
 
+  let fftAnalysis = {};
+
+
+
   sketch.draw = () => {
+
 
     // setAudioControlValues(audioCtrl, [centerWave, outerWaves, threeDWave]);
     setDOMControlValues(domCtrl, [centerWave, outerWaves, threeDWave]);
+
+    fftAnalysis = get10BandEnergy(fft);
+    // console.log(fftAnalysis);
+
 
     sketch.background(0);
     centerWave.easeInto();

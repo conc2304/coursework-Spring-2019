@@ -150,7 +150,12 @@ let createAudioCtrls = () => {
 };
 
 
-
+/**
+ * Create a select drop down to assign frequency bands to visual elements
+ * @param wave
+ * @param prop
+ * @param inputWrapper
+ */
 let createFrequencySelector = (wave, prop, inputWrapper) => {
   "use strict";
 
@@ -161,6 +166,7 @@ let createFrequencySelector = (wave, prop, inputWrapper) => {
   let rangeList = myp5.createElement("select");
   rangeList.attribute('data-wave', waveName);
   rangeList.attribute('data-prop', prop);
+  rangeList.elt.onchange = setAudioCtrl;
 
   let option = myp5.createElement('option');
   option.html(`Frequency Ranges`);
@@ -196,7 +202,7 @@ let createFrequencySelector = (wave, prop, inputWrapper) => {
 
 
 /**
- *
+ *  Create an html range slider to control the visual elements
  * @param wave
  * @param prop
  * @param inputWrapper
@@ -308,9 +314,7 @@ let createPianoDomInput = (wave, prop, parentWrapper) => {
   pianoInput.elt.onchange = setKeyboardControl;
   pianoInput.elt.step = Number((wave[prop].max - wave[prop].min) / 200).toFixed(3);
   pianoInput.parent(pianoWrapper);
-
 };
-
 
 
 /**
