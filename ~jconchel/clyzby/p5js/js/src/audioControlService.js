@@ -49,6 +49,7 @@ let uploaded = (file) => {
   uploadedAudio = myp5.loadSound(file.data, uploadedAudioPlay);
 };
 
+
 let uploadedAudioPlay = () => {
 
   uploadLoading = false;

@@ -136,7 +136,7 @@ button#piano-mode:focus {
 }
 
 button#piano-mode.editing path {
-  fill: #fff;
+  fill: rgba(255, 27, 47, 0.84);
 }
 
 button#piano-mode:hover path {

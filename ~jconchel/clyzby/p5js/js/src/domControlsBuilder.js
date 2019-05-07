@@ -307,7 +307,8 @@ let createPianoDomInput = (ctrlObject, prop, parentWrapper) => {
   let ctrlObjectName = ctrlObject.constructor.name;
 
   let pianoWrapper = myp5.createElement('div');
-  pianoWrapper.attribute('class', `piano-mode`);
+  pianoWrapper.addClass(`piano-mode`);
+  pianoWrapper.addClass(`hide`);
   pianoWrapper.parent(parentWrapper);
 
 
