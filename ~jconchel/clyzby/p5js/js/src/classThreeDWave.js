@@ -102,12 +102,12 @@ class ThreeDWave {
       easingMin : 0,
     };
     this.stroke = {
-      displayLabel : 'Stroke and Fill',
-      resetValue : 'stroke_no_fill',
-      currentValue : 'stroke_no_fill',
+      displayLabel : 'Outline and Fill',
+      resetValue : 'Outline',
+      currentValue : 'Outline',
       targetValue : null,
       attrType : 'variable',
-      options : ['stroke_no_fill', 'stroke_w_fill',]
+      options : ['Outline', 'Filled and Outline',]
     };
     this.colorR = {
       displayLabel : 'Color Red',
@@ -371,18 +371,14 @@ ThreeDWave.prototype.rotateShape = function() {
  */
 ThreeDWave.prototype.setColor = function() {
   switch (this.stroke.currentValue) {
-    case 'stroke_no_fill':
+    case 'Outline':
       myp5.strokeWeight(1);
       myp5.stroke(this.colorB.currentValue, this.colorR.currentValue, this.colorG.currentValue);
       myp5.noFill();
       break;
-    case 'stroke_w_fill':
+    case 'Filled and Outline':
       myp5.strokeWeight(1);
       myp5.stroke(this.colorB.currentValue, this.colorR.currentValue, this.colorG.currentValue);
-      myp5.fill(this.colorR.currentValue, this.colorG.currentValue, this.colorB.currentValue);
-      break;
-    case 'no_stroke_fill':
-      myp5.noStroke();
       myp5.fill(this.colorR.currentValue, this.colorG.currentValue, this.colorB.currentValue);
       break;
   }
@@ -397,6 +393,10 @@ ThreeDWave.prototype.easeInto = easeInto;
  * Renders the given 3D Primitive Shape
  */
 ThreeDWave.prototype.renderShape = function() {
+
+  myp5.push();
+  myp5.rotateX(myp5.frameCount * 0.01);
+  myp5.rotateY(myp5.frameCount * 0.01);
 
   switch(this.shape.currentValue) {
     case 'box':
@@ -418,16 +418,14 @@ ThreeDWave.prototype.renderShape = function() {
       break;
     case 'lambo':
     case 'glock':
-      myp5.push();
       myp5.normalMaterial();
 
-      myp5.rotateX(myp5.frameCount * 0.01);
-      myp5.rotateY(myp5.frameCount * 0.01);
       myp5.scale(this.radius.currentValue * 0.07);
       myp5.model(objects[this.shape.currentValue]);
-      myp5.pop();
       break;
   }
+  myp5.pop();
+
 
 };
 

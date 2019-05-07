@@ -217,9 +217,9 @@ let createDomSlider = (ctrlObject, prop, inputWrapper, controls) => {
   if (Number.isInteger(ctrlObject[prop].currentValue)) {
     step = 1;
   }
-  if ((ctrlObject[prop].max - ctrlObject[prop].min) < 10) {
+  if ((ctrlObject[prop].max - ctrlObject[prop].min) < 50) {
     // if the difference between min and max is 10 or less
-    step = (ctrlObject[prop].max - ctrlObject[prop].min) / 100;
+    step = (ctrlObject[prop].max - ctrlObject[prop].min) / 250;
   }
 
   // slider to control the individual property

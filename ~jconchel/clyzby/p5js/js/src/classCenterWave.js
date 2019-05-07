@@ -8,28 +8,19 @@ class CenterWave {
     this.origin = 0;
 
 
-    // wave attributes
-    this.waveType = {
-      displayLabel : 'Wave Type',
-      resetValue : 'sin',
-      currentValue : 'sin',
+    //  Numeric Type Attributes
+    this.radius = {
+      displayLabel : 'Size',
+      resetValue : 20,
+      currentValue : 20,
       targetValue : null,
-      options : ['sin', 'cos', 'tan'],
-      // options : ['sin', 'cos', 'tan', 'orbit'],
-      attrType : 'variable',
-    };
-    this.xSpacing = {
-      displayLabel : 'X Spacing',
-      resetValue : 40,
-      currentValue : 40,
-      targetValue : null,
-      min : 15,
-      max : 350,
+      min : 0,
+      max : 500,
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
+      easingValue : 0.7,
+      noteHeldEasing: 0.1,
       easingMax : 0,
       easingMin : 0,
     };
@@ -78,7 +69,23 @@ class CenterWave {
       easingMax : 0,
       easingMin : 0,
     };
-    this.yPoints = new Array(Math.floor(this.waveWidth / this.xSpacing.currentValue));
+    this.xSpacing = {
+      displayLabel : 'X Spacing',
+      resetValue : 40,
+      currentValue : 40,
+      targetValue : null,
+      min : 15,
+      max : 350,
+      attrType : 'numeric',
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.1,
+      easingMax : 0,
+      easingMin : 0,
+    };
+
+
 
     // this.orbitAngle = {
     //   resetValue : 20,
@@ -96,21 +103,18 @@ class CenterWave {
     // };
 
     // painting and rendering attributes
-    this.radius = {
-      displayLabel : 'Size',
-      resetValue : 20,
-      currentValue : 20,
+
+    //  Variable Type Attributes
+    this.waveType = {
+      displayLabel : 'Wave Type',
+      resetValue : 'sin',
+      currentValue : 'sin',
       targetValue : null,
-      min : 0,
-      max : 500,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.7,
-      noteHeldEasing: 0.1,
-      easingMax : 0,
-      easingMin : 0,
+      options : ['sin', 'cos', 'tan'],
+      // options : ['sin', 'cos', 'tan', 'orbit'],
+      attrType : 'variable',
     };
+
     this.shape = {
       displayLabel : 'Shape',
       resetValue : 'ellipse',
@@ -120,12 +124,12 @@ class CenterWave {
       attrType : 'variable',
     };
     this.stroke = {
-      displayLabel : 'Stroke and Fill',
-      resetValue : 'stroke_no_fill',
-      currentValue : 'stroke_no_fill',
+      displayLabel : 'Outline and Fill',
+      resetValue : 'Outline',
+      currentValue : 'Outline',
       targetValue : null,
       attrType : 'variable',
-      options : ['stroke_no_fill', 'stroke_w_fill', 'no_stroke_fill']
+      options : ['Outline', 'Filled']
     };
     this.colorR = {
       displayLabel : 'Color Red',
@@ -172,6 +176,8 @@ class CenterWave {
       easingMax : 0,
       easingMin : 0,
     };
+
+    this.yPoints = new Array(Math.floor(this.waveWidth / this.xSpacing.currentValue));
 
   }
 }
@@ -223,6 +229,7 @@ let slider =
  * @param radius
  */
 CenterWave.prototype.renderShape = function(xPos, yPos, radius) {
+  "use strict";
 
   let polygons = ['line', 'triangle', 'square', 'pentagon'];  // polygons we are allowing for set in the shape attribute
 
@@ -260,22 +267,19 @@ CenterWave.prototype.renderShape = function(xPos, yPos, radius) {
   }
 };
 
+
 /**
  * Based on user toggling, set the color profile for element to be rendered
  */
 CenterWave.prototype.setColor = function() {
+  "use strict";
   switch (this.stroke.currentValue) {
-    case 'stroke_no_fill':
+    case 'Outline':
       myp5.strokeWeight(1);
-      myp5.stroke(this.colorB.currentValue, this.colorR.currentValue, this.colorG.currentValue);
+      myp5.stroke(this.colorR.currentValue, this.colorG.currentValue, this.colorB.currentValue);
       myp5.noFill();
       break;
-    case 'stroke_w_fill':
-      myp5.strokeWeight(1);
-      myp5.stroke(this.colorB.currentValue * .2, this.colorR.currentValue * .2, this.colorG.currentValue * .2);
-      myp5.fill(this.colorR.currentValue, this.colorG.currentValue, this.colorB.currentValue);
-      break;
-    case 'no_stroke_fill':
+    case 'Filled':
       myp5.noStroke();
       myp5.fill(this.colorR.currentValue, this.colorG.currentValue, this.colorB.currentValue);
       break;

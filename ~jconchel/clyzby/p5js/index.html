@@ -19,18 +19,17 @@ git log
   <script src="js/libraries/jquery-3.3.1.js"></script>
   <script src="js/libraries/webmidi.js"></script>
 
-  <script src="js/src/a-easeInto.js"></script>
-  <script src="js/src/a-midiCtrlConfig.js"></script>
-  <script src="js/src/a-waveDrawer.js"></script>
-  <script src="js/src/a-centerWaveClass.js"></script>
-  <script src="js/src/a-outerWavesClass.js"></script>
-  <script src="js/src/a-threeDWaveClass.js"></script>
-  <script src="js/src/a-midiService.js"></script>
-  <script src="js/src/a-midiCtrl.js"></script>
-  <script src="js/src/audioControls.js"></script>
-  <script src="js/src/a-domControls.js"></script>
-  <script src="js/src/a-keyboardControls.js"></script>
-  <!--<script src="js/src/customSelectBox.js"></script>-->
+  <script src="js/src/easingService.js"></script>
+  <script src="js/src/midiCtrlConfig.js"></script>
+  <script src="js/src/waveDrawer_w_audio.js"></script>
+  <script src="js/src/classCenterWave.js"></script>
+  <script src="js/src/classOuterWaves.js"></script>
+  <script src="js/src/classThreeDWave.js"></script>
+  <script src="js/src/midiService.js"></script>
+  <script src="js/src/midiCtrlService.js"></script>
+  <script src="js/src/audioControlService.js"></script>
+  <script src="js/src/domControlsBuilder.js"></script>
+  <script src="js/src/keyboardControlsService.js"></script>
 
 </head>
 <body>
@@ -59,7 +58,7 @@ git log
     <div class="clear"></div>
   </div>
 
-  <!-- populated by p5 -->
+  <!-- populated by p5js via domControlsBuilder.js -->
   <div id="ctrlObject-control-panel"></div>
   <hr>
   <div id="audio-control-panel"></div>
