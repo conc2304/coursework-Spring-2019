@@ -169,7 +169,7 @@ let createFrequencySelector = (ctrlObject, prop, inputWrapper) => {
   rangeList.elt.onchange = setAudioCtrl;
 
   let option = myp5.createElement('option');
-  option.html(`Frequency Ranges`);
+  option.html(`Select Audio Frequency &#8675`);
   option.parent(rangeList);
 
   for (let i in freqBands) {
@@ -308,7 +308,6 @@ let createPianoDomInput = (ctrlObject, prop, parentWrapper) => {
 
   let pianoWrapper = myp5.createElement('div');
   pianoWrapper.addClass(`piano-mode`);
-  pianoWrapper.addClass(`hide`);
   pianoWrapper.parent(parentWrapper);
 
 

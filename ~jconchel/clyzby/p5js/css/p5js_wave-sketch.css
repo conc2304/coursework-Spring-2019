@@ -392,6 +392,12 @@ label.radio-input:after {
   cursor: pointer;
 }
 
+.custom-select-wrapper select:after {
+  content: 'down';
+  font-size: 40px;
+  color: red;
+}
+
 .custom-select-wrapper select:focus {
   outline: none;
 }

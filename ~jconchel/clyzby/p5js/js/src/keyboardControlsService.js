@@ -1,15 +1,4 @@
 
-let editingPiano = true;  // Don't play 'piano' keys while in editing mode;
-
-$(function () {
-  "use strict";
-  $('#piano-mode').click(function () {
-    $('.piano-mode').toggleClass('hide');
-    $('#piano-mode').toggleClass('editing');
-    editingPiano = !editingPiano;
-  });
-});
-
 
 /**
  *   For each of the properties associated with that key
@@ -22,10 +11,6 @@ $(function () {
 
 let playPianoKey = (key, pressed) => {
   "use strict";
-
-  if (editingPiano) {
-    return null;
-  }
 
   let ctrlHandlers = keyboardCtrl[key];
   let controlObject;
