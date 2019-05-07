@@ -49,15 +49,16 @@ let uploaded = (file) => {
   uploadedAudio = myp5.loadSound(file.data, uploadedAudioPlay);
 };
 
-let uploadedAudioPlay = (audioFile) => {
+let uploadedAudioPlay = () => {
 
   uploadLoading = false;
 
   if (audio.isPlaying()) {
-    audio.pause();
+    console.log('is playing');
+    audio.stop();
   }
-
-  audio = audioFile;
+  audio = uploadedAudio;
+  audio.play();
   audio.loop();
 };
 
@@ -65,7 +66,8 @@ let toggleAudio = () => {
   if (audio.isPlaying()) {
     audio.pause();
   } else {
-    audio.play();
+    // audio.play();
+    audio.loop();
   }
 };
 // end reference

@@ -19,10 +19,9 @@ let s = (sketch) => {
   sketch.preload = () => {
     objects.lambo = myp5.loadModel('files/3d_obj/lp670.obj', true);
     objects.glock = myp5.loadModel('files/3d_obj/Glock 3d.obj', true);
-
     audio = myp5.loadSound('/~jconchel/clyzby/p5js/files/audio/CharlestheFirst - Chynna - The Conversation.wav');
-    // audio.pause();
-
+    // audio = myp5.loadSound('/~jconchel/clyzby/p5js/files/audio/Pushloop - Deep, Dark & Dangerous Mix 015.mp3');
+    audio.pause();
   };
 
 
@@ -42,7 +41,7 @@ let s = (sketch) => {
 
     fft = new p5.FFT();
 
-    audio.loop();
+    // audio.loop();
     $("#settings-open").click();
   };
 
