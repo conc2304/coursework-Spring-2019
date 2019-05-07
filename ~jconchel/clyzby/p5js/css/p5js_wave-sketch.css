@@ -94,7 +94,7 @@ body {
   background: linear-gradient(180deg, rgba(0, 0, 0, 1) 66%, rgba(0, 0, 0, 0) 100%);
 }
 
-#wave-control-panel, #audio-control-panel {
+#ctrlObject-control-panel, #audio-control-panel {
   position: relative;
   padding: 60px 20px 30px;
 }
@@ -183,18 +183,18 @@ button#piano-mode:hover path {
 #piano-mode-svg path:hover {
 }
 
-.wave-settings {
+.ctrlObject-settings {
   display: block;
   position: relative;
   color: #000;
 }
 
-.wave-settings input {
+.ctrlObject-settings input {
   position: relative;
   color: #000;
 }
 
-.wave-settings .piano-mode input {
+.ctrlObject-settings .piano-mode input {
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   display: inline-block;
@@ -209,7 +209,7 @@ button#piano-mode:hover path {
   width: 120px;
 }
 
-.wave-settings .piano-mode input:last-child {
+.ctrlObject-settings .piano-mode input:last-child {
   margin-left: 8px;
 }
 

@@ -27,36 +27,25 @@ let playPianoKey = (key, pressed) => {
     return null;
   }
 
-  let waveHandlers = keyboardCtrl[key];
-  let waveCtrl;
-  console.log(waveHandlers);
+  let ctrlHandlers = keyboardCtrl[key];
+  let controlObject;
 
-
-  for (let waveName in waveHandlers) {
-    if (!waveHandlers.hasOwnProperty(waveName)) {
+  for (let controlElementName in ctrlHandlers) {
+    if (!ctrlHandlers.hasOwnProperty(controlElementName)) {
       continue;
     }
 
-    waveCtrl = getCtrlElement(waveName);
-    for (let waveProp in waveHandlers[waveName]) {
-      if (!waveHandlers[waveName].hasOwnProperty(waveProp)) {
+    controlObject = myp5[`get${controlElementName}`]();
+    for (let ctrlProp in ctrlHandlers[controlElementName]) {
+      if (!ctrlHandlers[controlElementName].hasOwnProperty(ctrlProp)) {
         continue;
       }
 
-      let waveClass = `.range-slider.${waveName}-${waveProp}`;
-      console.log(waveClass);
-      console.log($(waveClass));
-      console.log(`set ${waveProp} to ${waveHandlers[waveName][waveProp]}`);
-
-      let pianoValue;
       if (pressed) {
-        pianoValue = waveHandlers[waveName][waveProp];
+        controlObject[ctrlProp].targetValue = Number(ctrlHandlers[controlElementName][ctrlProp]);
       } else {
-        pianoValue = waveCtrl[waveProp].resetValue;
+        controlObject[ctrlProp].targetValue = Number(controlObject[ctrlProp].resetValue);
       }
-
-      $(waveClass).val(pianoValue);
-      updateRangeDisplay($(waveClass));
     }
   }
 };

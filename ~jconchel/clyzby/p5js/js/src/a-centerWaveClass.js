@@ -38,7 +38,7 @@ class CenterWave {
       resetValue : 0.025,
       currentValue : 0.025,
       targetValue : null,
-      min : 0.01,
+      min : -1,
       max : 1,
       attrType : 'numeric',
       triggerSource : null,

@@ -42,7 +42,7 @@ let s = (sketch) => {
 
     fft = new p5.FFT();
 
-    // audio.loop();  // todo turn on
+    audio.loop();
     $("#settings-open").click();
   };
 
@@ -69,12 +69,8 @@ let s = (sketch) => {
 
   sketch.draw = () => {
 
-
-    // setAudioControlValues(audioCtrl, [centerWave, outerWaves, threeDWave]);
-    setDOMControlValues(domCtrl, [centerWave, outerWaves, threeDWave]);
-
     fftAnalysis = get10BandEnergy(fft);
-    // console.log(fftAnalysis);
+    applyAudioEnergyValues(fftAnalysis);
 
 
     sketch.background(0);

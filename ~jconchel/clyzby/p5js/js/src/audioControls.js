@@ -70,6 +70,7 @@ let toggleAudio = () => {
 };
 // end reference
 
+
 let get10BandEnergy = (fft) => {
 
   fft.analyze();
@@ -90,8 +91,7 @@ let get10BandEnergy = (fft) => {
         }
 
         range = band.ranges[j];
-
-        fftAnalysis.push(fft.getEnergy(range[0], range[1]));
+        fftAnalysis[`${range[0]} - ${range[1]} Hz`] = fft.getEnergy(range[0], range[1]); // lower and upper bound
       }
     }
   }
@@ -108,8 +108,8 @@ let setAudioCtrl = (e) => {
 
   console.log(e);
 
-  let controlEl = e.target.dataset.wave;
-  let property = e.target.dataset.prop;
+  let controlEl = $(e.target).data('ctrl_object');
+  let property = $(e.target).data('prop');
 
   let value = e.target.selectedOptions[0].value;
 
@@ -147,6 +147,51 @@ let setAudioCtrl = (e) => {
 
   console.log(audioCtrl);
   console.log(elementPropToFQMap);
-  
+};
 
+
+
+let applyAudioEnergyValues = (energyValues) => {
+  "use strict";
+
+  if (energyValues.size < 1) {
+    return false;
+  }
+
+  let controlObject;
+  let audioValue;
+
+  // for each of the elements in the control
+  for (let eqBand in energyValues) {
+
+    if (eqBand === 0) {
+      continue;
+    }
+
+    // console.log(eqBand); // the eqBand index [0-10]
+    // console.log(energyValues[eqBand]);
+  }
+
+  let ctrlHandlers = elementPropToFQMap;
+  for (let controlElementName in ctrlHandlers) {
+    if (!ctrlHandlers.hasOwnProperty(controlElementName)) {
+      continue;
+    }
+
+    controlObject = myp5[`get${controlElementName}`]();
+    for (let ctrlProp in ctrlHandlers[controlElementName]) {
+      if (!ctrlHandlers[controlElementName].hasOwnProperty(ctrlProp)) {
+        continue;
+      }
+
+      let eqBand = ctrlHandlers[controlElementName][ctrlProp];
+      // the value in eq band will be somewhere between 0 and 255
+      // we need to scale that between the min and max value of the element
+      audioValue = myp5.map(energyValues[eqBand], 0, 255, controlObject[ctrlProp].min, controlObject[ctrlProp].max);
+
+
+      // todo find a way to make it additive or subtractive rather than replacing the value
+      controlObject[ctrlProp].currentValue = controlObject[ctrlProp].resetValue + Number(audioValue.toFixed(3));
+    }
+  }
 };

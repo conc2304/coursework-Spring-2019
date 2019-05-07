@@ -4,16 +4,16 @@
  * Iterate through all of the values that we want
  * to give the use control over and based on the
  * attribute type make a slider or a radio to control that property
- * @param waves
+ * @param ctrlElements
  * @returns {{}}
  */
 
 // TODO  -  this function is way to damn long
 
-let createDOMControls = (waves) => {
+let createDOMControls = (ctrlElements) => {
   "use strict";
 
-  if (!waves.length) {
+  if (!ctrlElements.length) {
     return {};
   }
 
@@ -23,32 +23,32 @@ let createDOMControls = (waves) => {
 
   createAudioCtrls();
 
-  // loop through each of the waves objects and create settings controllers based on
+  // loop through each of the control objects and create settings controllers based on
   // the property's attribute type
   let controls = {};
 
-  for (let wave in waves) {
-    if (!waves.hasOwnProperty(wave)) {
+  for (let ctrlElem in ctrlElements) {
+    if (!ctrlElements.hasOwnProperty(ctrlElem)) {
       continue;
     }
 
-    wave = waves[wave];
-    let waveName = wave.constructor.name;
-    let wrapperID = waveName + '-settings';
-    controls[waveName] = {};
+    ctrlElem = ctrlElements[ctrlElem];
+    let ctrlObjectName = ctrlElem.constructor.name;
+    let wrapperID = ctrlObjectName + '-settings';
+    controls[ctrlObjectName] = {};
 
 
-    // create a div for each of the different waves
+    // create a div for each of the different control
     let domCtrl = myp5.createDiv();
     domCtrl.attribute('id', wrapperID);
-    domCtrl.attribute('class', 'wave-settings');
-    domCtrl.parent('wave-control-panel');
+    domCtrl.attribute('class', 'ctrlObject-settings');
+    domCtrl.parent('ctrlObject-control-panel');
 
 
     // create a button to toggle the settings sliders visibility
-    let button = myp5.createButton(waveName, '1');
+    let button = myp5.createButton(ctrlObjectName, '1');
     button.style('position', 'relative');
-    button.attribute('id', waveName + '-toggle');
+    button.attribute('id', ctrlObjectName + '-toggle');
     button.attribute('class', 'settings-toggle-button');
     button.mousePressed(function () {  // todo  figure out how to pass a 'lexical this' with es6 arrow functions
       $('#' + this.html() + "-wrapper").toggleClass('hide'); // p5 makes it so incredibly dubm to get any sort of information
@@ -58,31 +58,31 @@ let createDOMControls = (waves) => {
 
     button.parent(wrapperID);
 
-    let waveSettingWrapper = myp5.createElement('div');
-    waveSettingWrapper.attribute('id', `${waveName}-wrapper`);
-    waveSettingWrapper.attribute('class', `hide settings-wrapper`);
-    waveSettingWrapper.parent(wrapperID);
+    let ctrlElemSettingWrapper = myp5.createElement('div');
+    ctrlElemSettingWrapper.attribute('id', `${ctrlObjectName}-wrapper`);
+    ctrlElemSettingWrapper.attribute('class', `hide settings-wrapper`);
+    ctrlElemSettingWrapper.parent(wrapperID);
 
 
-    for (let prop in wave) {
-      if (!wave.hasOwnProperty(prop)) {
+    for (let prop in ctrlElem) {
+      if (!ctrlElem.hasOwnProperty(prop)) {
         continue;
       }
 
-      if (wave[prop].attrType === 'numeric') {
-        createSliderCtrlr(wave, prop, waveSettingWrapper, controls);
+      if (ctrlElem[prop].attrType === 'numeric') {
+        createSliderCtrlr(ctrlElem, prop, ctrlElemSettingWrapper, controls);
       }
 
     }
 
     // loop through again (so that the radios come last in the group)
     // and create radio for all variable attribute types
-    for (let prop in wave) {
-      if (!wave.hasOwnProperty(prop)) {
+    for (let prop in ctrlElem) {
+      if (!ctrlElem.hasOwnProperty(prop)) {
         continue;
       }
-      if (wave[prop].attrType === 'variable') {
-        createRadioToggle(wave, prop, controls, waveSettingWrapper);
+      if (ctrlElem[prop].attrType === 'variable') {
+        createRadioToggle(ctrlElem, prop, controls, ctrlElemSettingWrapper);
       }
     }
   }
@@ -94,17 +94,17 @@ let createDOMControls = (waves) => {
 
 /**
  *
- * @param wave
+ * @param ctrlObject
  * @param prop
  * @param parentWrapper
  * @param controls
  */
-let createSliderCtrlr = (wave, prop, parentWrapper, controls) => {
+let createSliderCtrlr = (ctrlObject, prop, parentWrapper, controls) => {
   "use strict";
 
-  if (wave[prop].attrType === 'numeric') {
+  if (ctrlObject[prop].attrType === 'numeric') {
 
-    let waveName = wave.constructor.name;
+    let ctrlObjectName = ctrlObject.constructor.name;
 
     // wrapper to hold individual range sliders
     let inputWrapper = myp5.createElement('div');
@@ -112,13 +112,13 @@ let createSliderCtrlr = (wave, prop, parentWrapper, controls) => {
     inputWrapper.parent(parentWrapper);
 
 
-    let title = myp5.createElement('p', wave[prop].displayLabel);
+    let title = myp5.createElement('p', ctrlObject[prop].displayLabel);
     title.style('position', 'relative');
     title.parent(inputWrapper);
 
-    createPianoDomInput(wave, prop, inputWrapper, controls);
-    createDomSlider(wave, prop, inputWrapper, controls);
-    createFrequencySelector(wave, prop, inputWrapper);
+    createPianoDomInput(ctrlObject, prop, inputWrapper, controls);
+    createDomSlider(ctrlObject, prop, inputWrapper, controls);
+    createFrequencySelector(ctrlObject, prop, inputWrapper);
   }
 };
 
@@ -152,19 +152,19 @@ let createAudioCtrls = () => {
 
 /**
  * Create a select drop down to assign frequency bands to visual elements
- * @param wave
+ * @param ctrlObject
  * @param prop
  * @param inputWrapper
  */
-let createFrequencySelector = (wave, prop, inputWrapper) => {
+let createFrequencySelector = (ctrlObject, prop, inputWrapper) => {
   "use strict";
 
-  let waveName = wave.constructor.name;
+  let ctrlObjectName = ctrlObject.constructor.name;
   let selectWrap = myp5.createElement('div');
   selectWrap.addClass('custom-select-wrapper');
 
   let rangeList = myp5.createElement("select");
-  rangeList.attribute('data-wave', waveName);
+  rangeList.attribute('data-ctrl_object', ctrlObjectName);
   rangeList.attribute('data-prop', prop);
   rangeList.elt.onchange = setAudioCtrl;
 
@@ -203,32 +203,34 @@ let createFrequencySelector = (wave, prop, inputWrapper) => {
 
 /**
  *  Create an html range slider to control the visual elements
- * @param wave
+ * @param ctrlObject
  * @param prop
  * @param inputWrapper
  * @param controls
  */
-let createDomSlider = (wave, prop, inputWrapper, controls) => {
+let createDomSlider = (ctrlObject, prop, inputWrapper, controls) => {
   "use strict";
 
-  let waveName = wave.constructor.name;
+  let ctrlObjectName = ctrlObject.constructor.name;
 
   let step = 0;
-  if (Number.isInteger(wave[prop].currentValue)) {
+  if (Number.isInteger(ctrlObject[prop].currentValue)) {
     step = 1;
   }
-  if ((wave[prop].max - wave[prop].min) < 10) {
+  if ((ctrlObject[prop].max - ctrlObject[prop].min) < 10) {
     // if the difference between min and max is 10 or less
-    step = (wave[prop].max - wave[prop].min) / 100;
+    step = (ctrlObject[prop].max - ctrlObject[prop].min) / 100;
   }
 
   // slider to control the individual property
-  controls[waveName][prop] = myp5.createSlider(wave[prop].min, wave[prop].max, wave[prop].currentValue, step);
-  controls[waveName][prop].attribute('class', `range-slider ${waveName}-${prop}`);
-  controls[waveName][prop].attribute('oninput', 'updateRangeDisplay(this)');
-  controls[waveName][prop].parent(inputWrapper);
+  controls[ctrlObjectName][prop] = myp5.createSlider(ctrlObject[prop].min, ctrlObject[prop].max, ctrlObject[prop].currentValue, step);
+  controls[ctrlObjectName][prop].attribute('class', `range-slider ${ctrlObjectName}-${prop}`);
+  controls[ctrlObjectName][prop].attribute('data-ctrl_object', ctrlObjectName);
+  controls[ctrlObjectName][prop].attribute('data-prop', prop);
+  controls[ctrlObjectName][prop].attribute('oninput', 'sliderSetValue(this)');
+  controls[ctrlObjectName][prop].parent(inputWrapper);
 
-  let displayValue = myp5.createElement('span', wave[prop].currentValue.toString());
+  let displayValue = myp5.createElement('span', ctrlObject[prop].currentValue.toString());
   displayValue.attribute('class', `range-slider-value`);
   displayValue.parent(inputWrapper);
 };
@@ -237,54 +239,72 @@ let createDomSlider = (wave, prop, inputWrapper, controls) => {
 
 /**
  *
- * @param wave
+ * @param ctrlObject
  * @param prop
  * @param controls
  * @param parentWrapper
  */
-let createRadioToggle = (wave, prop, controls, parentWrapper) => {
+let createRadioToggle = (ctrlObject, prop, controls, parentWrapper) => {
   "use strict";
 
-  if (wave[prop].attrType === "variable" && wave[prop].options.length) {
+  if (ctrlObject[prop].attrType === "variable" && ctrlObject[prop].options.length) {
 
-    let waveName = wave.constructor.name;
+    let ctrlObjectName = ctrlObject.constructor.name;
 
 
     let inputWrapper = myp5.createElement('div');
-    inputWrapper.attribute('class', `radio-option-wrap ${waveName}-${prop}`);
+    inputWrapper.attribute('class', `radio-option-wrap ${ctrlObjectName}-${prop}`);
     inputWrapper.parent(parentWrapper);
 
-    let label = myp5.createElement('p', wave[prop].displayLabel);
+    let label = myp5.createElement('p', ctrlObject[prop].displayLabel);
     label.style('position', 'relative');
     label.parent(inputWrapper);
 
-    controls[waveName][prop] = myp5.createRadio();
+    controls[ctrlObjectName][prop] = myp5.createRadio();
 
-    for (let o in wave[prop].options) {
-      if (!wave[prop].options.hasOwnProperty(o)) {
+    for (let o in ctrlObject[prop].options) {
+      if (!ctrlObject[prop].options.hasOwnProperty(o)) {
         continue;
       }
 
-      controls[waveName][prop].option(ucFirst(wave[prop].options[o]), wave[prop].options[o]);
-      controls[waveName][prop].attribute('class', `radio-input`);
-      controls[waveName][prop].parent(inputWrapper);
+      controls[ctrlObjectName][prop].option(ucFirst(ctrlObject[prop].options[o]), ctrlObject[prop].options[o]);
+      controls[ctrlObjectName][prop].attribute('class', `radio-input`);
+      controls[ctrlObjectName][prop].parent(inputWrapper);
     }
-    controls[waveName][prop].selected(wave[prop].currentValue);
+    controls[ctrlObjectName][prop].selected(ctrlObject[prop].currentValue);
+    controls[ctrlObjectName][prop].attribute('data-ctrl_object', ctrlObjectName);
+    controls[ctrlObjectName][prop].attribute('data-prop', prop);
+    controls[ctrlObjectName][prop].attribute('onchange', 'setRadioValue(this)');
+
   }
 };
 
 
+let setRadioValue = (inputElem) => {
+  "use strict";
+
+  console.log($(inputElem));
+
+  let value = $(inputElem).val();
+  console.log(value);
+  let controlElementName = $(inputElem).data('ctrl_object');
+  let prop = $(inputElem).data('prop');
+
+  let controlObject = myp5[`get${controlElementName}`]();
+  controlObject[prop].currentValue = value;
+};
+
 
 /**
  *
- * @param wave
+ * @param ctrlObject
  * @param prop
  * @param parentWrapper
  */
-let createPianoDomInput = (wave, prop, parentWrapper) => {
+let createPianoDomInput = (ctrlObject, prop, parentWrapper) => {
   "use strict";
 
-  let waveName = wave.constructor.name;
+  let ctrlObjectName = ctrlObject.constructor.name;
 
   let pianoWrapper = myp5.createElement('div');
   pianoWrapper.attribute('class', `piano-mode`);
@@ -293,7 +313,7 @@ let createPianoDomInput = (wave, prop, parentWrapper) => {
 
   // input to set which keyboard key plays that element
   let pianoInput = myp5.createInput();
-  pianoInput.attribute('data-wave', waveName);
+  pianoInput.attribute('data-ctrl_object', ctrlObjectName);
   pianoInput.attribute('data-prop', prop);
   pianoInput.attribute('data-type', 'key-set');
   pianoInput.elt.placeholder = "Control Key";
@@ -303,54 +323,19 @@ let createPianoDomInput = (wave, prop, parentWrapper) => {
 
 
   // input to set what the value will be for that element on that key press
-  pianoInput = myp5.createInput(wave[prop].currentValue.toString(), 'number');
-  pianoInput.value(myp5.random(wave[prop].min, wave[prop].max).toFixed(3));
-  pianoInput.elt.max = wave[prop].max;  // not sure if i want to set a max or min
-  pianoInput.elt.min = wave[prop].min;  // not sure if i want to set a max or min
+  pianoInput = myp5.createInput(ctrlObject[prop].currentValue.toString(), 'number');
+  pianoInput.value(myp5.random(ctrlObject[prop].min, ctrlObject[prop].max).toFixed(3));
+  pianoInput.elt.max = ctrlObject[prop].max;  // not sure if i want to set a max or min
+  pianoInput.elt.min = ctrlObject[prop].min;  // not sure if i want to set a max or min
   pianoInput.attribute('data-type', 'value-set');
-  pianoInput.attribute('data-wave', waveName);
+  pianoInput.attribute('data-ctrl_object', ctrlObjectName);
   pianoInput.attribute('data-prop', prop);
 
   pianoInput.elt.onchange = setKeyboardControl;
-  pianoInput.elt.step = Number((wave[prop].max - wave[prop].min) / 200).toFixed(3);
+  pianoInput.elt.step = Number((ctrlObject[prop].max - ctrlObject[prop].min) / 200).toFixed(3);
   pianoInput.parent(pianoWrapper);
 };
 
-
-/**
- * On draw loop, check the value of all of our controls
- * and apply those values to our config objects
- * @param controls
- * @param waves
- */
-let setDOMControlValues = (controls, waves) => {
-  "use strict";
-  let waveName;
-
-  for (let wave in waves) {
-    if (!waves.hasOwnProperty(wave)) {
-      continue;
-    }
-
-    wave = waves[wave];
-    waveName = wave.constructor.name;
-
-    for (let prop in wave) {
-      if (!wave.hasOwnProperty(prop)) {
-        continue;
-      }
-      if (!wave[prop].hasOwnProperty('targetValue') || !controls[waveName].hasOwnProperty(prop)) {
-        continue;
-      }
-
-      if (wave[prop].attrType === "numeric") {
-        wave[prop].targetValue = controls[waveName][prop].value();
-      } else if (wave[prop].attrType === "variable") {
-        wave[prop].currentValue = controls[waveName][prop].selected();
-      }
-    }
-  }
-};
 
 
 /**
@@ -367,9 +352,23 @@ let updateRangeDisplay = (range) => {
 
 
 
+let sliderSetValue = (range) => {
+  "use strict";
+
+  let value = $(range).val();
+  let controlElementName = $(range).data('ctrl_object');
+  let prop = $(range).data('prop');
+  let controlObject = myp5[`get${controlElementName}`]();
+
+  controlObject[prop].resetValue = controlObject[prop].currentValue = Number(value);
+  updateRangeDisplay(range);
+};
+
+
+
 
 let keyboardCtrl = {};
-let wavePropToKeyMap = {};
+let ctrlElemPropToKeyMap = {};
 /**
  * When the user enters a key into the input
  * save it to a key to controller map
@@ -381,7 +380,7 @@ let setKeyboardControl = (e) => {
 
   let inputValue = e.target.value;
   let type = e.target.dataset.type;
-  let waveName = e.target.dataset.wave;
+  let ctrlObjectName = e.target.dataset.ctrl_object;
   let property = e.target.dataset.prop;
   let charCode;
   let propValue;
@@ -397,44 +396,44 @@ let setKeyboardControl = (e) => {
     charCode = e.target.previousSibling.value.toUpperCase().charCodeAt(0);
   }
 
-  if (!Number.isNaN(charCode) && waveName && property && propValue) {
+  if (!Number.isNaN(charCode) && ctrlObjectName && property && propValue) {
 
     console.log('setting value');
-    console.log([inputValue, charCode, waveName, property, propValue]);
+    console.log([inputValue, charCode, ctrlObjectName, property, propValue]);
     // only update the keyboard control if we have a key to control it with
     keyboardCtrl[charCode] = keyboardCtrl[charCode] || {};
-    keyboardCtrl[charCode][waveName] = keyboardCtrl[charCode][waveName] || {};
-    keyboardCtrl[charCode][waveName][property] = Number(propValue);
+    keyboardCtrl[charCode][ctrlObjectName] = keyboardCtrl[charCode][ctrlObjectName] || {};
+    keyboardCtrl[charCode][ctrlObjectName][property] = Number(propValue);
 
-    wavePropToKeyMap[waveName] = wavePropToKeyMap[waveName] || {};
-    wavePropToKeyMap[waveName][property] = charCode;
+    ctrlElemPropToKeyMap[ctrlObjectName] = ctrlElemPropToKeyMap[ctrlObjectName] || {};
+    ctrlElemPropToKeyMap[ctrlObjectName][property] = charCode;
   } else {
 
     console.log('cleaning ');
-    if (wavePropToKeyMap[waveName] && wavePropToKeyMap[waveName][property]) {
+    if (ctrlElemPropToKeyMap[ctrlObjectName] && ctrlElemPropToKeyMap[ctrlObjectName][property]) {
 
-      let keyToClean = wavePropToKeyMap[waveName][property];
+      let keyToClean = ctrlElemPropToKeyMap[ctrlObjectName][property];
       console.log(keyToClean);
 
-      delete keyboardCtrl[keyToClean][waveName][property];
-      if (Object.size(keyboardCtrl[keyToClean][waveName]) === 0) {
-        delete keyboardCtrl[keyToClean][waveName];
+      delete keyboardCtrl[keyToClean][ctrlObjectName][property];
+      if (Object.size(keyboardCtrl[keyToClean][ctrlObjectName]) === 0) {
+        delete keyboardCtrl[keyToClean][ctrlObjectName];
       }
 
       if (Object.size(keyboardCtrl[keyToClean]) === 0) {
         delete keyboardCtrl[keyToClean];
       }
-      delete wavePropToKeyMap[waveName][property];
+      delete ctrlElemPropToKeyMap[ctrlObjectName][property];
     }
 
 
-    if (Object.size(wavePropToKeyMap[waveName]) === 0) {
-      delete wavePropToKeyMap[waveName];
+    if (Object.size(ctrlElemPropToKeyMap[ctrlObjectName]) === 0) {
+      delete ctrlElemPropToKeyMap[ctrlObjectName];
     }
   }
 
   console.log(keyboardCtrl);
-  console.log(wavePropToKeyMap);
+  console.log(ctrlElemPropToKeyMap);
 };
 
 
