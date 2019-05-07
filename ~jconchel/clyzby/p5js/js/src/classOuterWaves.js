@@ -232,7 +232,7 @@ OuterWaves.prototype.render = function() {
     // make each one 15% smaller
     m = this.radius.currentValue * 0.15 * (i + 1);
     r = this.radius.currentValue - m;
-    s = this.ySpacing.currentValue;
+    s = this.ySpacing.currentValue * 2.5* (i + 1);
 
     for (let x = 0; x < this.yPoints.length; x++) {
       let xPos = x * this.xSpacing.currentValue - this.windowWidth/2;
