@@ -1,3 +1,12 @@
+/**
+ *
+ * todo add comments to functions and files
+ * todo create a lock feature for each control property
+ */
+
+
+
+
 let objects = {
   glock: null,
   lambo: null,

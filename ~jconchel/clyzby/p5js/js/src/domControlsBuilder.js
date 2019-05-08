@@ -495,6 +495,8 @@ $(() => {
   });
 });
 
+
+
 let resetSettings = () => {
   "use strict";
 
@@ -526,10 +528,10 @@ let resetSettings = () => {
       }
 
       ctrlElem[prop].currentValue = ctrlElem[prop].defaultValue;
-
     }
   }
 };
+
 
 
 let randomizeSettings = () => {
@@ -567,11 +569,9 @@ let randomizeSettings = () => {
           .val(rVal);
       } else if (ctrlElem[prop].attrType === "variable") {
         optLength = ctrlElem[prop].options.length;
-        //
-
         optIndex = getRandomInt(0, optLength - 1);
         rVal = ctrlElem[prop].options[optIndex];
-        console.log(rVal);
+        $(`input.radio-input.${ctrlObjectName}-${prop}`).val([rVal]);
 
         if (typeof(rVal) === "undefined") {
           console.log('stop');
@@ -579,9 +579,6 @@ let randomizeSettings = () => {
       }
 
       ctrlElem[prop].currentValue = rVal;
-
-
-
     }
   }
 };
@@ -590,6 +587,6 @@ let randomizeSettings = () => {
 let getRandomInt = (min, max) => {
   "use strict";
   return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
-}
+};
 
 
