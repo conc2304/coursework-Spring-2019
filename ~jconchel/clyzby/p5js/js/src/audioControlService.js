@@ -64,11 +64,14 @@ let uploadedAudioPlay = () => {
 };
 
 let toggleAudio = () => {
+  // console.log(elem);
   if (audio.isPlaying()) {
     audio.pause();
+    $("#play-audio").html('&#9658;');
   } else {
     // audio.play();
     audio.loop();
+    $("#play-audio").html('&#10074; &#10074;');
   }
 };
 // end reference

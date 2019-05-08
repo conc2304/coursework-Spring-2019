@@ -98,6 +98,20 @@ body {
   position: relative;
   padding: 60px 20px 30px;
 }
+#ctrlObject-control-panel {
+  padding-bottom: 200px;
+}
+
+#audio-control-panel {
+  text-align: center;
+  width: 439px;
+  position: fixed;
+  z-index: 5;
+  bottom: 0;
+  left: 0;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 66%, rgba(0, 0, 0, 0) 100%);
+}
 
 #settings-open {
   /*display: none;*/
@@ -209,6 +223,28 @@ button#piano-mode:hover path {
   width: 120px;
 }
 
+.ctrlObject-settings .piano-mode input:hover {
+  -webkit-animation: flash linear 2s infinite;
+  animation: flash linear 2s infinite;
+}
+
+@-webkit-keyframes flash {
+  from, to {
+    border-color: #d4d4d4;
+  }
+  50% {
+    border-color: transparent
+  }
+}
+@keyframes flash {
+  from, to {
+    border-color: #d4d4d4;
+  }
+  50% {
+    border-color: transparent
+  }
+}
+
 .ctrlObject-settings .piano-mode input:last-child {
   margin-left: 8px;
 }
@@ -223,6 +259,7 @@ button#piano-mode:hover path {
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
 }
+.range-slider-wrapper p { padding-top: 25px;}
 
 #settings-menu label {
   margin-left: 5px;
@@ -235,9 +272,15 @@ button#piano-mode:hover path {
   color: #fff;
 }
 
+
+#settings-menu button.settings-toggle-button {
+  display: block;
+  padding: 25px 80px;
+}
+
+
 #settings-menu button.settings-toggle-button,
 #settings-menu .audio-button{
-  display: block;
   margin: 20px auto;
 
   font-family: 'Oswald', sans-serif;
@@ -247,7 +290,6 @@ button#piano-mode:hover path {
   font-size: 18px;
   background: none;
   cursor: pointer;
-  padding: 25px 80px;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 700;
@@ -262,19 +304,29 @@ button#piano-mode:hover path {
 
 /* hide the file input button bc its ugly*/
 #upload-file {
-  width: 0.1px;
-  height: 0.1px;
+  width: 0;
+  height: 0;
   opacity: 0;
   overflow: hidden;
   position: absolute;
   z-index: -1;
 }
 
-#audio-control-panel .audio-button {
-  width: 150px;
-  padding: 20px 40px;
-  display: block;
+.audio-button {
+  padding: 0;
+  display: inline-block;
   vertical-align: middle;
+  height: 80px;
+  line-height: 80px;
+  box-sizing: content-box;
+}
+
+#play-audio.audio-button {
+  width: 80px;
+}
+
+#upload-file-label {
+  padding: 0 20px;
 }
 
 #settings-menu button:hover,
@@ -447,6 +499,8 @@ input[type="radio"].radio-input:checked {
 input[type="radio"].radio-input, label.radio-input {
   vertical-align: bottom;
 }
+
+
 
 
 

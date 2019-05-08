@@ -19,8 +19,6 @@ let createDOMControls = (ctrlElements) => {
 
 
   // create audio control config buttons
-  // reference - https://tympanus.net/Development/AudioVisualizers/
-
   createAudioCtrls();
 
   // loop through each of the control objects and create settings controllers based on
@@ -50,8 +48,8 @@ let createDOMControls = (ctrlElements) => {
     button.style('position', 'relative');
     button.attribute('id', ctrlObjectName + '-toggle');
     button.attribute('class', 'settings-toggle-button');
-    button.mousePressed(function () {  // todo  figure out how to pass a 'lexical this' with es6 arrow functions
-      $('#' + this.html() + "-wrapper").toggleClass('hide'); // p5 makes it so incredibly dubm to get any sort of information
+    button.mousePressed(function () {
+      $('#' + this.html() + "-wrapper").toggleClass('hide'); // p5 makes it so incredibly dumb to get any sort of information
       $(`#${this.html()}-toggle`).toggleClass('open');
 
     });
@@ -86,6 +84,8 @@ let createDOMControls = (ctrlElements) => {
       }
     }
   }
+
+  setIntroDefaults();
 
   return controls;
 };
@@ -123,6 +123,31 @@ let createSliderCtrlr = (ctrlObject, prop, parentWrapper, controls) => {
 };
 
 
+/**
+ *  Lets set the first elements with some default values
+ *  to give the user something to play with
+ */
+let setIntroDefaults = () => {
+  "use strict";
+
+  let defaultValues = ['Q','W', 'E', 'R', 'T', 'Y'];
+
+  let i = 0;
+  $("input.keyboard-assigner").each(function() {
+    console.log(this);
+    $(this)
+      .val(defaultValues[i])
+      .trigger('change');
+
+    i++;
+
+    if (i > defaultValues.length) {
+      return false;
+    }
+  });
+};
+
+
 
 /**
  *
@@ -131,6 +156,14 @@ let createAudioCtrls = () => {
   "use strict";
   let audioWrapperID = "audio-control-panel";
 
+
+  let playButton = myp5.createButton("Play");
+  playButton.parent(audioWrapperID);
+  playButton.addClass("audio-button");
+  playButton.attribute('id', 'play-audio');
+  playButton.mousePressed(toggleAudio);
+
+  // we will hide the default file input bc its ugly and use the label
   let uploadButton = myp5.createFileInput(uploaded);
   uploadButton.parent(audioWrapperID);
   uploadButton.addClass("upload-button");
@@ -138,15 +171,11 @@ let createAudioCtrls = () => {
   uploadButton.attribute('name', 'upload-file');
 
   let label = myp5.createElement('label');
-  label.html('Upload audio');
+  label.html('Upload Your Audio');
   label.attribute('for', 'upload-file');
+  label.attribute('id', 'upload-file-label');
   label.addClass("audio-button");
   label.parent(audioWrapperID);
-
-  let playButton = myp5.createButton("Play / Pause");
-  playButton.parent(audioWrapperID);
-  playButton.addClass("audio-button");
-  playButton.mousePressed(toggleAudio);
 };
 
 
@@ -313,10 +342,11 @@ let createPianoDomInput = (ctrlObject, prop, parentWrapper) => {
 
   // input to set which keyboard key plays that element
   let pianoInput = myp5.createInput();
+  pianoInput.attribute('class', 'keyboard-assigner');
   pianoInput.attribute('data-ctrl_object', ctrlObjectName);
   pianoInput.attribute('data-prop', prop);
   pianoInput.attribute('data-type', 'key-set');
-  pianoInput.elt.placeholder = "Control Key";
+  pianoInput.elt.placeholder = "Assign Key";
   pianoInput.elt.onchange = setKeyboardControl;
   pianoInput.elt.maxLength = 1;
   pianoInput.parent(pianoWrapper);
@@ -439,6 +469,7 @@ let setKeyboardControl = (e) => {
 
 // initialize the the menu toggle
 $(() => {
+
   $("#settings-close").click(() => {
     $("#settings-menu").fadeOut();
     $("#settings-open").fadeIn();
