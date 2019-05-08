@@ -15,6 +15,7 @@ let s = (sketch) => {
   let fft;
 
 
+
   //todo add a preload animation maybe?
   sketch.preload = () => {
     objects.lambo = myp5.loadModel('files/3d_obj/lp670.obj', true);
@@ -26,9 +27,12 @@ let s = (sketch) => {
 
 
   sketch.setup = () => {
+
     sketch.getCenterWave = () => centerWave;
     sketch.getOuterWaves = () => outerWaves;
     sketch.getThreeDWave = () => threeDWave;
+
+
 
     sketch.polygon = renderPolygon;
 
@@ -36,6 +40,9 @@ let s = (sketch) => {
     centerWave = new CenterWave(sketch.windowWidth, sketch.windowHeight);
     outerWaves = new OuterWaves(sketch.windowWidth, sketch.windowHeight);
     threeDWave = new ThreeDWave(sketch.windowWidth, sketch.windowHeight);
+
+    sketch.ctrlElementsArray = [];
+    sketch.ctrlElementsArray.push(centerWave, outerWaves, threeDWave); // add all of the elements to a global variable to 'register' them
 
     domCtrl = createDOMControls([centerWave, outerWaves, threeDWave]);
 

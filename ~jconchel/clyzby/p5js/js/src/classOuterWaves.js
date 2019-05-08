@@ -11,6 +11,7 @@ class OuterWaves {
     this.numWaves = {
       displayLabel : 'Number of Waves',
       resetValue : 1,
+      defaultValue : 1,
       currentValue : 2,
       targetValue : null,
       min : 0,
@@ -26,6 +27,7 @@ class OuterWaves {
     this.radius = {
       displayLabel : 'Size',
       resetValue : 10,
+      defaultValue : 10,
       currentValue : 10,
       targetValue : null,
       min : 0,
@@ -41,6 +43,7 @@ class OuterWaves {
     this.velocity = {
       displayLabel : 'Velocity',
       resetValue : 0.025,
+      defaultValue : 0.025,
       currentValue : 0.025,
       targetValue : null,
       min : 0.01,
@@ -57,6 +60,7 @@ class OuterWaves {
     this.xSpacing = {
       displayLabel : 'X Spacing',
       resetValue : 40,
+      defaultValue : 40,
       currentValue : 40,
       targetValue : null,
       min : 15,
@@ -72,6 +76,7 @@ class OuterWaves {
     this.ySpacing = {
       displayLabel : 'Y Spacing',
       resetValue : 30,
+      defaultValue : 30,
       currentValue : 40,
       targetValue : null,
       min : 5,
@@ -102,6 +107,7 @@ class OuterWaves {
     this.period = {
       displayLabel : 'Period',
       resetValue : 500,
+      defaultValue : 500,
       currentValue : 500,
       targetValue : null,
       min : 50,
@@ -118,6 +124,7 @@ class OuterWaves {
     this.colorR = {
       displayLabel : 'Color Red',
       resetValue : 100,
+      defaultValue : 100,
       currentValue : 200,
       targetValue : null,
       min : 0,
@@ -133,6 +140,7 @@ class OuterWaves {
     this.colorG = {
       displayLabel : 'Color Green',
       resetValue : 100,
+      defaultValue : 100,
       currentValue : 200,
       targetValue : null,
       min : 0,
@@ -148,6 +156,7 @@ class OuterWaves {
     this.colorB = {
       displayLabel : 'Color Blue',
       resetValue : 100,
+      defaultValue : 100,
       currentValue : 200,
       targetValue : null,
       min : 0,
@@ -167,6 +176,7 @@ class OuterWaves {
     this.waveType = {
       displayLabel : 'Wave Type',
       resetValue : 'sin',
+      defaultValue : 'sin',
       currentValue : 'sin',
       targetValue : null,
       options : ['sin', 'cos', 'tan'],
@@ -175,6 +185,7 @@ class OuterWaves {
     this.stroke = {
       displayLabel : 'Outline and Fill',
       resetValue : 'Outline',
+      defaultValue : 'Outline',
       currentValue : 'Outline',
       targetValue : 'Outline',
       attrType : 'variable',
@@ -183,6 +194,7 @@ class OuterWaves {
     this.shape = {
       displayLabel : 'Shape',
       resetValue : 'ellipse',
+      defaultValue : 'ellipse',
       currentValue : 'ellipse',
       targetValue : null,
       options : ['line', 'triangle', 'square', 'pentagon', 'ellipse'],

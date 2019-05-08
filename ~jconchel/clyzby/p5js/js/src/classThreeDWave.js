@@ -8,87 +8,10 @@ class ThreeDWave {
     this.origin = 0;
 
 
-    // wave attributes
-    this.waveType = {
-      displayLabel : 'Wave Type',
-      resetValue : 'sin',
-      currentValue : 'sin',
-      targetValue : null,
-      options : ['sin', 'cos', 'tan'],
-      attrType : 'variable',
-    };
-    this.xSpacing = {
-      displayLabel : 'X Spacing',
-      resetValue : 100,
-      currentValue : 100,
-      targetValue : null,
-      min : 90,
-      max : 450,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
-    };
-    this.velocity = {
-      displayLabel : 'Velocity',
-      resetValue : 0.01,
-      currentValue : 0.01,
-      targetValue : null,
-      min : 0.001,
-      max : 0.2,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
-    };
-    this.amplitude = {
-      displayLabel : 'Amplitude',
-      resetValue : 75,
-      currentValue : 75,
-      targetValue : null,
-      min : 0,
-      max : 500,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
-    };
-    this.period = {
-      displayLabel : 'Period',
-      resetValue : 500,
-      currentValue : 500,
-      targetValue : null,
-      min : 50,
-      max : 750,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.05,
-      easingMax : 0,
-      easingMin : 0,
-    };
-    this.shape = {
-      resetValue : 'torus',
-      currentValue : 'torus',
-      targetValue : null,
-      options : ['torus', 'plane', 'box', 'sphere', 'glock', 'ellipsoid' , 'cylinder', 'cone', 'lambo'],
-      attrType : 'variable',
-    };
-
-    // painting and rendering attributes
     this.radius = {
       displayLabel : 'Size',
       resetValue : 20,
+      defaultValue : 20,
       currentValue : 20,
       targetValue : null,
       min : 20,
@@ -101,17 +24,79 @@ class ThreeDWave {
       easingMax : 0,
       easingMin : 0,
     };
-    this.stroke = {
-      displayLabel : 'Outline and Fill',
-      resetValue : 'Outline',
-      currentValue : 'Outline',
+
+    this.velocity = {
+      displayLabel : 'Velocity',
+      resetValue : 0.01,
+      defaultValue : 0.01,
+      currentValue : 0.01,
       targetValue : null,
-      attrType : 'variable',
-      options : ['Outline', 'Filled and Outline',]
+      min : 0.001,
+      max : 0.2,
+      attrType : 'numeric',
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.1,
+      easingMax : 0,
+      easingMin : 0,
     };
+
+    this.amplitude = {
+      displayLabel : 'Amplitude',
+      resetValue : 75,
+      defaultValue : 75,
+      currentValue : 75,
+      targetValue : null,
+      min : 0,
+      max : 500,
+      attrType : 'numeric',
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.1,
+      easingMax : 0,
+      easingMin : 0,
+    };
+
+    this.period = {
+      displayLabel : 'Period',
+      resetValue : 500,
+      defaultValue : 500,
+      currentValue : 500,
+      targetValue : null,
+      min : 50,
+      max : 750,
+      attrType : 'numeric',
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.05,
+      easingMax : 0,
+      easingMin : 0,
+    };
+
+    this.xSpacing = {
+      displayLabel : 'X Spacing',
+      resetValue : 100,
+      defaultValue : 100,
+      currentValue : 100,
+      targetValue : null,
+      min : 90,
+      max : 450,
+      attrType : 'numeric',
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.1,
+      easingMax : 0,
+      easingMin : 0,
+    };
+
     this.colorR = {
       displayLabel : 'Color Red',
       resetValue : 100,
+      defaultValue : 100,
       currentValue : 100,
       targetValue : null,
       min : -10,
@@ -127,6 +112,7 @@ class ThreeDWave {
     this.colorG = {
       displayLabel : 'Color Green',
       resetValue : 100,
+      defaultValue : 100,
       currentValue : 100,
       targetValue : null,
       min : -10,
@@ -142,6 +128,7 @@ class ThreeDWave {
     this.colorB = {
       displayLabel : 'Color Blue',
       resetValue : 100,
+      defaultValue : 100,
       currentValue : 100,
       targetValue : null,
       min : -10,
@@ -160,6 +147,7 @@ class ThreeDWave {
     this.rotateX = {
       displayLabel : 'Rotate Shape X',
       resetValue : 0,
+      defaultValue : 0,
       currentValue : 0,
       targetValue : null,
       min : -0.5,
@@ -175,6 +163,7 @@ class ThreeDWave {
     this.rotateY = {
       displayLabel : 'Rotate Shape Y',
       resetValue : 0,
+      defaultValue : 0,
       currentValue : 0,
       targetValue : null,
       min : -0.5,
@@ -190,6 +179,7 @@ class ThreeDWave {
     this.rotateZ = {
       displayLabel : 'Rotate Shape Z',
       resetValue : 0,
+      defaultValue : 0,
       currentValue : 0,
       targetValue : null,
       min : -0.5,
@@ -206,6 +196,7 @@ class ThreeDWave {
     this.waveRotateX = {
       displayLabel : 'Rotate Wave X',
       resetValue : 0,
+      defaultValue : 0,
       currentValue : 0,
       targetValue : null,
       min : -10.1,
@@ -221,6 +212,7 @@ class ThreeDWave {
     this.waveRotateY = {
       displayLabel : 'Rotate Wave Y',
       resetValue : 0,
+      defaultValue : 0,
       currentValue : 0,
       targetValue : null,
       min : -10.1,
@@ -236,6 +228,7 @@ class ThreeDWave {
     this.waveRotateZ = {
       displayLabel : 'Rotate Wave Z',
       resetValue : 0,
+      defaultValue : 0,
       currentValue : 0,
       targetValue : null,
       min : -10.1,
@@ -252,6 +245,7 @@ class ThreeDWave {
     this.translateZ = {
       displayLabel : 'Translate Z',
       resetValue : 0,
+      defaultValue : 0,
       currentValue : 0,
       targetValue : null,
       min : -900,
@@ -268,6 +262,7 @@ class ThreeDWave {
     this.translateX = {
       displayLabel : 'Translate X',
       resetValue : 0,
+      defaultValue : 0,
       currentValue : 0,
       targetValue : null,
       min : -900,
@@ -284,6 +279,7 @@ class ThreeDWave {
     this.translateY = {
       displayLabel : 'Translate Y',
       resetValue : 0,
+      defaultValue : 0,
       currentValue : 0,
       targetValue : null,
       min : -900,
@@ -295,6 +291,39 @@ class ThreeDWave {
       noteHeldEasing : 0.002,
       easingMax : 0,
       easingMin : 0,
+    };
+
+
+
+
+    this.waveType = {
+      displayLabel : 'Wave Type',
+      resetValue : 'sin',
+      defaultValue : 'sin',
+      currentValue : 'sin',
+      targetValue : null,
+      options : ['sin', 'cos', 'tan'],
+      attrType : 'variable',
+    };
+
+    this.shape = {
+      displayLabel : "Shape",
+      resetValue : 'torus',
+      defaultValue : 'torus',
+      currentValue : 'torus',
+      targetValue : null,
+      options : ['torus', 'plane', 'box', 'sphere', 'glock', 'ellipsoid' , 'cylinder', 'cone', 'lambo'],
+      attrType : 'variable',
+    };
+
+    this.stroke = {
+      displayLabel : 'Outline and Fill',
+      resetValue : 'Outline',
+      defaultValue : 'Outline',
+      currentValue : 'Outline',
+      targetValue : null,
+      attrType : 'variable',
+      options : ['Outline', 'Filled and Outline',]
     };
 
     this.yPoints = new Array(Math.floor(this.waveWidth / this.xSpacing.currentValue));

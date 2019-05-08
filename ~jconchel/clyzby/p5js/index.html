@@ -6,11 +6,11 @@
   <meta title="P5js Wavey Thing">
 
   <!--<link rel="shortcut icon" href="http://www.joseconchello.com/wp-content/uploads/2015/10/cropped-logo.png">-->
-git log
 
   <title>P5js Wavey Thing</title>
 
   <link href="https://fonts.googleapis.com/css?family=Montserrat%7cOswald" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/p5js_wave-sketch.css" rel="stylesheet">
 
   <script src="js/libraries/p5.js"></script>
@@ -40,21 +40,21 @@ git log
 <div id="settings-menu">
 
   <div id="sub-menu">
-    <div id="settings-close">✕</div>
-    <!--<button id="piano-mode">-->
-      <!--<span class="tooltip">-->
-        <!--Set keyboard keys to control wave elements.<br>-->
-        <!--When done editing the controls, click me to exit out of editing mode.-->
-      <!--</span>-->
-      <!--<svg version="1.1" id="piano-mode-svg"-->
-     <!--xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"-->
-     <!--x="0px" y="0px" viewBox="0 0 500 500"-->
-     <!--enable-background="new 0 0 500 500" xml:space="preserve">-->
-  <!--<path fill="#FFFFFF" d="M382.1,2.8h-39.8h-27.8h-37.8h-53.2h-38.3h-28.4h-38.7H0v494.2h157h28.4h129.2h27.8H500V2.8H382.1z-->
-     <!--M27.8,469.3V30.7h90.6v250.9h38.7v187.8H27.8V469.3z M185.3,469.3V281.5h38.3V30.7h53.2v250.9h37.8v187.8H185.3V469.3z-->
-     <!--M472.2,469.3H342.5V281.5h39.7V30.7h90.1V469.3z"/>-->
-  <!--</svg>-->
-    <!--</button>-->
+    <div class="icon-wrapper">
+
+      <i id="settings-close" class="material-icons md-light">
+        close
+      </i>
+      <i id="reset-settings" class="global-control material-icons md-light">
+        restore
+      </i>
+      <i id="randomize-settings" class="global-control material-icons md-light">
+        shuffle
+      </i>
+
+
+    </div>
+
     <div class="clear"></div>
   </div>
 

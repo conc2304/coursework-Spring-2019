@@ -134,7 +134,7 @@ let setIntroDefaults = () => {
 
   let i = 0;
   $("input.keyboard-assigner").each(function() {
-    console.log(this);
+    // console.log(this);
     $(this)
       .val(defaultValues[i])
       .trigger('change');
@@ -163,6 +163,12 @@ let createAudioCtrls = () => {
   playButton.attribute('id', 'play-audio');
   playButton.mousePressed(toggleAudio);
 
+  let tooltip = myp5.createElement('span');
+  tooltip.addClass('tooltip');
+  tooltip.html('There is a built in audio file.<br>But you can also upload your own!');
+  tooltip.parent(audioWrapperID);
+
+
   // we will hide the default file input bc its ugly and use the label
   let uploadButton = myp5.createFileInput(uploaded);
   uploadButton.parent(audioWrapperID);
@@ -171,7 +177,7 @@ let createAudioCtrls = () => {
   uploadButton.attribute('name', 'upload-file');
 
   let label = myp5.createElement('label');
-  label.html('Upload Your Audio');
+  label.html('Upload Audio');
   label.attribute('for', 'upload-file');
   label.attribute('id', 'upload-file-label');
   label.addClass("audio-button");
@@ -297,14 +303,13 @@ let createRadioToggle = (ctrlObject, prop, controls, parentWrapper) => {
       }
 
       controls[ctrlObjectName][prop].option(ucFirst(ctrlObject[prop].options[o]), ctrlObject[prop].options[o]);
-      controls[ctrlObjectName][prop].attribute('class', `radio-input`);
-      controls[ctrlObjectName][prop].parent(inputWrapper);
     }
     controls[ctrlObjectName][prop].selected(ctrlObject[prop].currentValue);
     controls[ctrlObjectName][prop].attribute('data-ctrl_object', ctrlObjectName);
+    controls[ctrlObjectName][prop].attribute('class', `radio-input ${ctrlObjectName}-${prop}`);
     controls[ctrlObjectName][prop].attribute('data-prop', prop);
     controls[ctrlObjectName][prop].attribute('onchange', 'setRadioValue(this)');
-
+    controls[ctrlObjectName][prop].parent(inputWrapper);
   }
 };
 
@@ -428,8 +433,8 @@ let setKeyboardControl = (e) => {
 
   if (!Number.isNaN(charCode) && ctrlObjectName && property && propValue) {
 
-    console.log('setting value');
-    console.log([inputValue, charCode, ctrlObjectName, property, propValue]);
+    // console.log('setting value');
+    // console.log([inputValue, charCode, ctrlObjectName, property, propValue]);
     // only update the keyboard control if we have a key to control it with
     keyboardCtrl[charCode] = keyboardCtrl[charCode] || {};
     keyboardCtrl[charCode][ctrlObjectName] = keyboardCtrl[charCode][ctrlObjectName] || {};
@@ -462,13 +467,14 @@ let setKeyboardControl = (e) => {
     }
   }
 
-  console.log(keyboardCtrl);
-  console.log(ctrlElemPropToKeyMap);
+  // console.log(keyboardCtrl);
+  // console.log(ctrlElemPropToKeyMap);
 };
 
 
 // initialize the the menu toggle
 $(() => {
+ "use strict";
 
   $("#settings-close").click(() => {
     $("#settings-menu").fadeOut();
@@ -479,6 +485,111 @@ $(() => {
     $("#settings-menu").fadeIn();
     $("#settings-open").fadeOut();
   });
+
+  $("#reset-settings").click(() => {
+    resetSettings();
+  });
+
+  $("#randomize-settings").click(() => {
+    randomizeSettings();
+  });
 });
+
+let resetSettings = () => {
+  "use strict";
+
+  let ctrlElementsArray = myp5.ctrlElementsArray;
+
+  for (let i in ctrlElementsArray) {
+    if (!ctrlElementsArray.hasOwnProperty(i)) {
+      continue;
+    }
+
+    let ctrlElem = ctrlElementsArray[i];
+    let ctrlObjectName = ctrlElem.constructor.name;
+
+    for (let prop in ctrlElem) {
+      if (!ctrlElem.hasOwnProperty(prop)) {
+        continue;
+      }
+
+      if (!ctrlElem[prop].defaultValue || !ctrlElem[prop].currentValue) {
+        continue;
+      }
+
+      if (ctrlElem[prop].attrType === "numeric") {
+        $(`.range-slider.${ctrlObjectName}-${prop}`)
+          .val(ctrlElem[prop].defaultValue);
+      } else if (ctrlElem[prop].attrType === "variable") {
+        $(`input.radio-input.${ctrlObjectName}-${prop}`)
+          .val([ctrlElem[prop].defaultValue]);
+      }
+
+      ctrlElem[prop].currentValue = ctrlElem[prop].defaultValue;
+
+    }
+  }
+};
+
+
+let randomizeSettings = () => {
+  "use strict";
+
+  let ctrlElementsArray = myp5.ctrlElementsArray;
+  console.log(ctrlElementsArray);
+
+  let rVal;
+  // let prop;
+  let optLength;
+  let optIndex;
+
+  for (let i in ctrlElementsArray) {
+    if (!ctrlElementsArray.hasOwnProperty(i)) {
+      continue;
+    }
+
+    let ctrlElem = ctrlElementsArray[i];
+    let ctrlObjectName = ctrlElem.constructor.name;
+
+    for (let prop in ctrlElem) {
+      if (!ctrlElem.hasOwnProperty(prop)) {
+        continue;
+      }
+
+      if (!ctrlElem[prop].defaultValue || !ctrlElem[prop].currentValue) {
+        continue;
+      }
+      if (ctrlElem[prop].attrType === "numeric") {
+
+        rVal = myp5.random(ctrlElem[prop].min, ctrlElem[prop].max);
+
+        $(`.range-slider.${ctrlObjectName}-${prop}`)
+          .val(rVal);
+      } else if (ctrlElem[prop].attrType === "variable") {
+        optLength = ctrlElem[prop].options.length;
+        //
+
+        optIndex = getRandomInt(0, optLength - 1);
+        rVal = ctrlElem[prop].options[optIndex];
+        console.log(rVal);
+
+        if (typeof(rVal) === "undefined") {
+          console.log('stop');
+        }
+      }
+
+      ctrlElem[prop].currentValue = rVal;
+
+
+
+    }
+  }
+};
+
+
+let getRandomInt = (min, max) => {
+  "use strict";
+  return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
+}
 
 

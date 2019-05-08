@@ -12,6 +12,7 @@ class CenterWave {
     this.radius = {
       displayLabel : 'Size',
       resetValue : 20,
+      defaultValue : 20,
       currentValue : 20,
       targetValue : null,
       min : 0,
@@ -27,6 +28,7 @@ class CenterWave {
     this.velocity = {
       displayLabel : 'Velocity',
       resetValue : 0.025,
+      defaultValue : 0.025,
       currentValue : 0.025,
       targetValue : null,
       min : -1,
@@ -42,6 +44,7 @@ class CenterWave {
     this.amplitude = {
       displayLabel : 'Amplitude',
       resetValue : 75,
+      defaultValue : 75,
       currentValue : 75,
       targetValue : null,
       min : -2000,
@@ -57,6 +60,7 @@ class CenterWave {
     this.period = {
       displayLabel : 'Period',
       resetValue : 500,
+      defaultValue : 500,
       currentValue : 500,
       targetValue : null,
       min : -10250,
@@ -72,6 +76,7 @@ class CenterWave {
     this.xSpacing = {
       displayLabel : 'X Spacing',
       resetValue : 40,
+      defaultValue : 40,
       currentValue : 40,
       targetValue : null,
       min : 15,
@@ -108,6 +113,7 @@ class CenterWave {
     this.waveType = {
       displayLabel : 'Wave Type',
       resetValue : 'sin',
+      defaultValue : 'sin',
       currentValue : 'sin',
       targetValue : null,
       options : ['sin', 'cos', 'tan'],
@@ -118,6 +124,7 @@ class CenterWave {
     this.shape = {
       displayLabel : 'Shape',
       resetValue : 'ellipse',
+      defaultValue : 'ellipse',
       currentValue : 'ellipse',
       targetValue : null,
       options : ['line', 'triangle', 'square', 'pentagon', 'ellipse'],
@@ -126,6 +133,7 @@ class CenterWave {
     this.stroke = {
       displayLabel : 'Outline and Fill',
       resetValue : 'Outline',
+      defaultValue : 'Outline',
       currentValue : 'Outline',
       targetValue : null,
       attrType : 'variable',
@@ -134,6 +142,7 @@ class CenterWave {
     this.colorR = {
       displayLabel : 'Color Red',
       resetValue : 100,
+      defaultValue : 100,
       currentValue : 200,
       targetValue : null,
       min : 0,
@@ -149,6 +158,7 @@ class CenterWave {
     this.colorG = {
       displayLabel : 'Color Green',
       resetValue : 100,
+      defaultValue : 100,
       currentValue : 200,
       targetValue : null,
       min : 0,
@@ -164,6 +174,7 @@ class CenterWave {
     this.colorB = {
       displayLabel : 'Color Blue',
       resetValue : 100,
+      defaultValue : 100,
       currentValue : 200,
       targetValue : null,
       min : 0,
