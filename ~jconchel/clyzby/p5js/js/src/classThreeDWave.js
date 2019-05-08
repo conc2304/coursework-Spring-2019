@@ -450,7 +450,7 @@ ThreeDWave.prototype.renderShape = function() {
       myp5.normalMaterial();
 
       myp5.scale(this.radius.currentValue * 0.07);
-      myp5.model(objects[this.shape.currentValue]);
+      myp5.model(myp5.objects[this.shape.currentValue]);
       break;
   }
   myp5.pop();
