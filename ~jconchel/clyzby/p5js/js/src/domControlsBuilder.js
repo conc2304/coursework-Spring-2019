@@ -51,10 +51,10 @@ let createDOMControls = (ctrlElements) => {
     button.mousePressed(function () {
       $('#' + this.html() + "-wrapper").toggleClass('hide'); // p5 makes it so incredibly dumb to get any sort of information
       $(`#${this.html()}-toggle`).toggleClass('open');
-
     });
-
     button.parent(wrapperID);
+
+    addMasterElementControls(ctrlElem, wrapperID);
 
     let ctrlElemSettingWrapper = myp5.createElement('div');
     ctrlElemSettingWrapper.attribute('id', `${ctrlObjectName}-wrapper`);
@@ -86,10 +86,52 @@ let createDOMControls = (ctrlElements) => {
   }
 
   setIntroDefaults();
-
-  return controls;
 };
 
+
+// create a mute button, a shuffle, and a reset button
+// that will affect only the that element
+let addMasterElementControls = (ctrlElem, parent) => {
+  "use strict";
+
+  let ctrlElemName = ctrlElem.constructor.name;
+  // parent should be icon wrapper
+  let iconWrapper = myp5.createElement('div');
+  console.log(ctrlElemName);
+  iconWrapper.addClass('icon-wrapper');
+  iconWrapper.parent(parent);
+
+
+  let icons = [
+    {
+      htmlIcon : 'volume_up',
+      title : 'Mute Visuals',
+      onclick : `muteElement('${ctrlElemName}', this)`,
+    },
+    {
+      htmlIcon : 'shuffle',
+      title : 'Randomize',
+      onclick : `randomizeSettings('${ctrlElemName}')`,
+    },
+    {
+      htmlIcon : 'restore',
+      title : 'Reset Visuals',
+      onclick : `resetSettings('${ctrlElemName}')`,
+    }
+  ];
+
+  for (let i in icons) {
+    if (!icons.hasOwnProperty(i)) {
+      continue;
+    }
+    let icon = myp5.createElement('i');
+    icon.addClass('material-icons md-light');
+    icon.html(icons[i].htmlIcon);
+    icon.attribute('title', icons[i].title);
+    icon.attribute('onclick', icons[i].onclick);
+    icon.parent(iconWrapper);
+  }
+};
 
 
 /**
@@ -497,10 +539,20 @@ $(() => {
 
 
 
-let resetSettings = () => {
-  "use strict";
+let resetSettings = (ctrlElement = false) => {
+  // "use strict";
 
-  let ctrlElementsArray = myp5.ctrlElementsArray;
+  let ctrlElementsArray = [];
+
+  if (ctrlElement === false) {
+    ctrlElementsArray = myp5.ctrlElementsArray;
+  } else {
+    if (typeof(ctrlElement) === "string") {
+      ctrlElement = myp5[`get${ctrlElement}`]();
+    }
+    ctrlElementsArray.push(ctrlElement);
+  }
+
 
   for (let i in ctrlElementsArray) {
     if (!ctrlElementsArray.hasOwnProperty(i)) {
@@ -533,15 +585,27 @@ let resetSettings = () => {
 };
 
 
+/**
+ * This can either randomize every visual element
+ * or just a single visual element if it gets passed in
+ * @param ctrlElement
+ */
+let randomizeSettings = (ctrlElement = false) => {
+  // "use strict";
 
-let randomizeSettings = () => {
-  "use strict";
+  let ctrlElementsArray = [];
 
-  let ctrlElementsArray = myp5.ctrlElementsArray;
+  if (ctrlElement === false) {
+    ctrlElementsArray = myp5.ctrlElementsArray;
+  } else {
+    if (typeof(ctrlElement) === "string") {
+      ctrlElement = myp5[`get${ctrlElement}`]();
+    }
+    ctrlElementsArray.push(ctrlElement);
+  }
   console.log(ctrlElementsArray);
 
   let rVal;
-  // let prop;
   let optLength;
   let optIndex;
 
@@ -583,6 +647,29 @@ let randomizeSettings = () => {
   }
 };
 
+
+/**
+ * Turn off and on individual visual elements
+ * and change the material design icon state and associated title
+ * @param ctrlElementName
+ * @param htmlElem
+ */
+let muteElement = (ctrlElementName, htmlElem) => {
+  "use strict";
+
+  let controlObject = myp5[`get${ctrlElementName}`]();
+  controlObject.mute = !controlObject.mute;
+
+  $(htmlElem).toggleClass('muted');
+
+  if ($(htmlElem).hasClass('muted')) {
+    $(htmlElem).attr('title', 'Unmute Visuals');
+    $(htmlElem).html('volume_mute');
+  } else {
+    $(htmlElem).attr('title', 'Mute Visuals');
+    $(htmlElem).html('volume_up');
+  }
+};
 
 let getRandomInt = (min, max) => {
   "use strict";

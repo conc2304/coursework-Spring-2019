@@ -98,6 +98,10 @@ let s = (sketch) => {
         continue;
       }
       tempObj =  sketch.ctrlElementsArray[ctrlElement];
+      // dont render an object if we have muted it
+      if (tempObj.mute === true) {
+        continue;
+      }
       tempObj.easeInto();
       tempObj.yPoints = new Array(Math.floor(tempObj.waveWidth / tempObj.xSpacing.currentValue));
       tempObj.calcWave(0);

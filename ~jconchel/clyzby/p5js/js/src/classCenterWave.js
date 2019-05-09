@@ -6,7 +6,7 @@ class CenterWave {
     this.windowHeight = myp5.windowHeight;
     this.waveWidth = myp5.windowWidth + 200;  // have some of it go off the page
     this.origin = 0;
-
+    this.mute = false;
 
     //  Numeric Type Attributes
     this.radius = {

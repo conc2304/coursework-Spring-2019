@@ -116,61 +116,26 @@ body {
   float: left;
 }
 
-/*#settings-close {*/
-/*z-index: 2;*/
-/*font-size: 24px;*/
-/*padding: 15px;*/
-/*display: inline-block;*/
-/*float: right;*/
-/*color: #0e83cd;*/
-/*}*/
+#sub-menu i {
+  float: right;
+}
 
-.icon-wrapper i {
+i.material-icons {
   z-index: 2;
-
   font-size: 24px;
   padding: 15px;
   display: inline-block;
-  float: right;
   color: #0e83cd;
-
 }
 
-.icon-wrapper i:hover {
+i.material-icons.muted {
+  color: #aa0000;
+}
+
+i.material-icons:hover {
   color: #0eb1ff;
 }
 
-button#piano-mode {
-  background-color: transparent;
-  border: none;
-  float: right;
-  z-index: 2;
-  margin: 15px;
-}
-
-button#piano-mode:focus {
-  outline: none;
-}
-
-button#piano-mode.editing path {
-  fill: rgba(255, 27, 47, 0.84);
-}
-
-button#piano-mode:hover path {
-  fill: #0eb1ff;
-}
-
-#piano-mode-svg {
-  width: 24px;
-  display: inline;
-}
-
-#piano-mode-svg path {
-  fill: #0e83cd;
-}
-
-#piano-mode-svg path:hover {
-}
 
 .ctrlObject-settings {
   display: block;
@@ -196,6 +161,11 @@ button#piano-mode:hover path {
   background-color: black;
   text-transform: uppercase;
   width: 120px;
+}
+
+.ctrlObject-settings .icon-wrapper {
+  display: block;
+  text-align: center;
 }
 
 .ctrlObject-settings .piano-mode input:hover {
@@ -259,11 +229,9 @@ button#piano-mode:hover path {
 #settings-menu button.settings-toggle-button,
 #settings-menu .audio-button {
   margin: 20px auto;
-
   font-family: 'Oswald', sans-serif;
   border: 3px solid #fff;
   color: #fff;
-
   font-size: 18px;
   background: none;
   cursor: pointer;
