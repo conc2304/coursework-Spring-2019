@@ -194,6 +194,8 @@ let setIntroDefaults = () => {
       return false;
     }
   });
+
+  $($(".freq-selector")[0]).val("2000 - 4000 Hz").trigger("change");
 };
 
 
@@ -248,6 +250,7 @@ let createFrequencySelector = (ctrlObject, prop, inputWrapper) => {
   selectWrap.addClass('custom-select-wrapper');
 
   let rangeList = myp5.createElement("select");
+  rangeList.addClass("freq-selector");
   rangeList.attribute('data-ctrl_object', ctrlObjectName);
   rangeList.attribute('data-prop', prop);
   rangeList.elt.onchange = setAudioCtrl;
