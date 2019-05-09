@@ -182,6 +182,7 @@ class OuterWaves {
       targetValue : null,
       options : ['sin', 'cos', 'tan'],
       attrType : 'variable',
+      lockOn : false,
     };
     this.stroke = {
       displayLabel : 'Outline and Fill',
@@ -190,7 +191,8 @@ class OuterWaves {
       currentValue : 'Outline',
       targetValue : 'Outline',
       attrType : 'variable',
-      options : ['Outline', 'Filled']
+      options : ['Outline', 'Filled'],
+      lockOn : false,
     };
     this.shape = {
       displayLabel : 'Shape',
@@ -200,6 +202,7 @@ class OuterWaves {
       targetValue : null,
       options : ['line', 'triangle', 'square', 'pentagon', 'ellipse'],
       attrType : 'variable',
+      lockOn : false,
     };
 
 

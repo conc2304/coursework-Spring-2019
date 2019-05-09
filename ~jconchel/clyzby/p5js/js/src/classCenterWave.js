@@ -119,6 +119,8 @@ class CenterWave {
       options : ['sin', 'cos', 'tan'],
       // options : ['sin', 'cos', 'tan', 'orbit'],
       attrType : 'variable',
+      lockOn : false,
+
     };
 
     this.shape = {
@@ -129,6 +131,8 @@ class CenterWave {
       targetValue : null,
       options : ['line', 'triangle', 'square', 'pentagon', 'ellipse'],
       attrType : 'variable',
+      lockOn : false,
+
     };
     this.stroke = {
       displayLabel : 'Outline and Fill',
@@ -137,7 +141,8 @@ class CenterWave {
       currentValue : 'Outline',
       targetValue : null,
       attrType : 'variable',
-      options : ['Outline', 'Filled']
+      options : ['Outline', 'Filled'],
+      lockOn : false,
     };
     this.colorR = {
       displayLabel : 'Color Red',

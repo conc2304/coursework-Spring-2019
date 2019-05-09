@@ -197,6 +197,7 @@ let applyAudioEnergyValues = (energyValues) => {
 
 
       // todo find a way to make it additive or subtractive rather than replacing the value
+      // todo should the lock affect this?
       controlObject[ctrlProp].currentValue = controlObject[ctrlProp].resetValue + Number(audioValue.toFixed(3));
     }
   }

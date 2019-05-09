@@ -2,7 +2,6 @@
  *
  * todo add comments to functions and files
  * todo create a lock feature for each control property
- * todo mute certain elements
  * todo make audio reactive option additive, subtractive, e
  */
 

@@ -304,6 +304,7 @@ class ThreeDWave {
       targetValue : null,
       options : ['sin', 'cos', 'tan'],
       attrType : 'variable',
+      lockOn : false,
     };
 
     this.shape = {
@@ -314,6 +315,7 @@ class ThreeDWave {
       targetValue : null,
       options : ['torus', 'plane', 'box', 'sphere', 'glock', 'ellipsoid' , 'cylinder', 'cone', 'lambo'],
       attrType : 'variable',
+      lockOn : false,
     };
 
     this.stroke = {
@@ -323,7 +325,8 @@ class ThreeDWave {
       currentValue : 'Outline',
       targetValue : null,
       attrType : 'variable',
-      options : ['Outline', 'Filled and Outline',]
+      options : ['Outline', 'Filled and Outline',],
+      lockOn : false,
     };
 
     this.yPoints = new Array(Math.floor(this.waveWidth / this.xSpacing.currentValue));

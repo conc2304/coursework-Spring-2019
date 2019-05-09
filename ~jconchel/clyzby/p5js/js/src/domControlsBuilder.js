@@ -144,6 +144,8 @@ let addMasterElementControls = (ctrlElem, parent) => {
 let createSliderCtrlr = (ctrlObject, prop, parentWrapper, controls) => {
   "use strict";
 
+  let ctrlElemName = ctrlObject.constructor.name;
+
   if (ctrlObject[prop].attrType === 'numeric') {
 
     let ctrlObjectName = ctrlObject.constructor.name;
@@ -153,10 +155,15 @@ let createSliderCtrlr = (ctrlObject, prop, parentWrapper, controls) => {
     inputWrapper.attribute('class', `range-slider-wrapper`);
     inputWrapper.parent(parentWrapper);
 
-
     let title = myp5.createElement('p', ctrlObject[prop].displayLabel);
     title.style('position', 'relative');
     title.parent(inputWrapper);
+
+    let lockIcon = myp5.createElement('i','lock_open');
+    lockIcon.addClass(`material-icons md-light ${ctrlElemName}-${prop}`);
+    lockIcon.attribute('title', 'Lock This Property');
+    lockIcon.attribute('onclick', `lockProperty('${ctrlElemName}', '${prop}', this)`);
+    lockIcon.parent(title);
 
     createPianoDomInput(ctrlObject, prop, inputWrapper, controls);
     createDomSlider(ctrlObject, prop, inputWrapper, controls);
@@ -367,7 +374,9 @@ let setRadioValue = (inputElem) => {
   let prop = $(inputElem).data('prop');
 
   let controlObject = myp5[`get${controlElementName}`]();
-  controlObject[prop].currentValue = value;
+  if (controlObject[prop].lockOn === false) {
+    controlObject[prop].currentValue = value;
+  }
 };
 
 
@@ -437,7 +446,9 @@ let sliderSetValue = (range) => {
   let prop = $(range).data('prop');
   let controlObject = myp5[`get${controlElementName}`]();
 
-  controlObject[prop].resetValue = controlObject[prop].currentValue = Number(value);
+  if (controlObject[prop].lockOn === false) {
+    controlObject[prop].resetValue = controlObject[prop].currentValue = Number(value);
+  }
   updateRangeDisplay(range);
 };
 
@@ -544,12 +555,15 @@ let resetSettings = (ctrlElement = false) => {
 
   let ctrlElementsArray = [];
 
+  let globalReset;
   if (ctrlElement === false) {
+    globalReset = true;
     ctrlElementsArray = myp5.ctrlElementsArray;
   } else {
     if (typeof(ctrlElement) === "string") {
       ctrlElement = myp5[`get${ctrlElement}`]();
     }
+    globalReset = false;
     ctrlElementsArray.push(ctrlElement);
   }
 
@@ -579,7 +593,26 @@ let resetSettings = (ctrlElement = false) => {
           .val([ctrlElem[prop].defaultValue]);
       }
 
-      ctrlElem[prop].currentValue = ctrlElem[prop].defaultValue;
+      if (globalReset === true) {
+        ctrlElem[prop].lockOn = false;
+
+        $(`i.${ctrlObjectName}-${prop}`)
+          .html('lock_open')
+          .attr('title', 'Lock This Property')
+          .removeClass('locked');
+        // parents(".range-slider-wrapper")
+        $(`i.${ctrlObjectName}-${prop}`)
+          .parents(".range-slider-wrapper")
+          .removeClass('locked')
+          .find('input, select').each(function() {
+            $(this).prop('disabled', false);
+        });
+
+      }
+
+      if (ctrlElem[prop].lockOn === false) {
+        ctrlElem[prop].currentValue = ctrlElem[prop].defaultValue;
+      }
     }
   }
 };
@@ -625,6 +658,11 @@ let randomizeSettings = (ctrlElement = false) => {
       if (!ctrlElem[prop].defaultValue || !ctrlElem[prop].currentValue) {
         continue;
       }
+
+      if (ctrlElem[prop].lockOn === true) {
+        continue;
+      }
+
       if (ctrlElem[prop].attrType === "numeric") {
 
         rVal = myp5.random(ctrlElem[prop].min, ctrlElem[prop].max);
@@ -642,7 +680,9 @@ let randomizeSettings = (ctrlElement = false) => {
         }
       }
 
-      ctrlElem[prop].currentValue = rVal;
+      if (ctrlElem[prop].lockOn === false) {
+        ctrlElem[prop].currentValue = rVal;
+      }
     }
   }
 };
@@ -651,6 +691,7 @@ let randomizeSettings = (ctrlElement = false) => {
 /**
  * Turn off and on individual visual elements
  * and change the material design icon state and associated title
+ * Called by onclick of ctrl Elements' mute icon
  * @param ctrlElementName
  * @param htmlElem
  */
@@ -670,6 +711,46 @@ let muteElement = (ctrlElementName, htmlElem) => {
     $(htmlElem).html('volume_up');
   }
 };
+
+/**
+ * Lock the property so that the values can't be changed
+ * Set the icon and parent wrapper to a locked stated
+ * Disable the inputs and selects
+ * @param ctrlElementName
+ * @param prop
+ * @param htmlElem
+ */
+let lockProperty = (ctrlElementName, prop, htmlElem) => {
+  "use strict";
+
+  let controlObject = myp5[`get${ctrlElementName}`]();
+  let parent = $(htmlElem).parents(".range-slider-wrapper");
+
+
+  ;  $(htmlElem).toggleClass("locked");
+  parent.toggleClass('locked')
+
+  if ($(htmlElem).hasClass("locked")) {
+
+    $(htmlElem).html('lock');
+    $(htmlElem).attr('title', 'Unlock This Property');
+
+    parent.find('input, select').each(function() {
+      $(this).prop('disabled', true);
+    });
+  } else {
+    $(htmlElem).html('lock_open');
+    $(htmlElem).attr('title', 'Lock This Property');
+
+    parent.find('input, select').each(function() {
+      $(this).prop('disabled', false);
+    });
+  }
+
+  controlObject[prop].lockOn = !controlObject[prop].lockOn;
+};
+
+
 
 let getRandomInt = (min, max) => {
   "use strict";
