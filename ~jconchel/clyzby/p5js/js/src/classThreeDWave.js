@@ -10,6 +10,7 @@ class ThreeDWave {
 
     this.radius = {
       displayLabel : 'Size',
+      description : 'Sets the size of all of the 3D shapes.',
       resetValue : 20,
       defaultValue : 20,
       currentValue : 20,
@@ -27,6 +28,7 @@ class ThreeDWave {
 
     this.velocity = {
       displayLabel : 'Velocity',
+      description : 'This sets how fast the disturbance of the wave is moving',
       resetValue : 0.01,
       defaultValue : 0.01,
       currentValue : 0.01,
@@ -44,6 +46,7 @@ class ThreeDWave {
 
     this.amplitude = {
       displayLabel : 'Amplitude',
+      description : "Sets the height of the wave from its resting point.",
       resetValue : 75,
       defaultValue : 75,
       currentValue : 75,
@@ -61,6 +64,7 @@ class ThreeDWave {
 
     this.period = {
       displayLabel : 'Period',
+      description : 'This sets time/space between wave crests',
       resetValue : 500,
       defaultValue : 500,
       currentValue : 500,
@@ -78,6 +82,7 @@ class ThreeDWave {
 
     this.xSpacing = {
       displayLabel : 'X Spacing',
+      description : 'Sets the horizontal distance between each point in the wave.',
       resetValue : 100,
       defaultValue : 100,
       currentValue : 100,
@@ -95,6 +100,7 @@ class ThreeDWave {
 
     this.colorR = {
       displayLabel : 'Color Red',
+      description : "Sets the Red value in RGB. The higher the values = lighter color. The lower = darker color.",
       resetValue : 100,
       defaultValue : 100,
       currentValue : 100,
@@ -111,6 +117,7 @@ class ThreeDWave {
     };
     this.colorG = {
       displayLabel : 'Color Green',
+      description : "Sets the Green value in RGB. The higher the values = lighter color. The lower = darker color.",
       resetValue : 100,
       defaultValue : 100,
       currentValue : 100,
@@ -127,6 +134,7 @@ class ThreeDWave {
     };
     this.colorB = {
       displayLabel : 'Color Blue',
+      description : "Sets the Blue value in RGB. The higher the values = lighter color. The lower = darker color.",
       resetValue : 100,
       defaultValue : 100,
       currentValue : 100,
@@ -146,6 +154,7 @@ class ThreeDWave {
     // wave movement
     this.rotateX = {
       displayLabel : 'Rotate Shape X',
+      description : '',
       resetValue : 0,
       defaultValue : 0,
       currentValue : 0,
@@ -162,6 +171,7 @@ class ThreeDWave {
     };
     this.rotateY = {
       displayLabel : 'Rotate Shape Y',
+      description : '',
       resetValue : 0,
       defaultValue : 0,
       currentValue : 0,
@@ -178,6 +188,7 @@ class ThreeDWave {
     };
     this.rotateZ = {
       displayLabel : 'Rotate Shape Z',
+      description : '',
       resetValue : 0,
       defaultValue : 0,
       currentValue : 0,
@@ -195,6 +206,7 @@ class ThreeDWave {
 
     this.waveRotateX = {
       displayLabel : 'Rotate Wave X',
+      description : '',
       resetValue : 0,
       defaultValue : 0,
       currentValue : 0,
@@ -211,6 +223,7 @@ class ThreeDWave {
     };
     this.waveRotateY = {
       displayLabel : 'Rotate Wave Y',
+      description : '',
       resetValue : 0,
       defaultValue : 0,
       currentValue : 0,
@@ -227,6 +240,7 @@ class ThreeDWave {
     };
     this.waveRotateZ = {
       displayLabel : 'Rotate Wave Z',
+      description : '',
       resetValue : 0,
       defaultValue : 0,
       currentValue : 0,
@@ -244,6 +258,7 @@ class ThreeDWave {
 
     this.translateZ = {
       displayLabel : 'Translate Z',
+      description : '',
       resetValue : 0,
       defaultValue : 0,
       currentValue : 0,
@@ -261,6 +276,7 @@ class ThreeDWave {
 
     this.translateX = {
       displayLabel : 'Translate X',
+      description : '',
       resetValue : 0,
       defaultValue : 0,
       currentValue : 0,
@@ -278,6 +294,7 @@ class ThreeDWave {
 
     this.translateY = {
       displayLabel : 'Translate Y',
+      description : '',
       resetValue : 0,
       defaultValue : 0,
       currentValue : 0,
@@ -298,6 +315,7 @@ class ThreeDWave {
 
     this.waveType = {
       displayLabel : 'Wave Type',
+      description : '',
       resetValue : 'sin',
       defaultValue : 'sin',
       currentValue : 'sin',
@@ -309,6 +327,7 @@ class ThreeDWave {
 
     this.shape = {
       displayLabel : "Shape",
+      description : '',
       resetValue : 'torus',
       defaultValue : 'torus',
       currentValue : 'torus',
@@ -320,6 +339,7 @@ class ThreeDWave {
 
     this.stroke = {
       displayLabel : 'Outline and Fill',
+      description : '',
       resetValue : 'Outline',
       defaultValue : 'Outline',
       currentValue : 'Outline',

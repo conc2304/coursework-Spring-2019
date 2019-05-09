@@ -104,8 +104,8 @@ let addMasterElementControls = (ctrlElem, parent) => {
 
   let icons = [
     {
-      htmlIcon : 'volume_up',
-      title : 'Mute Visuals',
+      htmlIcon : 'visibility',
+      title : 'Turn Visuals Off',
       onclick : `muteElement('${ctrlElemName}', this)`,
     },
     {
@@ -161,7 +161,7 @@ let createSliderCtrlr = (ctrlObject, prop, parentWrapper, controls) => {
 
     let lockIcon = myp5.createElement('i','lock_open');
     lockIcon.addClass(`material-icons md-light ${ctrlElemName}-${prop}`);
-    lockIcon.attribute('title', 'Lock This Property');
+    lockIcon.attribute('title', 'Lock this property from changing: Only the global reset button will override a locked property.');
     lockIcon.attribute('onclick', `lockProperty('${ctrlElemName}', '${prop}', this)`);
     lockIcon.parent(title);
 
@@ -253,6 +253,7 @@ let createFrequencySelector = (ctrlObject, prop, inputWrapper) => {
   rangeList.addClass("freq-selector");
   rangeList.attribute('data-ctrl_object', ctrlObjectName);
   rangeList.attribute('data-prop', prop);
+  rangeList.attribute('title', 'Dropdown to bind a property to a frequency range.');
   rangeList.elt.onchange = setAudioCtrl;
 
   let option = myp5.createElement('option');
@@ -315,10 +316,12 @@ let createDomSlider = (ctrlObject, prop, inputWrapper, controls) => {
   controls[ctrlObjectName][prop].attribute('data-ctrl_object', ctrlObjectName);
   controls[ctrlObjectName][prop].attribute('data-prop', prop);
   controls[ctrlObjectName][prop].attribute('oninput', 'sliderSetValue(this)');
+  controls[ctrlObjectName][prop].attribute('title', 'Changes the current value of this property and sets the reset value for key press release.');
   controls[ctrlObjectName][prop].parent(inputWrapper);
 
   let displayValue = myp5.createElement('span', ctrlObject[prop].currentValue.toString());
   displayValue.attribute('class', `range-slider-value`);
+  displayValue.attribute('title', `Current and Reset value of this property. Reset Value is the value that the element will go to on key press release.`);
   displayValue.parent(inputWrapper);
 };
 
@@ -402,6 +405,7 @@ let createPianoDomInput = (ctrlObject, prop, parentWrapper) => {
   // input to set which keyboard key plays that element
   let pianoInput = myp5.createInput();
   pianoInput.attribute('class', 'keyboard-assigner');
+  pianoInput.attribute('title', 'Piano Mode: Set a keyboard key to play the assigned value for this property');
   pianoInput.attribute('data-ctrl_object', ctrlObjectName);
   pianoInput.attribute('data-prop', prop);
   pianoInput.attribute('data-type', 'key-set');
@@ -416,6 +420,7 @@ let createPianoDomInput = (ctrlObject, prop, parentWrapper) => {
   pianoInput.value(myp5.random(ctrlObject[prop].min, ctrlObject[prop].max).toFixed(3));
   pianoInput.elt.max = ctrlObject[prop].max;  // not sure if i want to set a max or min
   pianoInput.elt.min = ctrlObject[prop].min;  // not sure if i want to set a max or min
+  pianoInput.attribute('title', 'Piano Mode: Assign a value to set for property on keypress');
   pianoInput.attribute('data-type', 'value-set');
   pianoInput.attribute('data-ctrl_object', ctrlObjectName);
   pianoInput.attribute('data-prop', prop);
@@ -601,9 +606,8 @@ let resetSettings = (ctrlElement = false) => {
 
         $(`i.${ctrlObjectName}-${prop}`)
           .html('lock_open')
-          .attr('title', 'Lock This Property')
+          .attr('title', 'Lock This Property (Only the global reset will override a locked property)')
           .removeClass('locked');
-        // parents(".range-slider-wrapper")
         $(`i.${ctrlObjectName}-${prop}`)
           .parents(".range-slider-wrapper")
           .removeClass('locked')
@@ -707,11 +711,11 @@ let muteElement = (ctrlElementName, htmlElem) => {
   $(htmlElem).toggleClass('muted');
 
   if ($(htmlElem).hasClass('muted')) {
-    $(htmlElem).attr('title', 'Unmute Visuals');
-    $(htmlElem).html('volume_mute');
+    $(htmlElem).attr('title', 'Turn Visuals On');
+    $(htmlElem).html('visibility_off');
   } else {
-    $(htmlElem).attr('title', 'Mute Visuals');
-    $(htmlElem).html('volume_up');
+    $(htmlElem).attr('title', 'Turn Visuals Off');
+    $(htmlElem).html('visibility');
   }
 };
 
