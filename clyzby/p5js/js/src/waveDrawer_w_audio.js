@@ -3,6 +3,8 @@
  * todo add comments to functions and files
  * todo create a lock feature for each control property
  * todo make audio reactive option additive, subtractive, e
+ * todo make a toggle to spin/rotate the inner and outer waves like the 3D ones
+ * todo make patterns
  */
 
 
@@ -28,6 +30,7 @@ let s = (sketch) => {
     sketch.objects.lambo = myp5.loadModel('files/3d_obj/lp670.obj', true);
     sketch.objects.glock = myp5.loadModel('files/3d_obj/Glock 3d.obj', true);
     // audio = myp5.loadSound('/~jconchel/clyzby/p5js/files/audio/CharlestheFirst - Chynna - The Conversation.wav');
+    // todo find a way to display the name of the audio file  // hard code the original maybe? parse it out from the end of the file name?
     audio = myp5.loadSound('/~jconchel/clyzby/p5js/files/audio/PUFF - TSURUDA x HUXLEY ANNE.mp3');
     // audio = myp5.loadSound('/~jconchel/clyzby/p5js/files/audio/Pushloop - Deep, Dark & Dangerous Mix 015.mp3');
     audio.pause();
