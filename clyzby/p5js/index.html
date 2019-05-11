@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport"  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <meta title="P5js Wavey Thing">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta title="Interactive Audio Visualizer">
+  <title>Interactive Audio Visualizer</title>
 
-  <!--<link rel="shortcut icon" href="http://www.joseconchello.com/wp-content/uploads/2015/10/cropped-logo.png">-->
 
-  <title>P5js Wavey Thing</title>
+  <link rel="shortcut icon" href="http://www.joseconchello.com/wp-content/uploads/2015/10/cropped-logo.png">
 
   <link href="https://fonts.googleapis.com/css?family=Montserrat%7cOswald" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -45,10 +45,12 @@
       <i id="settings-close" class="material-icons md-light" title="Close Menu">
         close
       </i>
-      <i id="reset-settings" class="global-control material-icons md-light" title="Reset All Values :excludes audio reactive control">
+      <i id="reset-settings" class="global-control material-icons md-light"
+         title="Reset All Values :excludes audio reactive control">
         restore
       </i>
-      <i id="randomize-settings" class="global-control material-icons md-light" title="Randomize All Values :excludes audio reactive control">
+      <i id="randomize-settings" class="global-control material-icons md-light"
+         title="Randomize All Values :excludes audio reactive control">
         shuffle
       </i>
 
@@ -63,13 +65,9 @@
   <div id="audio-control-panel"></div>
 
 </div>
-
 </body>
 
 <script>
-
-
-
   Object.size = (obj) => {
     "use strict";
 
@@ -87,4 +85,5 @@
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 </script>
+
 </html>
