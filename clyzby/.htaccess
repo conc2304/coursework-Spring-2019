@@ -3,7 +3,7 @@ AddType application/x-httpd-php53 .php
 
 
 ## ERRORDOCUMENTS ##
-ErrorDocument 404 /~jconchel/error/404.html
+ErrorDocument 404 error/404.html
 
 
 ## EXPIRES CACHING ##
@@ -37,4 +37,4 @@ AddOutputFilterByType DEFLATE application/javascript
 
 
 ## REDIRECTS ##
-Redirect 301 /~jconchel/myfavoritebook  https://www.amazon.com/Hitchhikers-Guide-Galaxy-Douglas-Adams/dp/0345391802
+Redirect 301 myfavoritebook  https://www.amazon.com/Hitchhikers-Guide-Galaxy-Douglas-Adams/dp/0345391802
