@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>404 - Page Not Found</title>
+  <link rel="shortcut icon" href="/wp-content/uploads/2015/10/cropped-logo.png">
 </head>
 <body>
 
@@ -14,8 +15,9 @@
     margin: 0;
   }
 </style>
-<script src="clyzby/p5js/js/libraries/p5.js"></script>
+<script src="/clyzby/p5js/js/libraries/p5.js"></script>
 <script>
+
   let points;
   let cs = [];
   let l = [];
@@ -24,20 +26,17 @@
   let font;
 
   function preload() {
-    font = loadFont('clyzby/files/@custom/fonts/RubikMonoOne-Regular.ttf');
+    font = loadFont('/clyzby/files/@custom/fonts/RubikMonoOne-Regular.ttf');
   }
 
   function setup() {
 
     createCanvas(windowWidth, windowHeight);
-    background(0);
-
 
     r = 1;
     textFont(font);
     textSize(300);
-//    stroke(100, 0, 0);
-    points = font.textToPoints("404", width / 2 - 420, height / 2);
+    points = font.textToPoints("404", width / 2 - 420, height / 1.7);
     for (let j = 0; j < points.length; j++) {
       cs[j] = new L(points[j].x, points[j].y, 0, 0, 10, null);
     }
@@ -54,7 +53,6 @@
 
       for (let j = 0; j < cs.length; j++) {
         if (l[i].collision(cs[j])) {
-          // l.splice(i, 1)
           l[i].stop = true;
         }
       }
@@ -77,11 +75,11 @@
       if (choice === 0) {
         l[i] = new L(random(width * random(1, choice)), 0, 0, 0, 1, c)
       } else if (choice === 1) {
-        l[i] = new L(0, random(height * random(1, choice/2)), 0, 0, 1, c)
+        l[i] = new L(0, random(height * random(1, choice / 2)), 0, 0, 1, c)
       } else if (choice === 2) {
         l[i] = new L(width, random(height * random(1, choice)), 0, 0, 1, c)
       } else {
-        l[i] = new L(random(width), height * random(1, choice/2), 0, 0, 1, c)
+        l[i] = new L(random(width), height * random(1, choice / 2), 0, 0, 1, c)
       }
     }
   }
@@ -109,7 +107,11 @@
       let randomI = random(4);
       steer.add(createVector(random(-randomI, randomI), random(-randomI, randomI)));
       this.acc.add(steer);
-//      this.vel.add(createVector(noise(randomI), noise(randomI)));
+
+//      this.vel.add(cos(mouseX), cos(mouseY));
+      if (mouseIsPressed) {
+        this.vel.add(createVector(cos(mouseX)), tan(mouseY));
+      }
     }
   };
 
@@ -123,7 +125,19 @@
   };
 
   L.prototype.show = function () {
-    stroke(map(mouseY, 0, height, 0, 255, true), map(mouseX, 0, width, 0, 255, true), map(mouseY, 0, height, 0, 255, true) );
+
+//    14, 131, 205  blue ranges we want
+//    5.5, 69.4, 100
+    let r = map(mouseX, 0, width, 5, 15, true);
+    let g = map(mouseX, 0, width, 69, 131, true);
+    let b = map(mouseY, 0, height, 100, 205, true);
+    let alpha = map(Math.sin(mouseY), 0, 1, 10, 255, true);
+
+    if (mouseIsPressed) {
+      r = g = b = alpha = 255;
+    }
+
+    stroke(r, g, b, alpha);
     ellipse(this.pos.x, this.pos.y, this.r)
   };
 </script>

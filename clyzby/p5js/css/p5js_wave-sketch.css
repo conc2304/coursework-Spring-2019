@@ -6,7 +6,6 @@ body {
 }
 
 *, *:before, *:after {
-  box-sizing: border-box;
 }
 
 .hide {
@@ -40,7 +39,6 @@ body {
 
 #settings-menu::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #000;
   background-color: #000000bd;
   background-image: -webkit-gradient(linear,
   40% 0%,
@@ -61,7 +59,6 @@ body {
   top: 0;
   bottom: 0;
   left: 0;
-  background-color: #000;
   background-color: #000000bd;
   overflow-y: scroll;
   border-right: 1px solid #292929;
@@ -91,7 +88,6 @@ body {
 }
 
 #audio-control-panel {
-  position: relative;
   padding: 30px 20px;
   text-align: center;
   width: 439px;

@@ -20,66 +20,66 @@ let s = (sketch) => {
     let hairColor = sketch.color(63, 54, 40);
     let black = sketch.color(0, 0, 0);
 
-    sketch.background(0);
+    sketch.background(0, 0, 0, 0);
 
     drawFace(skinMed, skinDark, skinLight);
     drawEars(skinMed);
     drawHair(hairColor);
     drawEyes(black);
-    drawEyebrows(bL, bR, hairColor);
+    drawEyebrows(hairColor);
   };
 };
 
 let myp5 = new p5(s, 'sketch-container');
 
 
-
-
-function drawHair(color) {
+let drawHair = (color) => {
+  "use strict";
 
   myp5.fill(color)
   myp5.beginShape();
-  myp5.myp5.curveVertex(148, 146);
-  myp5.myp5.curveVertex(137, 161);
-  myp5.myp5.curveVertex(138, 206);
-  myp5.myp5.curveVertex(127, 186);
-  myp5.myp5.curveVertex(123, 158);
-  myp5.myp5.curveVertex(126, 114);
-  myp5.myp5.curveVertex(168, 77);
-  myp5.myp5.curveVertex(238, 78);
-  myp5.myp5.curveVertex(274, 116);
-  myp5.myp5.curveVertex(275, 162);
-  myp5.myp5.curveVertex(268, 197);
-  myp5.myp5.curveVertex(261, 211);
-  myp5.myp5.curveVertex(261, 185);
-  myp5.myp5.curveVertex(261, 161);
-  myp5.myp5.curveVertex(250, 124);
-  myp5.myp5.curveVertex(201, 131);
-  myp5.myp5.curveVertex(144, 124);
-  myp5.myp5.curveVertex(121, 206);
+  myp5.curveVertex(148, 146);
+  myp5.curveVertex(137, 161);
+  myp5.curveVertex(138, 206);
+  myp5.curveVertex(127, 186);
+  myp5.curveVertex(123, 158);
+  myp5.curveVertex(126, 114);
+  myp5.curveVertex(168, 77);
+  myp5.curveVertex(238, 78);
+  myp5.curveVertex(274, 116);
+  myp5.curveVertex(275, 162);
+  myp5.curveVertex(268, 197);
+  myp5.curveVertex(261, 211);
+  myp5.curveVertex(261, 185);
+  myp5.curveVertex(261, 161);
+  myp5.curveVertex(250, 124);
+  myp5.curveVertex(201, 131);
+  myp5.curveVertex(144, 124);
+  myp5.curveVertex(121, 206);
   myp5.endShape();
 
   // the bun
   myp5.beginShape();
-  myp5.myp5.curveVertex(178, 79);
-  myp5.myp5.curveVertex(169, 60);
-  myp5.myp5.curveVertex(177, 49);
-  myp5.myp5.curveVertex(196, 44);
-  myp5.myp5.curveVertex(217, 45);
-  myp5.myp5.curveVertex(226, 59);
-  myp5.myp5.curveVertex(224, 74);
-  myp5.myp5.curveVertex(210, 94);
-  myp5.myp5.curveVertex(183, 91);
-  myp5.myp5.curveVertex(172, 82);
+  myp5.curveVertex(178, 79);
+  myp5.curveVertex(169, 60);
+  myp5.curveVertex(177, 49);
+  myp5.curveVertex(196, 44);
+  myp5.curveVertex(217, 45);
+  myp5.curveVertex(226, 59);
+  myp5.curveVertex(224, 74);
+  myp5.curveVertex(210, 94);
+  myp5.curveVertex(183, 91);
+  myp5.curveVertex(172, 82);
   myp5.endShape();
 
   myp5.noFill();
   myp5.noStroke();
-}
+};
 
-function drawEars(color) {
+let drawEars = (color) => {
+  "use strict";
 
-  let center = width/2;
+  let center = myp5.width/2;
 
   myp5.fill(color);
 
@@ -104,9 +104,10 @@ function drawEars(color) {
   myp5.curveVertex(center - 66, 199);
   myp5.curveVertex(center - 66, 177);
   myp5.endShape();
-}
+};
 
-function drawFace(skinTone, shadeTone, lightTone) {
+let drawFace = (skinTone, shadeTone, lightTone) => {
+  "use strict";
 
   myp5.fill(skinTone);
 
@@ -142,13 +143,13 @@ function drawFace(skinTone, shadeTone, lightTone) {
   };
 
   myp5.quad(qP.x1, qP.y1, qP.x2, qP.y2, qP.x3, qP.y3, qP.x4, qP.y4);
-  myp5.rect(face.x, face.y, face.w, -50);   // fill in forehead
+  myp5.rect(face.x, face.y, face.w, -45);   // fill in forehead
 
   // chin
   myp5.stroke(shadeTone);
   myp5.strokeWeight(1);
   myp5.noFill();
-  myp5.arc(myp5.width/2, qP.y3 - jaw.h / 3, 25, 10, PI, 0, myp5.OPEN);
+  myp5.arc(myp5.width / 2, qP.y3 - jaw.h / 3, 25, 10, myp5.PI, 0, myp5.OPEN);
 
   // nose
   let nose = {
@@ -169,9 +170,10 @@ function drawFace(skinTone, shadeTone, lightTone) {
 
   myp5.noStroke();
   myp5.noFill();
-}
+};
 
-function drawEyes(color) {
+let drawEyes = (color) => {
+  "use strict";
 
   let eyeConf = {
     c : myp5.width / 2,
@@ -203,7 +205,8 @@ function drawEyes(color) {
 
   myp5.noStroke();
   myp5.noFill();
-}
+};
+
 
 
 let bL = {
@@ -221,7 +224,8 @@ let bR = {
 };
 
 let eyebrowState = 0;
-function drawEyebrows(leftBrow, rightBrow, color) {
+let drawEyebrows = (color) => {
+  "use strict";
   myp5.stroke(color);
   myp5.strokeWeight(3);
 
@@ -263,6 +267,6 @@ function drawEyebrows(leftBrow, rightBrow, color) {
 
   myp5.noStroke();
   myp5.noFill();
-}
+};
 
 

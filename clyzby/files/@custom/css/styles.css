@@ -1,0 +1,190 @@
+
+
+
+body * {
+  box-sizing: border-box;
+}
+
+#page {
+  background-color: #c7c7c3;
+}
+
+.hide {
+  display: none;
+}
+
+.clear {
+  clear: both;
+}
+
+h1, h2, h3 {
+  font-family: 'Rubik Mono One', sans-serif;
+}
+
+div, p, span, a, h4, h5 {
+  font-family: "Roboto", sans-serif;
+}
+
+
+#page nav {
+  background-color: #303030;
+  border-bottom: 1px solid #02141d;
+}
+
+
+/*  justify elements across a tag */
+.stretch-container {
+  text-align: justify;
+  -ms-text-justify: distribute-all-lines;
+  text-justify: distribute-all-lines;
+}
+
+.stretch-container:after {
+  content: '';
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0
+}
+
+.stretch-container span.stretch {
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+}
+
+.stretch-container > div {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+
+/* Nav bar styles*/
+#page .brand-logo, #page #clyzby-logo {
+  height: 100%;
+}
+
+#clyzby-logo {
+  opacity: 0.9;
+}
+
+
+/*  Footer Styles */
+
+footer.page-footer {
+  background-color: #303030;
+  border-top: 1px solid #02141d;
+}
+
+footer a.social {
+  padding: 1rem;
+  opacity: .7;
+}
+
+footer a.social:hover {
+  opacity: 1;
+}
+
+footer a.social i{
+  font-size: 2rem;
+  line-height: 2.2rem;
+}
+
+footer a.social:hover {
+
+}
+
+
+
+
+::selection {
+  color: #0e83cd;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #F5F5F5;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar {
+  width: 20px;
+  background-color: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background-color: #000000bd;
+  background-image: -webkit-gradient(linear,
+  40% 0%,
+  75% 84%,
+  from(#000000bd),
+  to(#0c6b98),
+  color-stop(.9, #0e83cd));
+}
+
+::-webkit-scrollbar-track {
+  background-color: #000;
+}
+
+
+
+/*  vertical grid system for fullheight of screen */
+*[class*='full-height-'] > .container {
+  height: inherit;
+}
+
+*[class*='full-height-'] > .container > .row{
+  position: relative;
+  height: 100%;
+}
+
+*[class*='full-height-'] .full-center-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.full-height-10 {
+  height: 10vh;
+}
+
+.full-height-20 {
+  height: 20vh;
+}
+
+.full-height-30 {
+  height: 30vh;
+}
+
+.full-height-40 {
+  height: 40vh;
+}
+
+.full-height-50 {
+  height: 50vh;
+}
+
+.full-height-60 {
+  height: 60vh;
+}
+
+.full-height-70 {
+  height: 70vh;
+}
+
+.full-height-80 {
+  height: 80vh;
+}
+
+.full-height-90 {
+  height: 90vh;
+}
+
+.full-height-100 {
+  height: 100vh;
+}

@@ -3,7 +3,7 @@ AddType application/x-httpd-php53 .php
 
 
 ## ERRORDOCUMENTS ##
-ErrorDocument 404 error/404.html
+ErrorDocument 404 /clyzby/error/404.html
 
 
 ## EXPIRES CACHING ##
