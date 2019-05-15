@@ -1,13 +1,10 @@
 
-
-
-
 #home-page-jumbotron h1 {
   font-family: 'Rubik Mono One', sans-serif;
 }
 
 #sketch-container canvas {
-  width: 200px !important;
+  width: 200px !important;   /* override the sizes set in the p5js sketch */
   height: 200px !important;
 }
 

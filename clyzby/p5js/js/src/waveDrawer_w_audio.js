@@ -31,7 +31,7 @@ let s = (sketch) => {
     sketch.objects.glock = myp5.loadModel('files/3d_obj/Glock 3d.obj', true);
     // audio = myp5.loadSound('clyzby/p5js/files/audio/CharlestheFirst - Chynna - The Conversation.wav');
     // todo find a way to display the name of the audio file  // hard code the original maybe? parse it out from the end of the file name?
-    audio = myp5.loadSound('clyzby/p5js/files/audio/PUFF - TSURUDA x HUXLEY ANNE.mp3');
+    audio = myp5.loadSound('/clyzby/p5js/files/audio/PUFF - TSURUDA x HUXLEY ANNE.mp3');
     // audio = myp5.loadSound('clyzby/p5js/files/audio/Pushloop - Deep, Dark & Dangerous Mix 015.mp3');
     audio.pause();
     fft = new p5.FFT();

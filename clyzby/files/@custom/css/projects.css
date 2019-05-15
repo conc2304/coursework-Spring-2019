@@ -1,0 +1,141 @@
+#projects h1 {
+  margin: 5rem 0 7rem;
+}
+
+.coming-soon {
+  opacity: .4;
+}
+
+
+
+
+/*  adapted from https://codepen.io/juliepark/pen/qKQzJL*/
+
+a {
+  cursor: pointer;
+}
+
+#portfolio {
+  margin: 0 auto 10rem;
+  width: 75%;
+  min-height: 100vh;
+  background: #c7c7c3;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(100px, auto);
+
+  grid-gap: 1.5rem;
+}
+
+.project {
+  position: relative;
+  background: #252525;
+  overflow: hidden;
+}
+.project img {
+  opacity: 0.9;
+}
+.project p {
+  top: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  padding: 1em 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  z-index: 3;
+}
+.project .grid-title {
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  font-weight: 100;
+  font-size: 0.8em;
+  z-index: 3;
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+.project:hover .grid-overlay {
+  transform: translateY(0%);
+}
+
+.grid-overlay {
+  background: #0e83cd;
+  height: 100%;
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  transform: translateY(101%);
+  transition: all 0.3s ease-in-out;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.grid-overlay .viewbutton {
+  background: none;
+  outline: none;
+  font-weight: 100;
+  letter-spacing: 2px;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  text-transform: uppercase;
+  padding: 10px;
+}
+.grid-overlay .viewbutton:hover {
+  transition: all 0.3s ease-in-out;
+  background: #ffffff;
+  color: #0e83cd;
+  transform: scale(1.05);
+}
+
+.overlay {
+  position: fixed;
+  background: rgba(71, 69, 69, 0.7);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+  z-index: 3;
+}
+
+.overlay.open {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.overlay-inner {
+  background: #ffffff;
+  width: 700px;
+  padding: 20px;
+  position: relative;
+  opacity: 1;
+}
+
+.close {
+  position: absolute;
+  top: 3px;
+  right: 10px;
+  background: none;
+  outline: 0;
+  color: #474545;
+  border: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.close:hover {
+  color: #0e83cd;
+}
+
+.project-image {
+  max-width: 100%;
+}
+

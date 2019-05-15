@@ -36,5 +36,3 @@ AddOutputFilterByType DEFLATE application/javascript
 </IfModule>
 
 
-## REDIRECTS ##
-Redirect 301 myfavoritebook  https://www.amazon.com/Hitchhikers-Guide-Galaxy-Douglas-Adams/dp/0345391802

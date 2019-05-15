@@ -9,11 +9,6 @@ let s = (sketch) => {
   };
   
   sketch.draw = () => {
-
-    if (sketch.mouseIsPressed) {
-      console.log(`myp5.curveVertex(${sketch.mouseX}, ${sketch.mouseY});`);
-    }
-
     let skinLight = sketch.color(255, 213, 147);
     let skinMed = sketch.color(234, 205, 159);
     let skinDark = sketch.color(193, 165, 120);

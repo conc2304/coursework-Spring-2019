@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css" type="text/css"
+        rel="stylesheet" media="screen,projection"/>
+
+</head>
+<body>
+
+<h1 class="center">Bauhaus Assignment</h1>
+
+<div id="p5-container"></div>
+
+<div class="container">
+  <div class="row">
+    <h3>Controls:</h3>
+    <dl>
+      <dt>a</dt>
+      <dd>Set Auto Mode for red spheres/boxes  </dd>
+      <dt>i</dt>
+      <dd>Set Interactive Mode for red spheres/boxes  </dd>
+      <dt><code>CONTROL</code></dt>
+      <dd>Set chaos level to 1 on keydown  * <sub>user must be in interactive mode</sub></dd>
+      <dt><code>OPTION</code></dt>
+      <dd>Set chaos level to 2 on keydown  * <sub>user must be in interactive mode</sub></dd>
+      <dt>↔</dt>
+      <dd>Control the delta rate parameter of the parametric form<sub>(changes the shape)</sub></dd>
+      <dt>↕</dt>
+      <dd>Control the Q parameter of the parametric form <sub>(changes the shape)</sub></dd>
+      <dt>Mouse</dt>
+      <dd>Use your mouse on the canvas to zoom, pan, and rotate around the canvas</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+
+    <p class="description">
+      For this Bauhaus inspired assignment I was extremely torn between Josef Albers, Overlapping
+      and Herbert Bayer's, Verdure. As someone who really enjoys minimalism, Albers' Overlapping really grabbed my
+      attention.
+      To me the piece was all about the layering of contrasting layers that created a sense of movement and depth
+      through the use of repetition. I attempted to mimic this effect by creating a set of regimented rectangles
+      in a similar, but less random approach, because as a programmer I wanted to be able to generate a constant
+      repetition that could scale easily. I kept the rectangles in black and white but made them change color to add to
+      the sense
+      of depth and to vary the overlapping theme. They are purposefully translucent which lends to the title of Albers'
+      piece
+      where you can see how each of the rectangles overlaps and the rest. While painting only allows a viewer to explore
+      a piece in
+      one singular plane, I thought I would break this convention by allowing the user to dive into and explore the
+      layers at a more
+      intimate level using the <code>orbitControl()</code> function.
+    </p>
+    <p class="description">The red boxes/spheres are meant to resemble the black bars that run vertically
+      in Albers' piece. I thought it would be more interesting if the layers were to move and thus creatinga more
+      complex and dynamic
+      sense of overlapping. And just because I thought it would be fun, and more engaging for the user, I added some
+      slight chaos to the piece. Pressing the <code>a</code> or the <code>i</code> key will engage either auto mode or
+      interactive mode. While in interactive mode pressing the <em>OPTION</em> or <em>CONTROL</em> key will add some
+      crazier
+      movement to the view.
+    </p>
+    <p class="description">
+      As a person who find generative art fascinating, I was obviously drawn to Bayer's Verdure. Verdure has a very
+      organic flow about it,
+      almost as though it is coming alive and moving and flowing inside the walls of the painting. I wanted to capture
+      that organic movement
+      and use it to juxtapose the rigid and stern look and feel of Albers' Overlapping. I had been in a bookstore in
+      Montreal last fall when I
+      came across a book called <a
+      href="https://www.amazon.com/gp/product/1780674139/ref=oh_aui_search_asin_title?ie=UTF8&psc=1">Morphing:
+      A Guide to Mathematical Transformations for Architects and Designers</a>. I had been trying to get parametric
+      equations working in a 3D environment
+      with p5js for the longest time, but it was not until this assignment that I found out that my local copy of p5.js
+      was very out of date compared
+      with the documentation on the p5js website. So once I got a hold of the cdn version I was able to start plotting
+      the Z coordinates of the equation.
+      Needless to say, this has re-spurred my interest parametric equations now that I know how to make them in 3D!
+    </p>
+  </div>
+
+  <div class="img-container center">
+    <div class="img-wrap">
+      <img src="https://idscache.harvardartmuseums.org/ids/view/455419656" height="500">
+    </div>
+    <cite>Josef Albers, Overlapping, c. 1927</cite>
+  </div>
+  <div class="img-container center">
+    <div class="img-wrap">
+      <img src="https://i.pinimg.com/originals/ad/66/9b/ad669b3f010ed909376a073cd2594875.jpg" width="500">
+    </div>
+    <cite>Herbert Bayer, Verdure, c. 1950</cite>
+  </div>
+</div>
+</div>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="></script>
+<script src="/clyzby/p5js/js/libraries/p5.js"></script>
+<script src="/clyzby/files/@custom/js/bauhausElements.js"></script>
+<script src="/clyzby/files/@custom/js/bauhausSketch.js"></script>
+<script src="/clyzby/files/@custom/js/bauhausShapes.js"></script>
+<script>
+  window.addEventListener("keydown", function (e) {
+    // space and arrow keys
+    if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+      e.preventDefault();
+    }
+  }, false);
+</script>
+
+</body>
+</html>
+
+<style>
+
+  p.description {
+    text-indent: 30px;
+  }
+
+  .img-container {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  #p5-container {
+    margin: 0 auto;
+    text-align: center;
+  }
+</style>
+

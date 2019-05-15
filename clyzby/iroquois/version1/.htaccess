@@ -1,4 +1,0 @@
-DirectoryIndex index.html 1.shtml
-
-AddType text/html .inc
-AddOutputFilter INCLUDES .inc
