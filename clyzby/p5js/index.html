@@ -33,35 +33,43 @@
 
 <div id="sketch-container"></div>
 
-<div id="settings-open" title="Open Menu">☰</div>
+<div id="settings-open" title="Open Menu" class="helper">☰</div>
 <div id="settings-menu">
 
   <div id="sub-menu">
     <div class="icon-wrapper">
 
-      <i id="settings-close" class="material-icons md-light" title="Close Menu">
+      <i id="settings-close" class="material-icons md-light helper" title="Close Menu">
         close
       </i>
-      <i id="reset-settings" class="global-control material-icons md-light"
-         title="Reset All Values :excludes audio reactive control">
+      <i id="reset-settings" class="global-control material-icons md-light helper"
+         title="Reset All Values. Excludes audio reactive control">
         restore
       </i>
-      <i id="randomize-settings" class="global-control material-icons md-light"
-         title="Randomize All Values :excludes audio reactive control">
+      <i id="randomize-settings" class="global-control material-icons md-light helper"
+         title="Randomize All Values. Excludes audio reactive control">
         shuffle
       </i>
-
-
+      <i id="toggle-help" class="global-control material-icons md-light helper"
+         title="Turn help box ON/OFF">
+        help
+      </i>
     </div>
-
     <div class="clear"></div>
   </div>
 
   <!-- populated by p5js via domControlsBuilder.js -->
   <div id="ctrlObject-control-panel"></div>
   <div id="audio-control-panel"></div>
+</div> <!-- end #settings-menu -->
 
+<div id="help-section">
+  <div class="help-inner">
+    <p id="help-text">
+    </p>
+  </div>
 </div>
+
 </body>
 
 <script>

@@ -122,11 +122,11 @@ i.material-icons {
   vertical-align: middle;
 }
 
-i.material-icons.muted {
+i.material-icons.inactive {
   color: #6f0000;
 }
 
-i.material-icons.muted:hover {
+i.material-icons.inactive:hover {
   color: #aa0000;
 }
 
@@ -481,5 +481,33 @@ input[type="radio"].radio-input, label.radio-input {
 
 
 
+#help-section {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 5;
+  padding: 30px;
+  background-color: #000000bd;
+  border: 1px solid #292929;
+  border-bottom: none;
+  width: 150px;
+  text-align: center;
+  display: none;
+}
 
+#help-section .help-inner {
+  position: relative;
+  display: inline-block;
+}
 
+#help-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  color: #fff;
+  line-height: 14px;
+  display: inline-block;
+}
+
+.helper {
+  z-index: 5;
+}

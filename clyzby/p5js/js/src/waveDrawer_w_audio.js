@@ -1,10 +1,19 @@
 /**
  *
- * todo add comments to functions and files
- * todo create a lock feature for each control property
- * todo make audio reactive option additive, subtractive, e
- * todo make a toggle to spin/rotate the inner and outer waves like the 3D ones
- * todo make patterns
+ *    --  HERE ARE MY AMBITIONS - BEHOLD THEIR MULTITUDE!  --
+ * todo - change help section : title to be just name of feature, help section to be description of feature
+ * todo - audio controls to be more like a remote - pause, play, stop, rewind, ff, volume
+ * todo - make a playlist, queue music, if possible get music from Spotify (can it be processed through fft though?)
+ * todo - add comments to functions and files
+ * todo - add lock feature to radio buttons
+ * todo - make audio reactive option additive, subtractive, e
+ * todo - gain and fall controls for audio reactive
+ * todo - range slider to also be able to set min and max values of property
+ * todo - make a toggle to spin/rotate the inner and outer waves like the 3D ones
+ * todo - make patterns by saving current config and make them triggerable (ie a pattern bank)
+ * todo - convert this entire thing into an angular web app #Angular8!
+ * todo - loading animation
+ *
  */
 
 
@@ -22,7 +31,6 @@ let s = (sketch) => {
 
 
 
-  //todo add a preload animation maybe?
   // keep all 'custom' code here
 
   sketch.preload = () => {
@@ -100,7 +108,7 @@ let s = (sketch) => {
         continue;
       }
       tempObj =  sketch.ctrlElementsArray[ctrlElement];
-      // dont render an object if we have muted it
+      // dont render an object if we have made it not visible it
       if (tempObj.mute === true) {
         continue;
       }

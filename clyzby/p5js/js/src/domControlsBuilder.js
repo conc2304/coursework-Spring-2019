@@ -1,5 +1,71 @@
 
 
+
+// initialize the the menu toggle
+$(() => {
+  "use strict";
+
+  $("#settings-close").click(() => {
+    $("#settings-menu").fadeOut();
+    $("#settings-open").fadeIn();
+  });
+
+  $("#settings-open").click(() => {
+    $("#settings-menu").fadeIn();
+    $("#settings-open").fadeOut();
+  });
+
+  $("#reset-settings").click(() => {
+    resetSettings();
+  });
+
+  $("#randomize-settings").click(() => {
+    randomizeSettings();
+  });
+
+
+  $("#toggle-help").click(() => {
+    $("#toggle-help").toggleClass("inactive");
+  });
+
+  $("#settings-menu").on('mouseover', '.helper', function () {
+
+
+    console.log($(this));
+    if ($("#toggle-help").hasClass("inactive") || !this.hasAttribute('title')) {
+      return false;
+    }
+
+    let helpText = $(this).attr('title');
+
+    setTimeout(function(){
+        $("#help-text").fadeOut(function () {
+          console.log(helpText);
+          console.log($(this));
+          $(this).html(helpText);
+          $(this).fadeIn();
+          $("#help-section").show();
+        });
+
+      }, 500
+    );
+
+    // let helpText = $(this).attr('title');
+    // $("#help-text").fadeOut(function () {
+    //   $(this).html(helpText);
+    //   $(this).fadeIn();
+    // });
+    // $("#help-section").fadeIn();
+  });
+
+  $("#settings-menu").on('mouseleave', '.helper', function () {
+    $("#help-section").fadeOut();
+  });
+
+});  // end document on load
+
+
+
 /**
  * Iterate through all of the values that we want
  * to give the use control over and based on the
@@ -106,7 +172,7 @@ let addMasterElementControls = (ctrlElem, parent) => {
     {
       htmlIcon : 'visibility',
       title : 'Turn Visuals Off',
-      onclick : `muteElement('${ctrlElemName}', this)`,
+      onclick : `toggleVisibility('${ctrlElemName}', this)`,
     },
     {
       htmlIcon : 'shuffle',
@@ -125,7 +191,7 @@ let addMasterElementControls = (ctrlElem, parent) => {
       continue;
     }
     let icon = myp5.createElement('i');
-    icon.addClass('material-icons md-light');
+    icon.addClass('material-icons md-light helper');
     icon.html(icons[i].htmlIcon);
     icon.attribute('title', icons[i].title);
     icon.attribute('onclick', icons[i].onclick);
@@ -160,7 +226,7 @@ let createSliderCtrlr = (ctrlObject, prop, parentWrapper, controls) => {
     title.parent(inputWrapper);
 
     let lockIcon = myp5.createElement('i','lock_open');
-    lockIcon.addClass(`material-icons md-light ${ctrlElemName}-${prop}`);
+    lockIcon.addClass(`material-icons md-light ${ctrlElemName}-${prop} helper`);
     lockIcon.attribute('title', 'Lock this property from changing: Only the global reset button will override a locked property.');
     lockIcon.attribute('onclick', `lockProperty('${ctrlElemName}', '${prop}', this)`);
     lockIcon.parent(title);
@@ -250,7 +316,7 @@ let createFrequencySelector = (ctrlObject, prop, inputWrapper) => {
   selectWrap.addClass('custom-select-wrapper');
 
   let rangeList = myp5.createElement("select");
-  rangeList.addClass("freq-selector");
+  rangeList.addClass("freq-selector helper");
   rangeList.attribute('data-ctrl_object', ctrlObjectName);
   rangeList.attribute('data-prop', prop);
   rangeList.attribute('title', 'Dropdown to bind a property to a frequency range.');
@@ -312,7 +378,7 @@ let createDomSlider = (ctrlObject, prop, inputWrapper, controls) => {
 
   // slider to control the individual property
   controls[ctrlObjectName][prop] = myp5.createSlider(ctrlObject[prop].min, ctrlObject[prop].max, ctrlObject[prop].currentValue, step);
-  controls[ctrlObjectName][prop].attribute('class', `range-slider ${ctrlObjectName}-${prop}`);
+  controls[ctrlObjectName][prop].attribute('class', `range-slider ${ctrlObjectName}-${prop} helper`);
   controls[ctrlObjectName][prop].attribute('data-ctrl_object', ctrlObjectName);
   controls[ctrlObjectName][prop].attribute('data-prop', prop);
   controls[ctrlObjectName][prop].attribute('oninput', 'sliderSetValue(this)');
@@ -320,7 +386,7 @@ let createDomSlider = (ctrlObject, prop, inputWrapper, controls) => {
   controls[ctrlObjectName][prop].parent(inputWrapper);
 
   let displayValue = myp5.createElement('span', ctrlObject[prop].currentValue.toString());
-  displayValue.attribute('class', `range-slider-value`);
+  displayValue.attribute('class', `range-slider-value helper`);
   displayValue.attribute('title', `Current and Reset value of this property. Reset Value is the value that the element will go to on key press release.`);
   displayValue.parent(inputWrapper);
 };
@@ -404,7 +470,7 @@ let createPianoDomInput = (ctrlObject, prop, parentWrapper) => {
 
   // input to set which keyboard key plays that element
   let pianoInput = myp5.createInput();
-  pianoInput.attribute('class', 'keyboard-assigner');
+  pianoInput.attribute('class', 'keyboard-assigner helper');
   pianoInput.attribute('title', 'Piano Mode: Set a keyboard key to play the assigned value for this property');
   pianoInput.attribute('data-ctrl_object', ctrlObjectName);
   pianoInput.attribute('data-prop', prop);
@@ -421,6 +487,7 @@ let createPianoDomInput = (ctrlObject, prop, parentWrapper) => {
   pianoInput.elt.max = ctrlObject[prop].max;  // not sure if i want to set a max or min
   pianoInput.elt.min = ctrlObject[prop].min;  // not sure if i want to set a max or min
   pianoInput.attribute('title', 'Piano Mode: Assign a value to set for property on keypress');
+  pianoInput.addClass('helper');
   pianoInput.attribute('data-type', 'value-set');
   pianoInput.attribute('data-ctrl_object', ctrlObjectName);
   pianoInput.attribute('data-prop', prop);
@@ -531,30 +598,6 @@ let setKeyboardControl = (e) => {
   // console.log(keyboardCtrl);
   // console.log(ctrlElemPropToKeyMap);
 };
-
-
-// initialize the the menu toggle
-$(() => {
- "use strict";
-
-  $("#settings-close").click(() => {
-    $("#settings-menu").fadeOut();
-    $("#settings-open").fadeIn();
-  });
-
-  $("#settings-open").click(() => {
-    $("#settings-menu").fadeIn();
-    $("#settings-open").fadeOut();
-  });
-
-  $("#reset-settings").click(() => {
-    resetSettings();
-  });
-
-  $("#randomize-settings").click(() => {
-    randomizeSettings();
-  });
-});
 
 
 
@@ -702,15 +745,15 @@ let randomizeSettings = (ctrlElement = false) => {
  * @param ctrlElementName
  * @param htmlElem
  */
-let muteElement = (ctrlElementName, htmlElem) => {
+let toggleVisibility = (ctrlElementName, htmlElem) => {
   "use strict";
 
   let controlObject = myp5[`get${ctrlElementName}`]();
   controlObject.mute = !controlObject.mute;
 
-  $(htmlElem).toggleClass('muted');
+  $(htmlElem).toggleClass('inactive');
 
-  if ($(htmlElem).hasClass('muted')) {
+  if ($(htmlElem).hasClass('inactive')) {
     $(htmlElem).attr('title', 'Turn Visuals On');
     $(htmlElem).html('visibility_off');
   } else {
@@ -734,22 +777,22 @@ let lockProperty = (ctrlElementName, prop, htmlElem) => {
   let parent = $(htmlElem).parents(".range-slider-wrapper");
 
 
-  ;  $(htmlElem).toggleClass("locked");
-  parent.toggleClass('locked')
+  $(htmlElem).toggleClass("locked");
+  parent.toggleClass('locked');
 
   if ($(htmlElem).hasClass("locked")) {
 
     $(htmlElem).html('lock');
     $(htmlElem).attr('title', 'Unlock This Property');
 
-    parent.find('input, select').each(function() {
+    parent.find('input, select').each(function () {
       $(this).prop('disabled', true);
     });
   } else {
     $(htmlElem).html('lock_open');
     $(htmlElem).attr('title', 'Lock This Property');
 
-    parent.find('input, select').each(function() {
+    parent.find('input, select').each(function () {
       $(this).prop('disabled', false);
     });
   }
@@ -763,5 +806,6 @@ let getRandomInt = (min, max) => {
   "use strict";
   return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
 };
+
 
 
