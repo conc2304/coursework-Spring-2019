@@ -27,8 +27,6 @@ $(() => {
 
   $("#settings-menu").on('mouseover', '.helper', function () {
 
-
-    console.log($(this));
     if ($("#toggle-help").hasClass("inactive") || !this.hasAttribute('title')) {
       return false;
     }
@@ -41,8 +39,6 @@ $(() => {
     // delay the helper a little
     setTimeout(function () {
         $("#help-text").fadeOut(function () {
-          console.log(helpText);
-          console.log($(this));
           $(this).html(helpText);
           $(this).fadeIn();
           $("#help-section").show();
@@ -148,8 +144,12 @@ let createDOMControls = (ctrlElements) => {
 };
 
 
-// create a mute button, a shuffle, and a reset button
-// that will affect only the that element
+/**
+ * Create a mute button, a shuffle, and a reset button
+ * that will affect only the that element
+ * @param ctrlElem
+ * @param parent
+ */
 let addMasterElementControls = (ctrlElem, parent) => {
   "use strict";
 
@@ -193,9 +193,9 @@ let addMasterElementControls = (ctrlElem, parent) => {
     icon.attribute('data-helper', icons[i].helper);
     icon.attribute('onclick', icons[i].onclick);
     icon.parent(iconWrapper);
-
   }
 };
+
 
 
 /**
@@ -208,7 +208,6 @@ let addMasterElementControls = (ctrlElem, parent) => {
 let createSliderCtrlr = (ctrlObject, prop, parentWrapper, controls) => {
   "use strict";
 
-  let ctrlElemName = ctrlObject.constructor.name;
 
   if (ctrlObject[prop].attrType === 'numeric') {
 
@@ -221,18 +220,34 @@ let createSliderCtrlr = (ctrlObject, prop, parentWrapper, controls) => {
     title.style('position', 'relative')
       .parent(inputWrapper);
 
-    let lockIcon = myp5.createElement('i', 'lock_open');
-    lockIcon.addClass(`material-icons md-light ${ctrlElemName}-${prop} helper`);
-    lockIcon.attribute('data-helper', 'Lock this property\'s settings from being set, randomized, or reset. Only the global reset button will override a locked property.');
-    lockIcon.attribute('title', 'Settings Lock');
-    lockIcon.attribute('onclick', `lockProperty('${ctrlElemName}', '${prop}', this)`);
-    lockIcon.parent(title);
-
+    createLockElement(ctrlObject, prop, title);
     createPianoDomInput(ctrlObject, prop, inputWrapper, controls);
     createDomSlider(ctrlObject, prop, inputWrapper, controls);
     createFrequencySelector(ctrlObject, prop, inputWrapper);
   }
 };
+
+
+
+/**
+ * Create a DOM element to control whether a property is changeable or not.
+ * @param ctrlObject
+ * @param prop
+ * @param parentElem
+ */
+let createLockElement = (ctrlObject, prop, parentElem) => {
+  "use strict";
+
+  let ctrlElemName = ctrlObject.constructor.name;
+
+  let lockIcon = myp5.createElement('i', 'lock_open');
+  lockIcon.addClass(`material-icons md-light ${ctrlElemName}-${prop} helper`);
+  lockIcon.attribute('data-helper', 'Lock this property\'s settings from being set, randomized, or reset. Only the global reset button will override a locked property.');
+  lockIcon.attribute('title', 'Settings Lock');
+  lockIcon.attribute('onclick', `lockProperty('${ctrlElemName}', '${prop}', this)`);
+  lockIcon.parent(parentElem);
+};
+
 
 
 /**
@@ -414,6 +429,8 @@ let createRadioToggle = (ctrlObject, prop, controls, parentWrapper) => {
     let label = myp5.createElement('p', ctrlObject[prop].displayLabel);
     label.style('position', 'relative');
     label.parent(inputWrapper);
+
+    createLockElement(ctrlObject, prop, label);
 
     controls[ctrlObjectName][prop] = myp5.createRadio();
 
@@ -770,7 +787,7 @@ let lockProperty = (ctrlElementName, prop, htmlElem) => {
   "use strict";
 
   let controlObject = myp5[`get${ctrlElementName}`]();
-  let parent = $(htmlElem).parents(".range-slider-wrapper");
+  let parent = $(htmlElem).parents(".range-slider-wrapper, .radio-option-wrap");
 
 
   $(htmlElem).toggleClass("locked");

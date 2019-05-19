@@ -1,11 +1,9 @@
 /**
  *
  *    --  HERE ARE MY AMBITIONS - BEHOLD THEIR MULTITUDE!  --
- * todo - change help section : title to be just name of feature, help section to be description of feature
  * todo - audio controls to be more like a remote - pause, play, stop, rewind, ff, volume
  * todo - make a playlist, queue music, if possible get music from Spotify (can it be processed through fft though?)
  * todo - add comments to functions and files
- * todo - add lock feature to radio buttons
  * todo - make audio reactive option additive, subtractive, e
  * todo - gain and fall controls for audio reactive (ie how reactive it is to music and by how much will the animation change)
  * todo - range slider to also be able to set min and max values of property

@@ -211,12 +211,13 @@ i.material-icons:hover {
   padding-top: 10px;
 }
 
-.range-slider-wrapper.locked *:not(p) {
+#settings-menu .range-slider-wrapper.locked *:not(p), #settings-menu .radio-option-wrap.locked *:not(p) {
   opacity: .4;
 }
 
-.range-slider-wrapper.locked p {
+#settings-menu .range-slider-wrapper.locked p, #settings-menu .radio-option-wrap.locked p {
   opacity: .8;
+  color: #aa0000
 }
 
 #settings-menu label {
