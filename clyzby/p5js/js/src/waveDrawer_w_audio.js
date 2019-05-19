@@ -2,6 +2,7 @@
  *
  *    --  HERE ARE MY AMBITIONS - BEHOLD THEIR MULTITUDE!  --
  * todo - audio controls to be more like a remote - pause, play, stop, rewind, ff, volume
+ *        - todo this would be better if we can queue music
  * todo - make a playlist, queue music, if possible get music from Spotify (can it be processed through fft though?)
  * todo - add comments to functions and files
  * todo - make audio reactive option additive, subtractive, e
