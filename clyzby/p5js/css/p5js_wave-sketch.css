@@ -404,6 +404,7 @@ label.radio-input:after {
   text-align: center;
   padding: 5px 0;
   margin-left: 8px;
+  box-sizing: border-box;
 }
 
 ::-moz-range-track {

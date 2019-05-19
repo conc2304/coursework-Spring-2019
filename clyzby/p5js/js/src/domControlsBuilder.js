@@ -1,6 +1,3 @@
-
-
-
 // initialize the the menu toggle
 $(() => {
   "use strict";
@@ -36,9 +33,13 @@ $(() => {
       return false;
     }
 
-    let helpText = $(this).attr('title');
+    let helpText = $(this).data('helper');
+    if (typeof(helpText) === 'undefined' || !helpText) {
+      helpText = $(this).attr('title');
+    }
 
-    setTimeout(function(){
+    // delay the helper a little
+    setTimeout(function () {
         $("#help-text").fadeOut(function () {
           console.log(helpText);
           console.log($(this));
@@ -47,15 +48,8 @@ $(() => {
           $("#help-section").show();
         });
 
-      }, 500
+      }, 200
     );
-
-    // let helpText = $(this).attr('title');
-    // $("#help-text").fadeOut(function () {
-    //   $(this).html(helpText);
-    //   $(this).fadeIn();
-    // });
-    // $("#help-section").fadeIn();
   });
 
   $("#settings-menu").on('mouseleave', '.helper', function () {
@@ -63,7 +57,6 @@ $(() => {
   });
 
 });  // end document on load
-
 
 
 /**
@@ -170,19 +163,22 @@ let addMasterElementControls = (ctrlElem, parent) => {
 
   let icons = [
     {
-      htmlIcon : 'visibility',
-      title : 'Turn Visuals Off',
-      onclick : `toggleVisibility('${ctrlElemName}', this)`,
+      htmlIcon: 'visibility',
+      title: 'Visibility',
+      onclick: `toggleVisibility('${ctrlElemName}', this)`,
+      helper: 'Toggles whether this element is visible or not.',
     },
     {
-      htmlIcon : 'shuffle',
-      title : 'Randomize',
-      onclick : `randomizeSettings('${ctrlElemName}')`,
+      htmlIcon: 'shuffle',
+      title: 'Randomize',
+      onclick: `randomizeSettings('${ctrlElemName}')`,
+      helper: 'Randomize every property in this element.  This does not affect the audio reactive controllers.',
     },
     {
-      htmlIcon : 'restore',
-      title : 'Reset Visuals',
-      onclick : `resetSettings('${ctrlElemName}')`,
+      htmlIcon: 'restore',
+      title: 'Reset Visuals',
+      onclick: `resetSettings('${ctrlElemName}')`,
+      helper: 'Randomize every property in this element to their original default state.  This does not affect the audio reactive controllers.',
     }
   ];
 
@@ -194,8 +190,10 @@ let addMasterElementControls = (ctrlElem, parent) => {
     icon.addClass('material-icons md-light helper');
     icon.html(icons[i].htmlIcon);
     icon.attribute('title', icons[i].title);
+    icon.attribute('data-helper', icons[i].helper);
     icon.attribute('onclick', icons[i].onclick);
     icon.parent(iconWrapper);
+
   }
 };
 
@@ -214,20 +212,19 @@ let createSliderCtrlr = (ctrlObject, prop, parentWrapper, controls) => {
 
   if (ctrlObject[prop].attrType === 'numeric') {
 
-    let ctrlObjectName = ctrlObject.constructor.name;
-
     // wrapper to hold individual range sliders
     let inputWrapper = myp5.createElement('div');
     inputWrapper.attribute('class', `range-slider-wrapper`);
     inputWrapper.parent(parentWrapper);
 
     let title = myp5.createElement('p', ctrlObject[prop].displayLabel);
-    title.style('position', 'relative');
-    title.parent(inputWrapper);
+    title.style('position', 'relative')
+      .parent(inputWrapper);
 
-    let lockIcon = myp5.createElement('i','lock_open');
+    let lockIcon = myp5.createElement('i', 'lock_open');
     lockIcon.addClass(`material-icons md-light ${ctrlElemName}-${prop} helper`);
-    lockIcon.attribute('title', 'Lock this property from changing: Only the global reset button will override a locked property.');
+    lockIcon.attribute('data-helper', 'Lock this property\'s settings from being set, randomized, or reset. Only the global reset button will override a locked property.');
+    lockIcon.attribute('title', 'Settings Lock');
     lockIcon.attribute('onclick', `lockProperty('${ctrlElemName}', '${prop}', this)`);
     lockIcon.parent(title);
 
@@ -245,10 +242,10 @@ let createSliderCtrlr = (ctrlObject, prop, parentWrapper, controls) => {
 let setIntroDefaults = () => {
   "use strict";
 
-  let defaultValues = ['Q','W', 'E', 'R', 'T', 'Y'];
+  let defaultValues = ['Q', 'W', 'E', 'R', 'T', 'Y'];
 
   let i = 0;
-  $("input.keyboard-assigner").each(function() {
+  $("input.keyboard-assigner").each(function () {
     // console.log(this);
     $(this)
       .val(defaultValues[i])
@@ -263,7 +260,6 @@ let setIntroDefaults = () => {
 
   $($(".freq-selector")[0]).val("2000 - 4000 Hz").trigger("change");
 };
-
 
 
 /**
@@ -319,7 +315,8 @@ let createFrequencySelector = (ctrlObject, prop, inputWrapper) => {
   rangeList.addClass("freq-selector helper");
   rangeList.attribute('data-ctrl_object', ctrlObjectName);
   rangeList.attribute('data-prop', prop);
-  rangeList.attribute('title', 'Dropdown to bind a property to a frequency range.');
+  rangeList.attribute('data-helper', 'Make this element property audio reactive.  Select a frequency range from the dropdown to make it react to the music\'s frequency levels.');
+  rangeList.attribute('title', 'Audio Reactive Settings');
   rangeList.elt.onchange = setAudioCtrl;
 
   let option = myp5.createElement('option');
@@ -377,20 +374,22 @@ let createDomSlider = (ctrlObject, prop, inputWrapper, controls) => {
   }
 
   // slider to control the individual property
-  controls[ctrlObjectName][prop] = myp5.createSlider(ctrlObject[prop].min, ctrlObject[prop].max, ctrlObject[prop].currentValue, step);
-  controls[ctrlObjectName][prop].attribute('class', `range-slider ${ctrlObjectName}-${prop} helper`);
+  controls[ctrlObjectName][prop] = myp5.createSlider(ctrlObject[prop].min, ctrlObject[prop].max, ctrlObject[prop].currentValue, step)
+  controls[ctrlObjectName][prop].addClass(`range-slider ${ctrlObjectName}-${prop} helper`);
   controls[ctrlObjectName][prop].attribute('data-ctrl_object', ctrlObjectName);
   controls[ctrlObjectName][prop].attribute('data-prop', prop);
+  controls[ctrlObjectName][prop].attribute('title', 'Set element property');
+  controls[ctrlObjectName][prop].attribute('data-helper', 'Changes the current value of this property. It also sets the reset value for key press release.  When you release a bound keystroke, the value will release to this value.');
   controls[ctrlObjectName][prop].attribute('oninput', 'sliderSetValue(this)');
-  controls[ctrlObjectName][prop].attribute('title', 'Changes the current value of this property and sets the reset value for key press release.');
   controls[ctrlObjectName][prop].parent(inputWrapper);
 
+
   let displayValue = myp5.createElement('span', ctrlObject[prop].currentValue.toString());
-  displayValue.attribute('class', `range-slider-value helper`);
-  displayValue.attribute('title', `Current and Reset value of this property. Reset Value is the value that the element will go to on key press release.`);
+  displayValue.addClass(`range-slider-value helper`);
+  displayValue.attribute('title', `Current and Reset value`);
+  displayValue.attribute('data-helper', `Current and Reset value of this property. Reset Value is the value that the element will go to on key press release.`);
   displayValue.parent(inputWrapper);
 };
-
 
 
 /**
@@ -471,32 +470,33 @@ let createPianoDomInput = (ctrlObject, prop, parentWrapper) => {
   // input to set which keyboard key plays that element
   let pianoInput = myp5.createInput();
   pianoInput.attribute('class', 'keyboard-assigner helper');
-  pianoInput.attribute('title', 'Piano Mode: Set a keyboard key to play the assigned value for this property');
+  pianoInput.attribute('title', 'Piano Mode Set Keyboard Key');
+  pianoInput.attribute('data-helper', 'Basically use the keyboard as a piano and type away.  Assign a value to set for property on keypress.  When the key is pressed it will set the element\'s property to the value specified.');
   pianoInput.attribute('data-ctrl_object', ctrlObjectName);
   pianoInput.attribute('data-prop', prop);
   pianoInput.attribute('data-type', 'key-set');
+  pianoInput.parent(pianoWrapper);
   pianoInput.elt.placeholder = "Assign Key";
   pianoInput.elt.onchange = setKeyboardControl;
   pianoInput.elt.maxLength = 1;
-  pianoInput.parent(pianoWrapper);
 
 
   // input to set what the value will be for that element on that key press
   pianoInput = myp5.createInput(ctrlObject[prop].currentValue.toString(), 'number');
   pianoInput.value(myp5.random(ctrlObject[prop].min, ctrlObject[prop].max).toFixed(3));
-  pianoInput.elt.max = ctrlObject[prop].max;  // not sure if i want to set a max or min
-  pianoInput.elt.min = ctrlObject[prop].min;  // not sure if i want to set a max or min
-  pianoInput.attribute('title', 'Piano Mode: Assign a value to set for property on keypress');
   pianoInput.addClass('helper');
+  pianoInput.attribute('title', 'Piano Mode Set Keyboard Key Value');
+  pianoInput.attribute('data-helper', ' Basically use the keyboard as a piano and type away.   Assign a value for the element\'s property to go to when its corresponding key is pressed. On key release, the it will go back to the reset value (the value set by the slider).');
   pianoInput.attribute('data-type', 'value-set');
   pianoInput.attribute('data-ctrl_object', ctrlObjectName);
   pianoInput.attribute('data-prop', prop);
+  pianoInput.parent(pianoWrapper);
 
+  pianoInput.elt.max = ctrlObject[prop].max;  // not sure if i want to set a max or min
+  pianoInput.elt.min = ctrlObject[prop].min;  // not sure if i want to set a max or min
   pianoInput.elt.onchange = setKeyboardControl;
   pianoInput.elt.step = Number((ctrlObject[prop].max - ctrlObject[prop].min) / 200).toFixed(3);
-  pianoInput.parent(pianoWrapper);
 };
-
 
 
 /**
@@ -512,7 +512,6 @@ let updateRangeDisplay = (range) => {
 };
 
 
-
 let sliderSetValue = (range) => {
   "use strict";
 
@@ -526,8 +525,6 @@ let sliderSetValue = (range) => {
   }
   updateRangeDisplay(range);
 };
-
-
 
 
 let keyboardCtrl = {};
@@ -600,7 +597,6 @@ let setKeyboardControl = (e) => {
 };
 
 
-
 let resetSettings = (ctrlElement = false) => {
   // "use strict";
 
@@ -654,8 +650,8 @@ let resetSettings = (ctrlElement = false) => {
         $(`i.${ctrlObjectName}-${prop}`)
           .parents(".range-slider-wrapper")
           .removeClass('locked')
-          .find('input, select').each(function() {
-            $(this).prop('disabled', false);
+          .find('input, select').each(function () {
+          $(this).prop('disabled', false);
         });
 
       }
@@ -799,7 +795,6 @@ let lockProperty = (ctrlElementName, prop, htmlElem) => {
 
   controlObject[prop].lockOn = !controlObject[prop].lockOn;
 };
-
 
 
 let getRandomInt = (min, max) => {
