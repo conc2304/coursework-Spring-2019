@@ -15,8 +15,10 @@ class ThreeDWave {
       defaultValue : 20,
       currentValue : 20,
       targetValue : null,
-      min : 20,
-      max : 150,
+      min : 20,   // this can be edited by the user
+      defaultMin : 20,    // this is the range within which the user can edit the min and max values
+      max : 150,    // this can be edited by the user
+      defaultMax : 150,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -33,8 +35,10 @@ class ThreeDWave {
       defaultValue : 0.01,
       currentValue : 0.01,
       targetValue : null,
-      min : 0.001,
-      max : 0.2,
+      min : 0.001,    // this can be edited by the user
+      defaultMin : 0.001,   // this is the range within which the user can edit the min and max values
+      max : 0.2,    // this can be edited by the user
+      defaultMax : 0.2,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -51,8 +55,10 @@ class ThreeDWave {
       defaultValue : 75,
       currentValue : 75,
       targetValue : null,
-      min : 0,
-      max : 500,
+      min : 0,    // this can be edited by the user
+      defaultMin : 0,   // this is the range within which the user can edit the min and max values
+      max : 500,    // this can be edited by the user
+      defaultMax : 500,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -69,8 +75,10 @@ class ThreeDWave {
       defaultValue : 500,
       currentValue : 500,
       targetValue : null,
-      min : 50,
-      max : 750,
+      min : 50,   // this can be edited by the user
+      defaultMin : 50,    // this is the range within which the user can edit the min and max values
+      max : 750,    // this can be edited by the user
+      defaultMax : 750,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -87,8 +95,10 @@ class ThreeDWave {
       defaultValue : 100,
       currentValue : 100,
       targetValue : null,
-      min : 90,
-      max : 450,
+      min : 90,   // this can be edited by the user
+      defaultMin : 90,    // this is the range within which the user can edit the min and max values
+      max : 450,    // this can be edited by the user
+      defaultMax : 450,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -105,8 +115,10 @@ class ThreeDWave {
       defaultValue : 100,
       currentValue : 100,
       targetValue : null,
-      min : -10,
-      max : 275,
+      min : -10,    // this can be edited by the user
+      defaultMin : -10,   // this is the range within which the user can edit the min and max values
+      max : 275,    // this can be edited by the user
+      defaultMax : 275,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -122,8 +134,10 @@ class ThreeDWave {
       defaultValue : 100,
       currentValue : 100,
       targetValue : null,
-      min : -10,
-      max : 275,
+      min : -10,    // this can be edited by the user
+      defaultMin : -10,   // this is the range within which the user can edit the min and max values
+      max : 275,    // this can be edited by the user
+      defaultMax : 275,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -139,8 +153,10 @@ class ThreeDWave {
       defaultValue : 100,
       currentValue : 100,
       targetValue : null,
-      min : -10,
-      max : 275,
+      min : -10,    // this can be edited by the user
+      defaultMin : -10,   // this is the range within which the user can edit the min and max values
+      max : 275,    // this can be edited by the user
+      defaultMax : 275,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -159,8 +175,10 @@ class ThreeDWave {
       defaultValue : 0,
       currentValue : 0,
       targetValue : null,
-      min : -0.5,
-      max : 0.5,
+      min : -0.5,   // this can be edited by the user
+      defaultMin : -0.5,    // this is the range within which the user can edit the min and max values
+      max : 0.5,    // this can be edited by the user
+      defaultMax : 0.5,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -176,8 +194,10 @@ class ThreeDWave {
       defaultValue : 0,
       currentValue : 0,
       targetValue : null,
-      min : -0.5,
-      max : 0.5,
+      min : -0.5,   // this can be edited by the user
+      defaultMin : -0.5,    // this is the range within which the user can edit the min and max values
+      max : 0.5,    // this can be edited by the user
+      defaultMax : 0.5,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -193,8 +213,10 @@ class ThreeDWave {
       defaultValue : 0,
       currentValue : 0,
       targetValue : null,
-      min : -0.5,
-      max : 0.5,
+      min : -0.5,   // this can be edited by the user
+      defaultMin : -0.5,    // this is the range within which the user can edit the min and max values
+      max : 0.5,    // this can be edited by the user
+      defaultMax : 0.5,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -211,8 +233,10 @@ class ThreeDWave {
       defaultValue : 0,
       currentValue : 0,
       targetValue : null,
-      min : -10.1,
-      max : 10.1,
+      min : -10.1,    // this can be edited by the user
+      defaultMin : -10.1,   // this is the range within which the user can edit the min and max values
+      max : 10.1,   // this can be edited by the user
+      defaultMax : 10.1,    // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -228,8 +252,10 @@ class ThreeDWave {
       defaultValue : 0,
       currentValue : 0,
       targetValue : null,
-      min : -10.1,
-      max : 10.1,
+      min : -10.1,    // this can be edited by the user
+      defaultMin : -10.1,   // this is the range within which the user can edit the min and max values
+      max : 10.1,   // this can be edited by the user
+      defaultMax : 10.1,    // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -245,8 +271,10 @@ class ThreeDWave {
       defaultValue : 0,
       currentValue : 0,
       targetValue : null,
-      min : -10.1,
-      max : 10.1,
+      min : -10.1,    // this can be edited by the user
+      defaultMin : -10.1,   // this is the range within which the user can edit the min and max values
+      max : 10.1,   // this can be edited by the user
+      defaultMax : 10.1,    // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -263,8 +291,10 @@ class ThreeDWave {
       defaultValue : 0,
       currentValue : 0,
       targetValue : null,
-      min : -900,
-      max : 900,
+      min : -900,   // this can be edited by the user
+      defaultMin : -900,    // this is the range within which the user can edit the min and max values
+      max : 900,    // this can be edited by the user
+      defaultMax : 900,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -281,8 +311,10 @@ class ThreeDWave {
       defaultValue : 0,
       currentValue : 0,
       targetValue : null,
-      min : -900,
-      max : 900,
+      min : -900,   // this can be edited by the user
+      defaultMin : -900,    // this is the range within which the user can edit the min and max values
+      max : 900,    // this can be edited by the user
+      defaultMax : 900,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -299,8 +331,10 @@ class ThreeDWave {
       defaultValue : 0,
       currentValue : 0,
       targetValue : null,
-      min : -900,
-      max : 900,
+      min : -900,   // this can be edited by the user
+      defaultMin : -900,    // this is the range within which the user can edit the min and max values
+      max : 900,    // this can be edited by the user
+      defaultMax : 900,   // this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,

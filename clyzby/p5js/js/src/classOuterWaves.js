@@ -1,6 +1,5 @@
-
 class OuterWaves {
-  constructor(windowWidth, windowHeight)  {
+  constructor(windowWidth, windowHeight) {
 
     this.windowWidth = windowWidth;
     this.windowHeight = windowHeight;
@@ -10,207 +9,224 @@ class OuterWaves {
 
     //  Numeric Type Attributes
     this.numWaves = {
-      displayLabel : 'Number of Waves',
-      resetValue : 1,
-      defaultValue : 1,
-      currentValue : 2,
-      targetValue : null,
-      min : 0,
-      max : 10,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.05,
-      easingMax : 0,
-      easingMin : 0,
+      displayLabel: 'Number of Waves',
+      resetValue: 1,
+      defaultValue: 1,
+      currentValue: 2,
+      targetValue: null,
+      min: 0,  // this can be edited by the user
+      defaultMin: 0, // this is the range within which the user can edit the min and max values
+      max: 10, // this can be edited by the user
+      defaultMax: 10, // this is the range within which the user can edit the min and max values
+      attrType: 'numeric',
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.1,
+      noteHeldEasing: 0.05,
+      easingMax: 0,
+      easingMin: 0,
     };
     this.radius = {
-      displayLabel : 'Size',
-      resetValue : 10,
-      defaultValue : 10,
-      currentValue : 10,
-      targetValue : null,
-      min : 0,
-      max : 200,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.05,
+      displayLabel: 'Size',
+      resetValue: 10,
+      defaultValue: 10,
+      currentValue: 10,
+      targetValue: null,
+      min: 0,  // this can be edited by the user
+      defaultMin: 0, // this is the range within which the user can edit the min and max values
+      max: 200,  // this can be edited by the user
+      defaultMax: 200, // this is the range within which the user can edit the min and max values
+      attrType: 'numeric',
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.05,
       noteHeldEasing: 0.01,
-      easingMax : 0,
-      easingMin : 0,
+      easingMax: 0,
+      easingMin: 0,
     };
     this.velocity = {
-      displayLabel : 'Velocity',
-      resetValue : 0.025,
-      defaultValue : 0.025,
-      currentValue : 0.025,
-      targetValue : null,
-      min : 0.01,
-      max : 1,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
+      displayLabel: 'Velocity',
+      resetValue: 0.025,
+      defaultValue: 0.025,
+      currentValue: 0.025,
+      targetValue: null,
+      min: 0.01, // this can be edited by the user
+      defaultMin: 0.01, // this is the range within which the user can edit the min and max values
+      max: 1,  // this can be edited by the user
+      defaultMax: 1, // this is the range within which the user can edit the min and max values
+      attrType: 'numeric',
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.1,
+      noteHeldEasing: 0.1,
+      easingMax: 0,
+      easingMin: 0,
     };
 
     this.xSpacing = {
-      displayLabel : 'X Spacing',
-      resetValue : 40,
-      defaultValue : 40,
-      currentValue : 40,
-      targetValue : null,
-      min : 15,
-      max : 350,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
+      displayLabel: 'X Spacing',
+      resetValue: 40,
+      defaultValue: 40,
+      currentValue: 40,
+      targetValue: null,
+      min: 15, // this can be edited by the user
+      defaultMin: 15, // this is the range within which the user can edit the min and max values
+      max: 350,  // this can be edited by the user
+      defaultMax: 350, // this is the range within which the user can edit the min and max values
+      attrType: 'numeric',
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.1,
+      noteHeldEasing: 0.1,
+      easingMax: 0,
+      easingMin: 0,
     };
     this.ySpacing = {
-      displayLabel : 'Y Spacing',
-      resetValue : 30,
-      defaultValue : 30,
-      currentValue : 40,
-      targetValue : null,
-      min : 5,
-      max : 150,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : null,
-      easingMax : 0,
-      easingMin : 0,
+      displayLabel: 'Y Spacing',
+      resetValue: 30,
+      defaultValue: 30,
+      currentValue: 40,
+      targetValue: null,
+      min: 5,  // this can be edited by the user
+      defaultMin: 5, // this is the range within which the user can edit the min and max values
+      max: 150,  // this can be edited by the user
+      defaultMax: 150, // this is the range within which the user can edit the min and max values
+      attrType: 'numeric',
+      triggerSource: null,
+      lockOn: false,
+      easingValue: null,
+      easingMax: 0,
+      easingMin: 0,
     };
 
     this.amplitude = {
-      displayLabel : 'Amplitude',
-      resetValue : 75,
-      currentValue : 75,
-      targetValue : null,
-      min : 0,
-      max : 500,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
+      displayLabel: 'Amplitude',
+      resetValue: 75,
+      currentValue: 75,
+      targetValue: null,
+      min: 0,  // this can be edited by the user
+      defaultMin: 0, // this is the range within which the user can edit the min and max values
+      max: 500,  // this can be edited by the user
+      defaultMax: 500, // this is the range within which the user can edit the min and max values
+      attrType: 'numeric',
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.1,
+      noteHeldEasing: 0.1,
+      easingMax: 0,
+      easingMin: 0,
     };
     this.period = {
-      displayLabel : 'Period',
-      resetValue : 500,
-      defaultValue : 500,
-      currentValue : 500,
-      targetValue : null,
-      min : 50,
-      max : 2250,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.07,
-      noteHeldEasing : 0.01,
-      easingMax : 0,
-      easingMin : 0,
+      displayLabel: 'Period',
+      resetValue: 500,
+      defaultValue: 500,
+      currentValue: 500,
+      targetValue: null,
+      min: 50, // this can be edited by the user
+      defaultMin: 50, // this is the range within which the user can edit the min and max values
+      max: 2250, // this can be edited by the user
+      defaultMax: 2250, // this is the range within which the user can edit the min and max values
+      attrType: 'numeric',
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.07,
+      noteHeldEasing: 0.01,
+      easingMax: 0,
+      easingMin: 0,
     };
 
     this.colorR = {
-      displayLabel : 'Color Red',
-      resetValue : 100,
-      defaultValue : 100,
-      currentValue : 200,
-      targetValue : null,
-      min : 0,
-      max : 255,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
+      displayLabel: 'Color Red',
+      resetValue: 100,
+      defaultValue: 100,
+      currentValue: 200,
+      targetValue: null,
+      min: 0,  // this can be edited by the user
+      defaultMin: 0, // this is the range within which the user can edit the min and max values
+      max: 255,  // this can be edited by the user
+      defaultMax: 255, // this is the range within which the user can edit the min and max values
+      attrType: 'numeric',
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.1,
+      noteHeldEasing: 0.1,
+      easingMax: 0,
+      easingMin: 0,
     };
     this.colorG = {
-      displayLabel : 'Color Green',
-      resetValue : 100,
-      defaultValue : 100,
-      currentValue : 200,
-      targetValue : null,
-      min : 0,
-      max : 255,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.05,
-      easingMax : 0,
-      easingMin : 0,
+      displayLabel: 'Color Green',
+      resetValue: 100,
+      defaultValue: 100,
+      currentValue: 200,
+      targetValue: null,
+      min: 0,  // this can be edited by the user
+      defaultMin: 0, // this is the range within which the user can edit the min and max values
+      max: 255,  // this can be edited by the user
+      defaultMax: 255, // this is the range within which the user can edit the min and max values
+      attrType: 'numeric',
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.1,
+      noteHeldEasing: 0.05,
+      easingMax: 0,
+      easingMin: 0,
     };
     this.colorB = {
-      displayLabel : 'Color Blue',
-      resetValue : 100,
-      defaultValue : 100,
-      currentValue : 200,
-      targetValue : null,
-      min : 0,
-      max : 255,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.05,
-      easingMax : 0,
-      easingMin : 0,
+      displayLabel: 'Color Blue',
+      resetValue: 100,
+      defaultValue: 100,
+      currentValue: 200,
+      targetValue: null,
+      min: 0,  // this can be edited by the user
+      defaultMin: 0, // this is the range within which the user can edit the min and max values
+      max: 255,  // this can be edited by the user
+      defaultMax: 255, // this is the range within which the user can edit the min and max values
+      attrType: 'numeric',
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.1,
+      noteHeldEasing: 0.05,
+      easingMax: 0,
+      easingMin: 0,
     };
-
 
 
     //  Variable Type Attributes
     this.waveType = {
-      displayLabel : 'Wave Type',
-      resetValue : 'sin',
-      defaultValue : 'sin',
-      currentValue : 'sin',
-      targetValue : null,
-      options : ['sin', 'cos', 'tan'],
-      attrType : 'variable',
-      lockOn : false,
+      displayLabel: 'Wave Type',
+      resetValue: 'sin',
+      defaultValue: 'sin',
+      currentValue: 'sin',
+      targetValue: null,
+      options: ['sin', 'cos', 'tan'],
+      attrType: 'variable',
+      lockOn: false,
     };
     this.stroke = {
-      displayLabel : 'Outline and Fill',
-      resetValue : 'Outline',
-      defaultValue : 'Outline',
-      currentValue : 'Outline',
-      targetValue : 'Outline',
-      attrType : 'variable',
-      options : ['Outline', 'Filled'],
-      lockOn : false,
+      displayLabel: 'Outline and Fill',
+      resetValue: 'Outline',
+      defaultValue: 'Outline',
+      currentValue: 'Outline',
+      targetValue: 'Outline',
+      attrType: 'variable',
+      options: ['Outline', 'Filled'],
+      lockOn: false,
     };
     this.shape = {
-      displayLabel : 'Shape',
-      resetValue : 'ellipse',
-      defaultValue : 'ellipse',
-      currentValue : 'ellipse',
-      targetValue : null,
-      options : ['line', 'triangle', 'square', 'pentagon', 'ellipse'],
-      attrType : 'variable',
-      lockOn : false,
+      displayLabel: 'Shape',
+      resetValue: 'ellipse',
+      defaultValue: 'ellipse',
+      currentValue: 'ellipse',
+      targetValue: null,
+      options: ['line', 'triangle', 'square', 'pentagon', 'ellipse'],
+      attrType: 'variable',
+      lockOn: false,
     };
-
 
 
     this.yPoints = new Array(Math.floor(this.waveWidth / this.xSpacing.currentValue));
   }  // end constructor
 }
-
 
 
 // METHODS
@@ -237,7 +253,7 @@ OuterWaves.prototype.calcWave = function (yOffset) {
 /**
  * Paint the object onto the screen based on the object's attributes.
  */
-OuterWaves.prototype.render = function() {
+OuterWaves.prototype.render = function () {
   "use strict";
 
   myp5.push();
@@ -248,11 +264,11 @@ OuterWaves.prototype.render = function() {
     // make each one 15% smaller
     m = this.radius.currentValue * 0.15 * (i + 1);
     r = this.radius.currentValue - m;
-    s = this.ySpacing.currentValue * 2.5* (i + 1);
+    s = this.ySpacing.currentValue * 2.5 * (i + 1);
 
     for (let x = 0; x < this.yPoints.length; x++) {
-      let xPos = x * this.xSpacing.currentValue - this.windowWidth/2;
-      let yPos = myp5.height/2 + this.yPoints[x] - this.windowHeight/2;
+      let xPos = x * this.xSpacing.currentValue - this.windowWidth / 2;
+      let yPos = myp5.height / 2 + this.yPoints[x] - this.windowHeight / 2;
       this.renderShape(xPos, yPos, r, s);
     }
   }
@@ -263,7 +279,7 @@ OuterWaves.prototype.render = function() {
 /**
  * Based on user toggling, set the color profile for element to be rendered
  */
-OuterWaves.prototype.setColor = function() {
+OuterWaves.prototype.setColor = function () {
   "use strict";
 
   switch (this.stroke.currentValue) {
@@ -286,7 +302,7 @@ OuterWaves.prototype.setColor = function() {
  * @param radius
  * @param spacing  - y space between lines
  */
-OuterWaves.prototype.renderShape = function(xPos, yPos, radius, spacing) {
+OuterWaves.prototype.renderShape = function (xPos, yPos, radius, spacing) {
 
   let polygons = ['line', 'triangle', 'square', 'pentagon'];  // polygons we are allowing for set in the shape attribute
 

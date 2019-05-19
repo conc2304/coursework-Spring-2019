@@ -15,8 +15,10 @@ class CenterWave {
       defaultValue : 20,
       currentValue : 20,
       targetValue : null,
-      min : 0,
-      max : 500,
+      min : 0,    // this can be edited by the user
+      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
+      max : 500,    // this can be edited by the user
+      defaultMax : 500,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -31,8 +33,10 @@ class CenterWave {
       defaultValue : 0.025,
       currentValue : 0.025,
       targetValue : null,
-      min : -1,
-      max : 1,
+      min : -1,   // this can be edited by the user
+      defaultMin : -1,    //  this is the range within which the user can edit the min and max values
+      max : 1,    // this can be edited by the user
+      defaultMax : 1,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -47,8 +51,10 @@ class CenterWave {
       defaultValue : 75,
       currentValue : 75,
       targetValue : null,
-      min : -2000,
-      max : 2000,
+      min : -2000,    // this can be edited by the user
+      defaultMin : -2000,   //  this is the range within which the user can edit the min and max values
+      max : 2000,   // this can be edited by the user
+      defaultMax : 2000,    //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -63,8 +69,10 @@ class CenterWave {
       defaultValue : 500,
       currentValue : 500,
       targetValue : null,
-      min : -10250,
-      max : 10250,
+      min : -10250,   // this can be edited by the user
+      defaultMin : -10250,    //  this is the range within which the user can edit the min and max values
+      max : 10250,    // this can be edited by the user
+      defaultMax : 10250,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -79,8 +87,10 @@ class CenterWave {
       defaultValue : 40,
       currentValue : 40,
       targetValue : null,
-      min : 15,
-      max : 350,
+      min : 15,   // this can be edited by the user
+      defaultMin : 15,    //  this is the range within which the user can edit the min and max values
+      max : 350,    // this can be edited by the user
+      defaultMax : 350,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,
@@ -90,6 +100,60 @@ class CenterWave {
       easingMin : 0,
     };
 
+    this.colorR = {
+      displayLabel : 'Color Red',
+      resetValue : 100,
+      defaultValue : 100,
+      currentValue : 200,
+      targetValue : null,
+      min : 0,    // this can be edited by the user
+      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
+      max : 255,    // this can be edited by the user
+      defaultMax : 255,   //  this is the range within which the user can edit the min and max values
+      attrType : 'numeric',
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.1,
+      easingMax : 0,
+      easingMin : 0,
+    };
+    this.colorG = {
+      displayLabel : 'Color Green',
+      resetValue : 100,
+      defaultValue : 100,
+      currentValue : 200,
+      targetValue : null,
+      min : 0,    // this can be edited by the user
+      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
+      max : 255,    // this can be edited by the user
+      defaultMax : 255,   //  this is the range within which the user can edit the min and max values
+      attrType : 'numeric',
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.1,
+      easingMax : 0,
+      easingMin : 0,
+    };
+    this.colorB = {
+      displayLabel : 'Color Blue',
+      resetValue : 100,
+      defaultValue : 100,
+      currentValue : 200,
+      targetValue : null,
+      min : 0,    // this can be edited by the user
+      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
+      max : 255,    // this can be edited by the user
+      defaultMax : 255,   //  this is the range within which the user can edit the min and max values
+      attrType : 'numeric',
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.1,
+      easingMax : 0,
+      easingMin : 0,
+    };
 
 
     // this.orbitAngle = {
@@ -144,54 +208,7 @@ class CenterWave {
       options : ['Outline', 'Filled'],
       lockOn : false,
     };
-    this.colorR = {
-      displayLabel : 'Color Red',
-      resetValue : 100,
-      defaultValue : 100,
-      currentValue : 200,
-      targetValue : null,
-      min : 0,
-      max : 255,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
-    };
-    this.colorG = {
-      displayLabel : 'Color Green',
-      resetValue : 100,
-      defaultValue : 100,
-      currentValue : 200,
-      targetValue : null,
-      min : 0,
-      max : 255,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
-    };
-    this.colorB = {
-      displayLabel : 'Color Blue',
-      resetValue : 100,
-      defaultValue : 100,
-      currentValue : 200,
-      targetValue : null,
-      min : 0,
-      max : 255,
-      attrType : 'numeric',
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
-    };
+
 
     this.yPoints = new Array(Math.floor(this.waveWidth / this.xSpacing.currentValue));
 
