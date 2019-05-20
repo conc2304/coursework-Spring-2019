@@ -15,10 +15,10 @@ class CenterWave {
       defaultValue : 20,
       currentValue : 20,
       targetValue : null,
-      min : 0,    // this can be edited by the user
-      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
+      min : -50,    // this can be edited by the user
+      defaultMin : -100,   //  this is the range within which the user can edit the min and max values
       max : 500,    // this can be edited by the user
-      defaultMax : 500,   //  this is the range within which the user can edit the min and max values
+      defaultMax : 600,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       triggerSource : null,
       lockOn : false,

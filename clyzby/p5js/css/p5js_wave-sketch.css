@@ -8,6 +8,10 @@ body {
 *, *:before, *:after {
 }
 
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
 .hide {
   display: none;
 }
@@ -120,6 +124,7 @@ i.material-icons {
   display: inline-block;
   color: #0e83cd;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 i.material-icons.inactive {
@@ -335,58 +340,134 @@ label.radio-input:after {
   width: 100%;
 }
 
-.range-slider {
-  -webkit-appearance: none;
-  width: calc(100% - (73px));
-  height: 10px;
-  border-radius: 5px;
-  background: #095c8f;
-  outline: none;
-  padding: 0;
-  margin: 0;
+
+
+
+
+
+
+/*  customize the noUI slider  */
+
+
+
+
+
+#settings-menu .noUi-tooltip {
+  display: none;
+  color: #fff;
+  background-color: transparent;
+  border: none;
+  font-size: 12px;
+  bottom: 100%;
 }
 
-.range-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 1px solid #0e83cd;
-  background: #000000;
+#settings-menu .noUi-connect {
+  background-color: #0e83cd;
+}
+
+#settings-menu .noUi-target {
+  background: initial;
+  border-radius: 10px;
+  box-shadow: initial;
+  margin: 40px 10px 30px 0;
+  height: 14px;
+}
+
+#settings-menu .noUi-handle {
+  border: 1px solid #fff;
+  background-color: black;
+  box-shadow: initial;
   cursor: pointer;
-  transition: background .15s ease-in-out;
+  top: -8px;
 }
-
-.range-slider::-webkit-slider-thumb:hover {
-  background: #0e83cd;
-}
-
-.range-slider:active::-webkit-slider-thumb {
-  background: #0e83cd;
-}
-
-.range-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border: 0;
+#settings-menu .noUi-handle[data-handle="1"] {
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: #2c3e50;
-  cursor: pointer;
-  transition: background .15s ease-in-out;
 }
 
-.range-slider::-moz-range-thumb:hover {
-  background: #0e83cd;
+#settings-menu .noUi-handle[data-handle="0"]:before {
+  content : 'min';
+}
+#settings-menu .noUi-handle[data-handle="2"]:before {
+  content: "max";
 }
 
-.range-slider:active::-moz-range-thumb {
-  background: #0e83cd;
+#settings-menu .noUi-handle:before {
+  display: block;
+  width: initial;
+  height: initial;
+  background: initial;
+  color: grey;
+  font-size: 10px;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 23px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
-.range-slider:focus::-webkit-slider-thumb {
-  box-shadow: 0 0 0 3px #000, 0 0 0 6px #0e83cd;
+#settings-menu .noUi-handle:after {
+  content: initial;
 }
+
+
+
+
+/*.range-slider {*/
+  /*-webkit-appearance: none;*/
+  /*width: calc(100% - (73px));*/
+  /*height: 10px;*/
+  /*border-radius: 5px;*/
+  /*background: #095c8f;*/
+  /*outline: none;*/
+  /*padding: 0;*/
+  /*margin: 0;*/
+/*}*/
+
+/*.range-slider::-webkit-slider-thumb {*/
+  /*-webkit-appearance: none;*/
+  /*appearance: none;*/
+  /*width: 20px;*/
+  /*height: 20px;*/
+  /*border-radius: 50%;*/
+  /*border: 1px solid #0e83cd;*/
+  /*background: #000000;*/
+  /*cursor: pointer;*/
+  /*transition: background .15s ease-in-out;*/
+/*}*/
+
+/*.range-slider::-webkit-slider-thumb:hover {*/
+  /*background: #0e83cd;*/
+/*}*/
+
+/*.range-slider:active::-webkit-slider-thumb {*/
+  /*background: #0e83cd;*/
+/*}*/
+
+/*.range-slider::-moz-range-thumb {*/
+  /*width: 20px;*/
+  /*height: 20px;*/
+  /*border: 0;*/
+  /*border-radius: 50%;*/
+  /*background: #2c3e50;*/
+  /*cursor: pointer;*/
+  /*transition: background .15s ease-in-out;*/
+/*}*/
+
+/*.range-slider::-moz-range-thumb:hover {*/
+  /*background: #0e83cd;*/
+/*}*/
+
+/*.range-slider:active::-moz-range-thumb {*/
+  /*background: #0e83cd;*/
+/*}*/
+
+/*.range-slider:focus::-webkit-slider-thumb {*/
+  /*box-shadow: 0 0 0 3px #000, 0 0 0 6px #0e83cd;*/
+/*}*/
 
 .editing {
   background-color: darkcyan;
@@ -408,10 +489,10 @@ label.radio-input:after {
   box-sizing: border-box;
 }
 
-::-moz-range-track {
-  background: #d7dcdf;
-  border: 0;
-}
+/*::-moz-range-track {*/
+  /*background: #d7dcdf;*/
+  /*border: 0;*/
+/*}*/
 
 .custom-select-wrapper select {
   -webkit-appearance: none;

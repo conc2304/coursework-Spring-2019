@@ -7,7 +7,6 @@
  * todo - add comments to functions and files
  * todo - make audio reactive option additive, subtractive, e
  * todo - gain and fall controls for audio reactive (ie how reactive it is to music and by how much will the animation change)
- * todo - range slider to also be able to set min and max values of property
  * todo - make a toggle to spin/rotate the inner and outer waves like the 3D ones
  * todo - make patterns by saving current config and make them triggerable (ie a pattern bank)
  * todo - convert this entire thing into an angular web app #Angular8!

@@ -25,6 +25,17 @@ $(() => {
     $("#toggle-help").toggleClass("inactive");
   });
 
+
+
+  // on hover mouse over/leave show/hide the value of the range slider handle
+  $("#settings-menu").on('mouseover', '.noUi-handle', function() {
+    $(this).parent(".noUi-origin").find('.noUi-tooltip').show();
+  });
+  $("#settings-menu").on('mouseleave', '.noUi-handle', function() {
+    $(this).parent(".noUi-origin").find('.noUi-tooltip').hide();
+  });
+
+  // display a help box in the corner with what this element does.
   $("#settings-menu").on('mouseover', '.helper', function () {
 
     if ($("#toggle-help").hasClass("inactive") || !this.hasAttribute('title')) {
@@ -43,9 +54,9 @@ $(() => {
           $(this).fadeIn();
           $("#help-section").show();
         });
-
       }, 200
     );
+
   });
 
   $("#settings-menu").on('mouseleave', '.helper', function () {
@@ -78,7 +89,6 @@ let createDOMControls = (ctrlElements) => {
 
   // loop through each of the control objects and create settings controllers based on
   // the property's attribute type
-  let controls = {};
 
   for (let ctrlElem in ctrlElements) {
     if (!ctrlElements.hasOwnProperty(ctrlElem)) {
@@ -88,8 +98,6 @@ let createDOMControls = (ctrlElements) => {
     ctrlElem = ctrlElements[ctrlElem];
     let ctrlObjectName = ctrlElem.constructor.name;
     let wrapperID = ctrlObjectName + '-settings';
-    controls[ctrlObjectName] = {};
-
 
     // create a div for each of the different control
     let domCtrl = myp5.createDiv();
@@ -123,7 +131,7 @@ let createDOMControls = (ctrlElements) => {
       }
 
       if (ctrlElem[prop].attrType === 'numeric') {
-        createSliderCtrlr(ctrlElem, prop, ctrlElemSettingWrapper, controls);
+        createSliderCtrlr(ctrlElem, prop, ctrlElemSettingWrapper);
       }
 
     }
@@ -135,7 +143,7 @@ let createDOMControls = (ctrlElements) => {
         continue;
       }
       if (ctrlElem[prop].attrType === 'variable') {
-        createRadioToggle(ctrlElem, prop, controls, ctrlElemSettingWrapper);
+        createRadioToggle(ctrlElem, prop, ctrlElemSettingWrapper);
       }
     }
   }
@@ -203,13 +211,13 @@ let addMasterElementControls = (ctrlElem, parent) => {
  * @param ctrlObject
  * @param prop
  * @param parentWrapper
- * @param controls
  */
-let createSliderCtrlr = (ctrlObject, prop, parentWrapper, controls) => {
+let createSliderCtrlr = (ctrlObject, prop, parentWrapper) => {
   "use strict";
 
 
   if (ctrlObject[prop].attrType === 'numeric') {
+
 
     // wrapper to hold individual range sliders
     let inputWrapper = myp5.createElement('div');
@@ -221,8 +229,8 @@ let createSliderCtrlr = (ctrlObject, prop, parentWrapper, controls) => {
       .parent(inputWrapper);
 
     createLockElement(ctrlObject, prop, title);
-    createPianoDomInput(ctrlObject, prop, inputWrapper, controls);
-    createDomSlider(ctrlObject, prop, inputWrapper, controls);
+    createPianoDomInput(ctrlObject, prop, inputWrapper);
+    createDomSlider(ctrlObject, prop, inputWrapper);
     createFrequencySelector(ctrlObject, prop, inputWrapper);
   }
 };
@@ -372,9 +380,8 @@ let createFrequencySelector = (ctrlObject, prop, inputWrapper) => {
  * @param ctrlObject
  * @param prop
  * @param inputWrapper
- * @param controls
  */
-let createDomSlider = (ctrlObject, prop, inputWrapper, controls) => {
+let createDomSlider = (ctrlObject, prop, inputWrapper) => {
   "use strict";
 
   let ctrlObjectName = ctrlObject.constructor.name;
@@ -389,32 +396,69 @@ let createDomSlider = (ctrlObject, prop, inputWrapper, controls) => {
   }
 
   // slider to control the individual property
-  controls[ctrlObjectName][prop] = myp5.createSlider(ctrlObject[prop].min, ctrlObject[prop].max, ctrlObject[prop].currentValue, step)
-  controls[ctrlObjectName][prop].addClass(`range-slider ${ctrlObjectName}-${prop} helper`);
-  controls[ctrlObjectName][prop].attribute('data-ctrl_object', ctrlObjectName);
-  controls[ctrlObjectName][prop].attribute('data-prop', prop);
-  controls[ctrlObjectName][prop].attribute('title', 'Set element property');
-  controls[ctrlObjectName][prop].attribute('data-helper', 'Changes the current value of this property. It also sets the reset value for key press release.  When you release a bound keystroke, the value will release to this value.');
-  controls[ctrlObjectName][prop].attribute('oninput', 'sliderSetValue(this)');
-  controls[ctrlObjectName][prop].parent(inputWrapper);
+  let rangeSlider = myp5.createElement('div');
+  rangeSlider.addClass(`range-slider ${ctrlObjectName}-${prop} helper`);
+  rangeSlider.attribute('data-ctrl_object', ctrlObjectName);
+  rangeSlider.attribute('data-prop', prop);
+  rangeSlider.attribute('title', 'Set element property');
+  rangeSlider.attribute('data-helper', 'Changes the current value of this property. It also sets the reset value for key press release.  When you release a bound keystroke, the value will release to this value.');
+  rangeSlider.attribute('oninput', 'sliderSetValue(this)');
+  rangeSlider.parent(inputWrapper);
 
+  let customSlider = $(`.range-slider.${ctrlObjectName}-${prop}`)[0];
 
-  let displayValue = myp5.createElement('span', ctrlObject[prop].currentValue.toString());
-  displayValue.addClass(`range-slider-value helper`);
-  displayValue.attribute('title', `Current and Reset value`);
-  displayValue.attribute('data-helper', `Current and Reset value of this property. Reset Value is the value that the element will go to on key press release.`);
-  displayValue.parent(inputWrapper);
+  noUiSlider.create(customSlider, {
+    start: [ctrlObject[prop].min, ctrlObject[prop].currentValue, ctrlObject[prop].max],
+    range: {
+      'min': [ctrlObject[prop].defaultMin],
+      'max': [ctrlObject[prop].defaultMax]
+      // todo, there can be custom ranges to maximize certain sections of the slider
+    },
+    connect: true,
+    // step : [ctrlObject[prop].step,
+    tooltips: true,
+  });
+
+  customSlider.noUiSlider.on(`update.$\{ctrlObjectName}-$\{prop}`, rangeSliderUpdate);
 };
+
+
+
+let rangeSliderUpdate = function (values, handle, unencoded, tap, positions) {
+  "use strict";
+
+  let controlObject = myp5[`get${this.target.dataset.ctrl_object}`]();
+  let prop = this.target.dataset.prop;
+  console.log(controlObject[prop]);
+
+  console.log(handle);
+  // handle 0 = min, 1 = currentValue, 2 = max
+
+  console.log(`current min : ${controlObject[prop].min}`);
+  console.log(`current val : ${controlObject[prop].currentValue}`);
+  console.log(`current max : ${controlObject[prop].max}`);
+
+  console.log(`handle 0 : ${values[0]}`);
+  console.log(`handle 1 : ${values[1]}`);
+  console.log(`handle 2 : ${values[2]}`);
+
+  controlObject[prop].min = Number(values[0]);
+  controlObject[prop].targetValue =  Number(values[1]);
+  controlObject[prop].max =  Number(values[2]);
+
+  console.log(controlObject[prop]);
+
+};
+
 
 
 /**
  *
  * @param ctrlObject
  * @param prop
- * @param controls
  * @param parentWrapper
  */
-let createRadioToggle = (ctrlObject, prop, controls, parentWrapper) => {
+let createRadioToggle = (ctrlObject, prop, parentWrapper) => {
   "use strict";
 
   if (ctrlObject[prop].attrType === "variable" && ctrlObject[prop].options.length) {
@@ -432,21 +476,21 @@ let createRadioToggle = (ctrlObject, prop, controls, parentWrapper) => {
 
     createLockElement(ctrlObject, prop, label);
 
-    controls[ctrlObjectName][prop] = myp5.createRadio();
+    let radioInput = myp5.createRadio();
 
     for (let o in ctrlObject[prop].options) {
       if (!ctrlObject[prop].options.hasOwnProperty(o)) {
         continue;
       }
 
-      controls[ctrlObjectName][prop].option(ucFirst(ctrlObject[prop].options[o]), ctrlObject[prop].options[o]);
+      radioInput.option(ucFirst(ctrlObject[prop].options[o]), ctrlObject[prop].options[o]);
     }
-    controls[ctrlObjectName][prop].selected(ctrlObject[prop].currentValue);
-    controls[ctrlObjectName][prop].attribute('data-ctrl_object', ctrlObjectName);
-    controls[ctrlObjectName][prop].attribute('class', `radio-input ${ctrlObjectName}-${prop}`);
-    controls[ctrlObjectName][prop].attribute('data-prop', prop);
-    controls[ctrlObjectName][prop].attribute('onchange', 'setRadioValue(this)');
-    controls[ctrlObjectName][prop].parent(inputWrapper);
+    radioInput.selected(ctrlObject[prop].currentValue);
+    radioInput.attribute('data-ctrl_object', ctrlObjectName);
+    radioInput.attribute('class', `radio-input ${ctrlObjectName}-${prop}`);
+    radioInput.attribute('data-prop', prop);
+    radioInput.attribute('onchange', 'setRadioValue(this)');
+    radioInput.parent(inputWrapper);
   }
 };
 
@@ -650,8 +694,9 @@ let resetSettings = (ctrlElement = false) => {
       }
 
       if (ctrlElem[prop].attrType === "numeric") {
-        $(`.range-slider.${ctrlObjectName}-${prop}`)
-          .val(ctrlElem[prop].defaultValue);
+
+        $(`.range-slider.${ctrlObjectName}-${prop}`)[0]
+          .noUiSlider.set([ctrlElem[prop].defaultMin, ctrlElem[prop].defaultValue, ctrlElem[prop].defaultMax]);
       } else if (ctrlElem[prop].attrType === "variable") {
         $(`input.radio-input.${ctrlObjectName}-${prop}`)
           .val([ctrlElem[prop].defaultValue]);
@@ -730,8 +775,8 @@ let randomizeSettings = (ctrlElement = false) => {
 
         rVal = myp5.random(ctrlElem[prop].min, ctrlElem[prop].max);
 
-        $(`.range-slider.${ctrlObjectName}-${prop}`)
-          .val(rVal);
+        $(`.range-slider.${ctrlObjectName}-${prop}`)[0]
+          .noUiSlider.set([null, rVal, null]);
       } else if (ctrlElem[prop].attrType === "variable") {
         optLength = ctrlElem[prop].options.length;
         optIndex = getRandomInt(0, optLength - 1);
