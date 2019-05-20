@@ -73,9 +73,6 @@ $(() => {
  * @param ctrlElements
  * @returns {{}}
  */
-
-// TODO  -  this function is way to damn long
-
 let createDOMControls = (ctrlElements) => {
   "use strict";
 
@@ -131,7 +128,7 @@ let createDOMControls = (ctrlElements) => {
       }
 
       if (ctrlElem[prop].attrType === 'numeric') {
-        createSliderCtrlr(ctrlElem, prop, ctrlElemSettingWrapper);
+        createPropertyControllers(ctrlElem, prop, ctrlElemSettingWrapper);
       }
 
     }
@@ -207,12 +204,16 @@ let addMasterElementControls = (ctrlElem, parent) => {
 
 
 /**
- *
+ *  Create in the DOM inputs that will control a control element in various ways.
+ *  Creates a input boxes to assign keyboard keys for user to play visuals by typing.
+ *  Creates an ability to lock a property so that randomizers and resetter don't affect it
+ *  Creates a range slider for user to change the current properties value real time.
+ *  Creates a dropdown for the user to make a property react to music frequencies
  * @param ctrlObject
  * @param prop
  * @param parentWrapper
  */
-let createSliderCtrlr = (ctrlObject, prop, parentWrapper) => {
+let createPropertyControllers = (ctrlObject, prop, parentWrapper) => {
   "use strict";
 
 
@@ -286,7 +287,7 @@ let setIntroDefaults = () => {
 
 
 /**
- *
+ *  Create buttons in the DOM to play/pause music and also upload audio
  */
 let createAudioCtrls = () => {
   "use strict";
@@ -386,6 +387,8 @@ let createDomSlider = (ctrlObject, prop, inputWrapper) => {
 
   let ctrlObjectName = ctrlObject.constructor.name;
 
+  // todo make step a property of the elements
+  // todo cont. we can make the sliders non-linear if we want  @see https://refreshless.com/nouislider/slider-values/
   let step = 0;
   if (Number.isInteger(ctrlObject[prop].currentValue)) {
     step = 1;
@@ -405,8 +408,10 @@ let createDomSlider = (ctrlObject, prop, inputWrapper) => {
   rangeSlider.attribute('oninput', 'sliderSetValue(this)');
   rangeSlider.parent(inputWrapper);
 
-  let customSlider = $(`.range-slider.${ctrlObjectName}-${prop}`)[0];
 
+  // lets us create a custom slider with multiple handles allowing us to have slider handles for a property's min, max, and current value
+  // @see https://refreshless.com/nouislider
+  let customSlider = $(`.range-slider.${ctrlObjectName}-${prop}`)[0];
   noUiSlider.create(customSlider, {
     start: [ctrlObject[prop].min, ctrlObject[prop].currentValue, ctrlObject[prop].max],
     range: {
@@ -423,7 +428,17 @@ let createDomSlider = (ctrlObject, prop, inputWrapper) => {
 };
 
 
-
+/**
+ * Gets called by noUiSlider on update of the custom range slider.
+ * We set the min, target, and max values for each of the handles in the slider.
+ * Handles : 0 = min; 1 = currentValue; 2 = max;
+ * @see https://refreshless.com/nouislider/slider-read-write/
+ * @param values
+ * @param handle
+ * @param unencoded
+ * @param tap
+ * @param positions
+ */
 let rangeSliderUpdate = function (values, handle, unencoded, tap, positions) {
   "use strict";
 
@@ -453,7 +468,7 @@ let rangeSliderUpdate = function (values, handle, unencoded, tap, positions) {
 
 
 /**
- *
+ * Create in the DOM a radio input for the variable attribute properties.
  * @param ctrlObject
  * @param prop
  * @param parentWrapper
@@ -495,6 +510,11 @@ let createRadioToggle = (ctrlObject, prop, parentWrapper) => {
 };
 
 
+/**
+ * Triggered by an on change even on the radio element.
+ * Sets the object's property value to the selected radio option.
+ * @param inputElem
+ */
 let setRadioValue = (inputElem) => {
   "use strict";
 
@@ -513,7 +533,8 @@ let setRadioValue = (inputElem) => {
 
 
 /**
- *
+ * Create input boxes in the DOM that will control an element when the user presses key board keys.
+ * An input box for the Key to press, and another for the the value that the key triggers.
  * @param ctrlObject
  * @param prop
  * @param parentWrapper
@@ -529,63 +550,36 @@ let createPianoDomInput = (ctrlObject, prop, parentWrapper) => {
 
 
   // input to set which keyboard key plays that element
-  let pianoInput = myp5.createInput();
-  pianoInput.attribute('class', 'keyboard-assigner helper');
-  pianoInput.attribute('title', 'Piano Mode Set Keyboard Key');
-  pianoInput.attribute('data-helper', 'Basically use the keyboard as a piano and type away.  Assign a value to set for property on keypress.  When the key is pressed it will set the element\'s property to the value specified.');
-  pianoInput.attribute('data-ctrl_object', ctrlObjectName);
-  pianoInput.attribute('data-prop', prop);
-  pianoInput.attribute('data-type', 'key-set');
-  pianoInput.parent(pianoWrapper);
-  pianoInput.elt.placeholder = "Assign Key";
-  pianoInput.elt.onchange = setKeyboardControl;
-  pianoInput.elt.maxLength = 1;
+  let pianoInputKey = myp5.createInput();
+  pianoInputKey.attribute('class', 'keyboard-assigner helper');
+  pianoInputKey.attribute('title', 'Piano Mode Set Keyboard Key');
+  pianoInputKey.attribute('data-helper', 'Basically use the keyboard as a piano and type away.  Assign a value to set for property on keypress.  When the key is pressed it will set the element\'s property to the value specified.');
+  pianoInputKey.attribute('data-ctrl_object', ctrlObjectName);
+  pianoInputKey.attribute('data-prop', prop);
+  pianoInputKey.attribute('data-type', 'key-set');
+  pianoInputKey.parent(pianoWrapper);
+  pianoInputKey.elt.placeholder = "Assign Key";
+  pianoInputKey.elt.onchange = setKeyboardControl;
+  pianoInputKey.elt.maxLength = 1;
 
 
   // input to set what the value will be for that element on that key press
-  pianoInput = myp5.createInput(ctrlObject[prop].currentValue.toString(), 'number');
-  pianoInput.value(myp5.random(ctrlObject[prop].min, ctrlObject[prop].max).toFixed(3));
-  pianoInput.addClass('helper');
-  pianoInput.attribute('title', 'Piano Mode Set Keyboard Key Value');
-  pianoInput.attribute('data-helper', ' Basically use the keyboard as a piano and type away.   Assign a value for the element\'s property to go to when its corresponding key is pressed. On key release, the it will go back to the reset value (the value set by the slider).');
-  pianoInput.attribute('data-type', 'value-set');
-  pianoInput.attribute('data-ctrl_object', ctrlObjectName);
-  pianoInput.attribute('data-prop', prop);
-  pianoInput.parent(pianoWrapper);
+  let pianoInputValue = myp5.createInput(ctrlObject[prop].currentValue.toString(), 'number');
+  pianoInputValue.value(myp5.random(ctrlObject[prop].min, ctrlObject[prop].max).toFixed(3));
+  pianoInputValue.addClass('helper');
+  pianoInputValue.attribute('title', 'Piano Mode Set Keyboard Key Value');
+  pianoInputValue.attribute('data-helper', ' Basically use the keyboard as a piano and type away.   Assign a value for the element\'s property to go to when its corresponding key is pressed. On key release, the it will go back to the reset value (the value set by the slider).');
+  pianoInputValue.attribute('data-type', 'value-set');
+  pianoInputValue.attribute('data-ctrl_object', ctrlObjectName);
+  pianoInputValue.attribute('data-prop', prop);
+  pianoInputValue.parent(pianoWrapper);
 
-  pianoInput.elt.max = ctrlObject[prop].max;  // not sure if i want to set a max or min
-  pianoInput.elt.min = ctrlObject[prop].min;  // not sure if i want to set a max or min
-  pianoInput.elt.onchange = setKeyboardControl;
-  pianoInput.elt.step = Number((ctrlObject[prop].max - ctrlObject[prop].min) / 200).toFixed(3);
+  pianoInputValue.elt.max = ctrlObject[prop].max;  // not sure if i want to set a max or min
+  pianoInputValue.elt.min = ctrlObject[prop].min;  // not sure if i want to set a max or min
+  pianoInputValue.elt.onchange = setKeyboardControl;
+  pianoInputValue.elt.step = Number((ctrlObject[prop].max - ctrlObject[prop].min) / 200).toFixed(3);
 };
 
-
-/**
- * Bind the range slider to the display value
- * Called oninput via the html bc the dom elements aren't created until after the dom is ready
- * @param range
- */
-let updateRangeDisplay = (range) => {
-  "use strict";
-  let value = $(range).val();
-  value = Math.round(value * 100) / 100;
-  $(range).parents('.range-slider-wrapper').children('.range-slider-value').html(value);
-};
-
-
-let sliderSetValue = (range) => {
-  "use strict";
-
-  let value = $(range).val();
-  let controlElementName = $(range).data('ctrl_object');
-  let prop = $(range).data('prop');
-  let controlObject = myp5[`get${controlElementName}`]();
-
-  if (controlObject[prop].lockOn === false) {
-    controlObject[prop].resetValue = controlObject[prop].currentValue = Number(value);
-  }
-  updateRangeDisplay(range);
-};
 
 
 let keyboardCtrl = {};
@@ -658,6 +652,13 @@ let setKeyboardControl = (e) => {
 };
 
 
+
+/**
+ * If a Controlable element is passed then, only loop through that.
+ * If no element is passed in then loop through the entire selection of elements.
+ * Go through each of the properties and set the current value to the defaultValue.
+ * @param ctrlElement
+ */
 let resetSettings = (ctrlElement = false) => {
   // "use strict";
 
@@ -724,6 +725,7 @@ let resetSettings = (ctrlElement = false) => {
     }
   }
 };
+
 
 
 /**
@@ -796,6 +798,7 @@ let randomizeSettings = (ctrlElement = false) => {
 };
 
 
+
 /**
  * Turn off and on individual visual elements
  * and change the material design icon state and associated title
@@ -859,6 +862,12 @@ let lockProperty = (ctrlElementName, prop, htmlElem) => {
 };
 
 
+/**
+ * Given a min and max get a whole number (integer) between them.
+ * @param min
+ * @param max
+ * @returns {number}
+ */
 let getRandomInt = (min, max) => {
   "use strict";
   return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
