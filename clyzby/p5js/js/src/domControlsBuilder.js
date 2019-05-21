@@ -444,25 +444,10 @@ let rangeSliderUpdate = function (values, handle, unencoded, tap, positions) {
 
   let controlObject = myp5[`get${this.target.dataset.ctrl_object}`]();
   let prop = this.target.dataset.prop;
-  console.log(controlObject[prop]);
-
-  console.log(handle);
-  // handle 0 = min, 1 = currentValue, 2 = max
-
-  console.log(`current min : ${controlObject[prop].min}`);
-  console.log(`current val : ${controlObject[prop].currentValue}`);
-  console.log(`current max : ${controlObject[prop].max}`);
-
-  console.log(`handle 0 : ${values[0]}`);
-  console.log(`handle 1 : ${values[1]}`);
-  console.log(`handle 2 : ${values[2]}`);
 
   controlObject[prop].min = Number(values[0]);
   controlObject[prop].targetValue =  Number(values[1]);
   controlObject[prop].max =  Number(values[2]);
-
-  console.log(controlObject[prop]);
-
 };
 
 

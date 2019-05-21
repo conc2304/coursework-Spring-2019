@@ -43,7 +43,8 @@ let freqBands = {
   },
 };
 
-// reference - https://tympanus.net/Development/AudioVisualizers/
+
+
 let uploaded = (file) => {
   uploadLoading = true;
   uploadedAudio = myp5.loadSound(file.data, uploadedAudioPlay);
@@ -167,17 +168,6 @@ let applyAudioEnergyValues = (energyValues) => {
   let controlObject;
   let audioValue;
 
-  // // for each of the elements in the control
-  // for (let eqBand in energyValues) {
-  //
-  //   if (eqBand === 0) {
-  //     continue;
-  //   }
-  //
-  //   // console.log(eqBand); // the eqBand index [0-10]
-  //   // console.log(energyValues[eqBand]);
-  // }
-
   let ctrlHandlers = elementPropToFQMap;
   for (let controlElementName in ctrlHandlers) {
     if (!ctrlHandlers.hasOwnProperty(controlElementName)) {
@@ -192,13 +182,51 @@ let applyAudioEnergyValues = (energyValues) => {
 
       let eqBand = ctrlHandlers[controlElementName][ctrlProp];
       // the value in eq band will be somewhere between 0 and 255
-      // we need to scale that between the default min and max value of the element
+      // we need to scale that between the upper and lower bounds of the element
       audioValue = myp5.map(energyValues[eqBand], 0, 255, controlObject[ctrlProp].defaultMin, controlObject[ctrlProp].defaultMax);
 
+      // todo create a knob for this in the dom
+      audioValue = audioValue * controlObject[ctrlProp].audio.gain;
 
-      // todo find a way to make it additive or subtractive rather than replacing the value
       // todo should the lock affect this? should random and reset affect these
-      controlObject[ctrlProp].currentValue = controlObject[ctrlProp].resetValue + Number(audioValue.toFixed(3));
+
+      let setValue;
+      let overBy;
+      switch (controlObject[ctrlProp].audio.responsiveType) {
+                case "loop up":
+          audioValue = audioValue * 0.009;
+          // increase it by how much it went over and then loop from top againgit comm
+          if (controlObject[ctrlProp].currentValue + audioValue > controlObject[ctrlProp].max) {
+            overBy = controlObject[ctrlProp].currentValue + audioValue - controlObject[ctrlProp].max;
+            setValue = controlObject[ctrlProp].min + overBy;
+          } else {
+            setValue = controlObject[ctrlProp].currentValue + audioValue;
+          }
+          break;
+        case "loop down":
+          audioValue = audioValue * 0.009;
+          // decrease it by how much it went under and then loop from top againgit comm
+          if (controlObject[ctrlProp].currentValue - audioValue < controlObject[ctrlProp].min) {
+            overBy = controlObject[ctrlProp].currentValue - audioValue + controlObject[ctrlProp].min;
+            setValue = controlObject[ctrlProp].max - overBy;
+          } else {
+            setValue = controlObject[ctrlProp].currentValue - audioValue;
+          }
+          break;
+        case "subtract":
+          setValue = controlObject[ctrlProp].resetValue - Number(audioValue.toFixed(3));
+          break;
+        case "add":
+        default:
+          setValue = controlObject[ctrlProp].resetValue + Number(audioValue.toFixed(3));
+          break;
+      }
+
+      controlObject[ctrlProp].targetValue = setValue;
+      controlObject[ctrlProp].currentValue = setValue;
     }
   }
 };
+
+
+

@@ -5,7 +5,11 @@
  *        - todo this would be better if we can queue music
  * todo - make a playlist, queue music, if possible get music from Spotify (can it be processed through fft though?)
  * todo - add comments to functions and files
+ *
+ *
  * todo - make audio reactive option additive, subtractive, e
+ *
+ *
  * todo - gain and fall controls for audio reactive (ie how reactive it is to music and by how much will the animation change)
  * todo - make a toggle to spin/rotate the inner and outer waves like the 3D ones
  * todo - make patterns by saving current config and make them triggerable (ie a pattern bank)
@@ -35,9 +39,9 @@ let s = (sketch) => {
     sketch.objects = {};
     sketch.objects.lambo = myp5.loadModel('files/3d_obj/lp670.obj', true);
     sketch.objects.glock = myp5.loadModel('files/3d_obj/Glock 3d.obj', true);
-    // audio = myp5.loadSound('clyzby/p5js/files/audio/CharlestheFirst - Chynna - The Conversation.wav');
     // todo find a way to display the name of the audio file  // hard code the original maybe? parse it out from the end of the file name?
-    audio = myp5.loadSound('/clyzby/p5js/files/audio/PUFF - TSURUDA x HUXLEY ANNE.mp3');
+    audio = myp5.loadSound('/clyzby/p5js/files/audio/CharlestheFirst - Chynna - The Conversation.wav');
+    // audio = myp5.loadSound('/clyzby/p5js/files/audio/PUFF - TSURUDA x HUXLEY ANNE.mp3');
     // audio = myp5.loadSound('clyzby/p5js/files/audio/Pushloop - Deep, Dark & Dangerous Mix 015.mp3');
     audio.pause();
     fft = new p5.FFT();

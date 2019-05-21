@@ -16,10 +16,16 @@ class CenterWave {
       currentValue : 20,
       targetValue : null,
       min : -50,    // this can be edited by the user
-      defaultMin : -100,   //  this is the range within which the user can edit the min and max values
+      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
       max : 500,    // this can be edited by the user
-      defaultMax : 600,   //  this is the range within which the user can edit the min and max values
+      defaultMax : 2000,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
+      audio : {
+        responsiveType : 'loop down',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource : null,
       lockOn : false,
       easingValue : 0.7,
@@ -38,6 +44,12 @@ class CenterWave {
       max : 1,    // this can be edited by the user
       defaultMax : 1,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource : null,
       lockOn : false,
       easingValue : 0.1,
@@ -56,6 +68,12 @@ class CenterWave {
       max : 2000,   // this can be edited by the user
       defaultMax : 2000,    //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource : null,
       lockOn : false,
       easingValue : 0.1,
@@ -74,6 +92,12 @@ class CenterWave {
       max : 10250,    // this can be edited by the user
       defaultMax : 10250,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource : null,
       lockOn : false,
       easingValue : 0.07,
@@ -92,6 +116,12 @@ class CenterWave {
       max : 350,    // this can be edited by the user
       defaultMax : 350,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource : null,
       lockOn : false,
       easingValue : 0.1,
@@ -111,6 +141,12 @@ class CenterWave {
       max : 255,    // this can be edited by the user
       defaultMax : 255,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource : null,
       lockOn : false,
       easingValue : 0.1,
@@ -129,6 +165,12 @@ class CenterWave {
       max : 255,    // this can be edited by the user
       defaultMax : 255,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource : null,
       lockOn : false,
       easingValue : 0.1,
@@ -147,6 +189,12 @@ class CenterWave {
       max : 255,    // this can be edited by the user
       defaultMax : 255,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource : null,
       lockOn : false,
       easingValue : 0.1,
@@ -156,20 +204,6 @@ class CenterWave {
     };
 
 
-    // this.orbitAngle = {
-    //   resetValue : 20,
-    //   currentValue : 20,
-    //   targetValue : null,
-    //   min : -100,
-    //   max : 100,
-    //   attrType : 'numeric',
-    //   triggerSource : null,
-    //   lockOn : false,
-    //   easingValue : 0.07,
-    //   noteHeldEasing: 0.07,
-    //   easingMax : 0,
-    //   easingMin : 0,
-    // };
 
     // painting and rendering attributes
 
@@ -181,7 +215,6 @@ class CenterWave {
       currentValue : 'sin',
       targetValue : null,
       options : ['sin', 'cos', 'tan'],
-      // options : ['sin', 'cos', 'tan', 'orbit'],
       attrType : 'variable',
       lockOn : false,
 

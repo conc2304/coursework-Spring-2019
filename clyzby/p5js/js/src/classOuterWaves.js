@@ -19,6 +19,12 @@ class OuterWaves {
       max: 10, // this can be edited by the user
       defaultMax: 10, // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource: null,
       lockOn: false,
       easingValue: 0.1,
@@ -37,6 +43,12 @@ class OuterWaves {
       max: 200,  // this can be edited by the user
       defaultMax: 200, // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource: null,
       lockOn: false,
       easingValue: 0.05,
@@ -55,6 +67,12 @@ class OuterWaves {
       max: 1,  // this can be edited by the user
       defaultMax: 1, // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource: null,
       lockOn: false,
       easingValue: 0.1,
@@ -74,6 +92,12 @@ class OuterWaves {
       max: 350,  // this can be edited by the user
       defaultMax: 350, // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource: null,
       lockOn: false,
       easingValue: 0.1,
@@ -92,6 +116,12 @@ class OuterWaves {
       max: 150,  // this can be edited by the user
       defaultMax: 150, // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource: null,
       lockOn: false,
       easingValue: null,
@@ -109,6 +139,12 @@ class OuterWaves {
       max: 500,  // this can be edited by the user
       defaultMax: 500, // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource: null,
       lockOn: false,
       easingValue: 0.1,
@@ -127,6 +163,12 @@ class OuterWaves {
       max: 2250, // this can be edited by the user
       defaultMax: 2250, // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource: null,
       lockOn: false,
       easingValue: 0.07,
@@ -146,6 +188,12 @@ class OuterWaves {
       max: 255,  // this can be edited by the user
       defaultMax: 255, // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource: null,
       lockOn: false,
       easingValue: 0.1,
@@ -164,6 +212,12 @@ class OuterWaves {
       max: 255,  // this can be edited by the user
       defaultMax: 255, // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource: null,
       lockOn: false,
       easingValue: 0.1,
@@ -182,6 +236,12 @@ class OuterWaves {
       max: 255,  // this can be edited by the user
       defaultMax: 255, // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
       triggerSource: null,
       lockOn: false,
       easingValue: 0.1,
