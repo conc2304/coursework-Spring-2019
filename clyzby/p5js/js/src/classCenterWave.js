@@ -6,7 +6,7 @@ class CenterWave {
     this.windowHeight = myp5.windowHeight;
     this.waveWidth = myp5.windowWidth + 200;  // have some of it go off the page
     this.origin = 0;
-    this.mute = false;
+    this.bypass = false;
 
     //  Numeric Type Attributes
     this.radius = {
@@ -21,7 +21,7 @@ class CenterWave {
       defaultMax : 2000,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       audio : {
-        responsiveType : 'loop down',
+        responsiveType : 'add',
         responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
         gain : 1,
         fall : 1, // not sure what this will do yet

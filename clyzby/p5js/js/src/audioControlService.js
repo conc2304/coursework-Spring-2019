@@ -222,7 +222,7 @@ let applyAudioEnergyValues = (energyValues) => {
           break;
       }
 
-      controlObject[ctrlProp].targetValue = setValue;
+      // controlObject[ctrlProp].targetValue = setValue;
       controlObject[ctrlProp].currentValue = setValue;
     }
   }

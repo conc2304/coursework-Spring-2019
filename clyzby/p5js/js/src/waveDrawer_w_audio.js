@@ -111,7 +111,7 @@ let s = (sketch) => {
       }
       tempObj =  sketch.ctrlElementsArray[ctrlElement];
       // dont render an object if we have made it not visible it
-      if (tempObj.mute === true) {
+      if (tempObj.bypass === true) {
         continue;
       }
       tempObj.easeInto();

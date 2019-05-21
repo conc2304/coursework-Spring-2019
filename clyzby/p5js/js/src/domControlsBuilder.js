@@ -95,42 +95,42 @@ let createDOMControls = (ctrlElements) => {
     ctrlElem = ctrlElements[ctrlElem];
     let ctrlObjectName = ctrlElem.constructor.name;
     let wrapperID = ctrlObjectName + '-settings';
+    // let wrapperElem = $(`#${wrapperID}`);
+    // console.log(wrapperElem);
 
     // create a div for each of the different control
-    let domCtrl = myp5.createDiv();
-    domCtrl.attribute('id', wrapperID);
-    domCtrl.attribute('class', 'ctrlObject-settings');
-    domCtrl.parent('ctrlObject-control-panel');
-
+    let domCtrl = document.createElement('div');
+    $(domCtrl).attr('id', wrapperID)
+      .addClass('ctrlObject-settings')
+      .appendTo($('#ctrlObject-control-panel'));
 
     // create a button to toggle the settings sliders visibility
-    let button = myp5.createButton(ctrlObjectName, '1');
-    button.style('position', 'relative');
-    button.attribute('id', ctrlObjectName + '-toggle');
-    button.attribute('class', 'settings-toggle-button');
-    button.mousePressed(function () {
-      $('#' + this.html() + "-wrapper").toggleClass('hide'); // p5 makes it so incredibly dumb to get any sort of information
-      $(`#${this.html()}-toggle`).toggleClass('open');
-    });
-    button.parent(wrapperID);
+    let button = document.createElement('button');
+    $(button).css('position', 'relative')
+      .html(ctrlObjectName)
+      .attr('id', ctrlObjectName + '-toggle')
+      .addClass('settings-toggle-button')
+      .mousedown(function () {
+        $(`#${ctrlObjectName}-wrapper`).toggleClass('hide'); // p5 makes it so incredibly dumb to get any sort of information
+        $(`#${ctrlObjectName}-toggle`).toggleClass('open');
+      })
+      .appendTo(domCtrl);
 
-    addMasterElementControls(ctrlElem, wrapperID);
+    addMasterElementControls(ctrlElem, domCtrl);
 
-    let ctrlElemSettingWrapper = myp5.createElement('div');
-    ctrlElemSettingWrapper.attribute('id', `${ctrlObjectName}-wrapper`);
-    ctrlElemSettingWrapper.attribute('class', `hide settings-wrapper`);
-    ctrlElemSettingWrapper.parent(wrapperID);
+    let ctrlElemSettingWrapper = document.createElement('div');
+    $(ctrlElemSettingWrapper).attr('id', `${ctrlObjectName}-wrapper`)
+      .addClass('hide settings-wrapper')
+      .appendTo(domCtrl);
 
 
     for (let prop in ctrlElem) {
       if (!ctrlElem.hasOwnProperty(prop)) {
         continue;
       }
-
       if (ctrlElem[prop].attrType === 'numeric') {
-        createPropertyControllers(ctrlElem, prop, ctrlElemSettingWrapper);
+        createNumericPropertyCtrlr(ctrlElem, prop, ctrlElemSettingWrapper);
       }
-
     }
 
     // loop through again (so that the radios come last in the group)
@@ -150,7 +150,7 @@ let createDOMControls = (ctrlElements) => {
 
 
 /**
- * Create a mute button, a shuffle, and a reset button
+ * Create a bypass button, a shuffle, and a reset button
  * that will affect only the that element
  * @param ctrlElem
  * @param parent
@@ -160,10 +160,10 @@ let addMasterElementControls = (ctrlElem, parent) => {
 
   let ctrlElemName = ctrlElem.constructor.name;
   // parent should be icon wrapper
-  let iconWrapper = myp5.createElement('div');
+  let iconWrapper = document.createElement('div');
   console.log(ctrlElemName);
-  iconWrapper.addClass('icon-wrapper');
-  iconWrapper.parent(parent);
+  $(iconWrapper).addClass('icon-wrapper')
+    .appendTo(parent);
 
 
   let icons = [
@@ -191,13 +191,13 @@ let addMasterElementControls = (ctrlElem, parent) => {
     if (!icons.hasOwnProperty(i)) {
       continue;
     }
-    let icon = myp5.createElement('i');
-    icon.addClass('material-icons md-light helper');
-    icon.html(icons[i].htmlIcon);
-    icon.attribute('title', icons[i].title);
-    icon.attribute('data-helper', icons[i].helper);
-    icon.attribute('onclick', icons[i].onclick);
-    icon.parent(iconWrapper);
+    let icon = document.createElement('i');
+    $(icon).addClass('material-icons md-light helper')
+      .html(icons[i].htmlIcon)
+      .attr('title', icons[i].title)
+      .data('helper', icons[i].helper)
+      .attr('onclick', icons[i].onclick)
+      .appendTo(iconWrapper);
   }
 };
 
@@ -213,7 +213,7 @@ let addMasterElementControls = (ctrlElem, parent) => {
  * @param prop
  * @param parentWrapper
  */
-let createPropertyControllers = (ctrlObject, prop, parentWrapper) => {
+let createNumericPropertyCtrlr = (ctrlObject, prop, parentWrapper) => {
   "use strict";
 
 
@@ -221,19 +221,104 @@ let createPropertyControllers = (ctrlObject, prop, parentWrapper) => {
 
 
     // wrapper to hold individual range sliders
-    let inputWrapper = myp5.createElement('div');
-    inputWrapper.attribute('class', `range-slider-wrapper`);
-    inputWrapper.parent(parentWrapper);
+    let inputWrapper = document.createElement('div');
+    $(inputWrapper).addClass('range-slider-wrapper')
+      .appendTo(parentWrapper);
 
-    let title = myp5.createElement('p', ctrlObject[prop].displayLabel);
-    title.style('position', 'relative')
-      .parent(inputWrapper);
+    let title = document.createElement('p');
+    $(title).html(ctrlObject[prop].displayLabel)
+      .css('position', 'relative')
+      .appendTo(inputWrapper);
 
     createLockElement(ctrlObject, prop, title);
     createPianoDomInput(ctrlObject, prop, inputWrapper);
     createDomSlider(ctrlObject, prop, inputWrapper);
     createFrequencySelector(ctrlObject, prop, inputWrapper);
+    createAudioResponsiveTypeSelector(ctrlObject, prop, inputWrapper);
   }
+};
+
+
+/**
+ *
+ * @param ctrlObject
+ * @param prop
+ * @param parent
+ * @returns {boolean}
+ */
+let createAudioResponsiveTypeSelector = (ctrlObject, prop, parent) => {
+  "use strict";
+
+  let ctrlObjectName = ctrlObject.constructor.name;
+
+  if (!ctrlObject[prop].audio || !ctrlObject[prop].audio.responsiveOptions) {
+    return false;
+  }
+
+  let desc = {
+    add : {
+      label : '+',
+      title : "Addative",
+      helper : "Animate this property to the peak value of the selected audio frequency. Bouncy Bass!",
+    },
+    subtract : {
+      label : '-',
+      title : "Subtractive",
+      helper : "Animate this property to the peak value of the selected audio frequency. Shrinky Dinky like!",
+    },
+    'loop up' : {
+      label : '>',
+      title : "Increment Loop",
+      helper : "Each amplitude reading adds onto the last reading.  Once it hits the maximum it starts again from the minimum. Grow baby, Grow!",
+    },
+    'loop down' : {
+      label : '<',
+      title : "Decrement Loop",
+      helper : "Each amplitude reading subtracts from the last reading.  Once it hits the minimum it starts again from the maximum. Benjamin Button mode.",
+    },
+  };
+
+  // console.log(parent);
+  // let radioWrapper = document.createElement('div');
+  // $(radioWrapper).addClass('audio-radio-wrapper')
+  //   .html('BANANANANNANA')
+  //   .add($(parent)[0]);
+  // console.log($(radioWrapper));
+
+
+  // let radio;
+  // let label;
+  // let labelHtml;
+  // let titleText;
+  // let helperText;
+  // let thisOption;
+  //
+  // let aOptions = ctrlObject[prop].audio.responsiveOptions;
+  //
+  // for (let option in aOptions) {
+  //   if (!aOptions.hasOwnProperty(option)) {
+  //     continue;
+  //   }
+  //
+  //   console.log(`Build Audio Radio - ${ctrlObjectName}-${prop}`);
+  //   thisOption = aOptions[option];
+  //   labelHtml = desc[thisOption].label;
+  //   titleText = desc[thisOption].title;
+  //   helperText = desc[thisOption].helper;
+  //
+  //   let radio = $('<input type="radio" name="`${ctrlObjectName}-${prop}-responsiveType`" id="`${ctrlObjectName}-${prop}-responsiveType`"/>');
+  //   radio.addClass('audio-responsive-selector')
+  //     .appendTo(radioWrapper);
+  //
+  //
+  //   let label = $('<label for="`${ctrlObjectName}-${prop}-responsiveType`"></label>');
+  //   label.addClass('audio-responsive-selector helper')
+  //     .html(labelHtml)
+  //     .attr('title', titleText)
+  //     .data('helper', helperText)
+  //     .appendTo(radioWrapper);
+  // }
+
 };
 
 
@@ -331,21 +416,26 @@ let createAudioCtrls = () => {
 let createFrequencySelector = (ctrlObject, prop, inputWrapper) => {
   "use strict";
 
+  if (inputWrapper.elt) {
+  inputWrapper = $(inputWrapper.elt);
+  }
+
   let ctrlObjectName = ctrlObject.constructor.name;
-  let selectWrap = myp5.createElement('div');
-  selectWrap.addClass('custom-select-wrapper');
+  let selectWrap = document.createElement('div');
+  $(selectWrap).addClass('custom-select-wrapper');
 
-  let rangeList = myp5.createElement("select");
-  rangeList.addClass("freq-selector helper");
-  rangeList.attribute('data-ctrl_object', ctrlObjectName);
-  rangeList.attribute('data-prop', prop);
-  rangeList.attribute('data-helper', 'Make this element property audio reactive.  Select a frequency range from the dropdown to make it react to the music\'s frequency levels.');
-  rangeList.attribute('title', 'Audio Reactive Settings');
-  rangeList.elt.onchange = setAudioCtrl;
+  let rangeList = document.createElement("select");
+  $(rangeList).addClass("freq-selector helper")
+    .data('ctrl_object', ctrlObjectName)
+    .data('prop', prop)
+    .data('helper', 'Make this element property audio reactive.  Select a frequency range from the dropdown to make it react to the music\'s frequency levels.')
+    .attr('title', 'Audio Reactive Settings')
 
-  let option = myp5.createElement('option');
-  option.html(`Select Audio Frequency &#8675`);
-  option.parent(rangeList);
+  $(rangeList).on("change", setAudioCtrl);
+
+  let option = document.createElement('option');
+  $(option).html(`Select Audio Frequency &#8675`)
+    .appendTo(rangeList);
 
   for (let i in freqBands) {
     if (!freqBands.hasOwnProperty(i)) {
@@ -354,25 +444,25 @@ let createFrequencySelector = (ctrlObject, prop, inputWrapper) => {
 
     let band = freqBands[i];
 
-    let optGroup = myp5.createElement('optgroup');
-    optGroup.attribute('label', band.optGroup);
+    let optGroup = document.createElement('optgroup');
+    $(optGroup).attr('label', band.optGroup);
 
     for (let j in  band.ranges) {
       if (!band.ranges.hasOwnProperty(j)) {
         continue;
       }
 
-      let option = myp5.createElement('option');
-      option.html(`${band.ranges[j][0]} - ${band.ranges[j][1]} Hz`);
-      option.attribute('data-lower-bound', band.ranges[j][0]);
-      option.attribute('data-upper-bound', band.ranges[j][1]);
-      option.parent(optGroup);
+      let option = document.createElement('option');
+      $(option).html(`${band.ranges[j][0]} - ${band.ranges[j][1]} Hz`)
+        .data('lower-bound', band.ranges[j][0])
+        .data('upper-bound', band.ranges[j][1])
+        .appendTo(optGroup);
     }
-    optGroup.parent(rangeList);
+    $(optGroup).appendTo(rangeList);
   }
 
-  rangeList.parent(selectWrap);
-  selectWrap.parent(inputWrapper);
+  $(rangeList).appendTo(selectWrap);
+  $(selectWrap).appendTo(inputWrapper);
 };
 
 
@@ -399,19 +489,22 @@ let createDomSlider = (ctrlObject, prop, inputWrapper) => {
   }
 
   // slider to control the individual property
-  let rangeSlider = myp5.createElement('div');
-  rangeSlider.addClass(`range-slider ${ctrlObjectName}-${prop} helper`);
-  rangeSlider.attribute('data-ctrl_object', ctrlObjectName);
-  rangeSlider.attribute('data-prop', prop);
-  rangeSlider.attribute('title', 'Set element property');
-  rangeSlider.attribute('data-helper', 'Changes the current value of this property. It also sets the reset value for key press release.  When you release a bound keystroke, the value will release to this value.');
-  rangeSlider.attribute('oninput', 'sliderSetValue(this)');
-  rangeSlider.parent(inputWrapper);
+  let rangeSlider = document.createElement('div');
+  $(rangeSlider).addClass(`range-slider ${ctrlObjectName}-${prop} helper`)
+    .data('ctrl_object', ctrlObjectName)
+    .data('prop', prop)
+    .data('helper', 'Changes the current value of this property. It also sets the reset value for key press release.  When you release a bound keystroke, the value will release to this value.')
+    .attr('title', 'Set element property')
+    // .attr('oninput', 'sliderSetValue(this)')
+    .appendTo(inputWrapper);
+
+
 
 
   // lets us create a custom slider with multiple handles allowing us to have slider handles for a property's min, max, and current value
   // @see https://refreshless.com/nouislider
   let customSlider = $(`.range-slider.${ctrlObjectName}-${prop}`)[0];
+
   noUiSlider.create(customSlider, {
     start: [ctrlObject[prop].min, ctrlObject[prop].currentValue, ctrlObject[prop].max],
     range: {
@@ -442,8 +535,9 @@ let createDomSlider = (ctrlObject, prop, inputWrapper) => {
 let rangeSliderUpdate = function (values, handle, unencoded, tap, positions) {
   "use strict";
 
-  let controlObject = myp5[`get${this.target.dataset.ctrl_object}`]();
-  let prop = this.target.dataset.prop;
+  let ctrlObjectName = $(this.target).data('ctrl_object');
+  let controlObject = myp5[`get${ctrlObjectName}`]();
+  let prop = $(this.target).data('prop');
 
   controlObject[prop].min = Number(values[0]);
   controlObject[prop].targetValue =  Number(values[1]);
@@ -466,31 +560,46 @@ let createRadioToggle = (ctrlObject, prop, parentWrapper) => {
     let ctrlObjectName = ctrlObject.constructor.name;
 
 
-    let inputWrapper = myp5.createElement('div');
-    inputWrapper.attribute('class', `radio-option-wrap ${ctrlObjectName}-${prop}`);
-    inputWrapper.parent(parentWrapper);
+    let inputWrapper = document.createElement('div');
+    $(inputWrapper).addClass(`radio-option-wrap ${ctrlObjectName}-${prop}`)
+      .appendTo(parentWrapper);
 
-    let label = myp5.createElement('p', ctrlObject[prop].displayLabel);
-    label.style('position', 'relative');
-    label.parent(inputWrapper);
+    let label = document.createElement('p');
+    $(label).css('position', 'relative')
+      .html(ctrlObject[prop].displayLabel)
+      .appendTo(inputWrapper);
 
     createLockElement(ctrlObject, prop, label);
 
-    let radioInput = myp5.createRadio();
-
+    let optionWrapper;
+    let radioInput;
+    let radioLabel;
     for (let o in ctrlObject[prop].options) {
       if (!ctrlObject[prop].options.hasOwnProperty(o)) {
         continue;
       }
 
-      radioInput.option(ucFirst(ctrlObject[prop].options[o]), ctrlObject[prop].options[o]);
+      optionWrapper = document.createElement('div');
+      $(optionWrapper).addClass("radio-option-wrapper")
+        .appendTo(parentWrapper);
+
+      radioInput = $('<input type="radio" onchange="setRadioValue(this)">');
+      radioInput.addClass(`radio-input ${ctrlObjectName}-${prop}`)
+        .attr('id', `${ctrlObjectName}-${prop}-radio`)
+        .attr('name', `${ctrlObjectName}-${prop}-radio`)
+        .val(ctrlObject[prop].options[o])
+        .data('ctrl_object', ctrlObjectName)
+        .data('prop', prop)
+        .appendTo(optionWrapper);
+
+      if (ctrlObject[prop].options[o] === ctrlObject[prop].currentValue) {
+        radioInput.prop('checked', true);
+      }
+
+      radioLabel = $('<label></label>');
+      radioLabel.html(ucFirst(ctrlObject[prop].options[o]))
+        .appendTo(optionWrapper);
     }
-    radioInput.selected(ctrlObject[prop].currentValue);
-    radioInput.attribute('data-ctrl_object', ctrlObjectName);
-    radioInput.attribute('class', `radio-input ${ctrlObjectName}-${prop}`);
-    radioInput.attribute('data-prop', prop);
-    radioInput.attribute('onchange', 'setRadioValue(this)');
-    radioInput.parent(inputWrapper);
   }
 };
 
@@ -787,7 +896,7 @@ let randomizeSettings = (ctrlElement = false) => {
 /**
  * Turn off and on individual visual elements
  * and change the material design icon state and associated title
- * Called by onclick of ctrl Elements' mute icon
+ * Called by onclick of ctrl Elements' bypass icon
  * @param ctrlElementName
  * @param htmlElem
  */
@@ -795,7 +904,7 @@ let toggleVisibility = (ctrlElementName, htmlElem) => {
   "use strict";
 
   let controlObject = myp5[`get${ctrlElementName}`]();
-  controlObject.mute = !controlObject.mute;
+  controlObject.bypass = !controlObject.bypass;
 
   $(htmlElem).toggleClass('inactive');
 
@@ -807,6 +916,8 @@ let toggleVisibility = (ctrlElementName, htmlElem) => {
     $(htmlElem).html('visibility');
   }
 };
+
+
 
 /**
  * Lock the property so that the values can't be changed
