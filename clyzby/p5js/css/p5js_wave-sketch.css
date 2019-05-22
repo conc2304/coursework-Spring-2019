@@ -20,6 +20,24 @@ body {
   clear: both;
 }
 
+
+#help-section .help-inner {
+  position: relative;
+  display: inline-block;
+}
+
+#help-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  color: #fff;
+  line-height: 14px;
+  display: inline-block;
+}
+
+.helper {
+  z-index: 5;
+}
+
 #settings-menu::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
   background-color: #F5F5F5;
@@ -380,6 +398,17 @@ label.radio-input:after {
   cursor: pointer;
   top: -8px;
 }
+
+#settings-menu .noUi-handle:hover {
+  border-color: #0e83cd;
+}
+
+#settings-menu .noUi-handle:active, #settings-menu .noUi-handle:focus {
+  border-color: #0eb1ff;
+  outline: none;
+  border-width: 2px;
+}
+
 #settings-menu .noUi-handle[data-handle="1"] {
   width: 30px;
   height: 30px;
@@ -578,19 +607,4 @@ input[type="radio"].radio-input, label.radio-input {
   display: none;
 }
 
-#help-section .help-inner {
-  position: relative;
-  display: inline-block;
-}
 
-#help-text {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
-  color: #fff;
-  line-height: 14px;
-  display: inline-block;
-}
-
-.helper {
-  z-index: 5;
-}

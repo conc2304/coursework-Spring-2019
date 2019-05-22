@@ -334,12 +334,13 @@ let createLockElement = (ctrlObject, prop, parentElem) => {
 
   let ctrlElemName = ctrlObject.constructor.name;
 
-  let lockIcon = myp5.createElement('i', 'lock_open');
-  lockIcon.addClass(`material-icons md-light ${ctrlElemName}-${prop} helper`);
-  lockIcon.attribute('data-helper', 'Lock this property\'s settings from being set, randomized, or reset. Only the global reset button will override a locked property.');
-  lockIcon.attribute('title', 'Settings Lock');
-  lockIcon.attribute('onclick', `lockProperty('${ctrlElemName}', '${prop}', this)`);
-  lockIcon.parent(parentElem);
+  let lockIcon = document.createElement('i');
+  $(lockIcon).html('lock_open')
+    .addClass(`material-icons md-light ${ctrlElemName}-${prop} helper`)
+    .data('helper', 'Lock this property\'s settings from being set, randomized, or reset. Only the global reset button will override a locked property.')
+    .attr('title', 'Settings Lock')
+    .on('click', lockProperty(ctrlElemName, prop, this))
+    .appendTo(parentElem);
 };
 
 
@@ -351,6 +352,8 @@ let createLockElement = (ctrlObject, prop, parentElem) => {
 let setIntroDefaults = () => {
   "use strict";
 
+
+  // todo maybe add defaults for each of the control objects
   let defaultValues = ['Q', 'W', 'E', 'R', 'T', 'Y'];
 
   let i = 0;
@@ -358,7 +361,7 @@ let setIntroDefaults = () => {
     // console.log(this);
     $(this)
       .val(defaultValues[i])
-      .trigger('change');
+      .trigger('input');
 
     i++;
 
@@ -376,19 +379,20 @@ let setIntroDefaults = () => {
  */
 let createAudioCtrls = () => {
   "use strict";
-  let audioWrapperID = "audio-control-panel";
+  let audioWrapperID = "#audio-control-panel";
 
 
-  let playButton = myp5.createButton("Play");
-  playButton.parent(audioWrapperID);
-  playButton.addClass("audio-button");
-  playButton.attribute('id', 'play-audio');
-  playButton.mousePressed(toggleAudio);
+  let playButton = document.createElement("div");
+  $(playButton).html("Play")
+    .addClass("audio-button")
+    .attr('id', 'play-audio')
+    .on("click", toggleAudio)
+    .appendTo(audioWrapperID)
 
-  let tooltip = myp5.createElement('span');
-  tooltip.addClass('tooltip');
-  tooltip.html('There is a built in audio file.<br>But you can also upload your own!');
-  tooltip.parent(audioWrapperID);
+  let tooltip = document.createElement('span');
+  $(tooltip).addClass('tooltip')
+    .html('There is a built in audio file.<br>But you can also upload your own!')
+    .appendTo(audioWrapperID);
 
 
   // we will hide the default file input bc its ugly and use the label
@@ -398,12 +402,13 @@ let createAudioCtrls = () => {
   uploadButton.attribute('id', 'upload-file');
   uploadButton.attribute('name', 'upload-file');
 
-  let label = myp5.createElement('label');
-  label.html('Upload Audio');
-  label.attribute('for', 'upload-file');
-  label.attribute('id', 'upload-file-label');
-  label.addClass("audio-button");
-  label.parent(audioWrapperID);
+  // instead we will see the label for it and labels have the same function as the actual input
+  let label = document.createElement('label');
+  $(label).html('Upload Audio')
+    .attr('for', 'upload-file')
+    .attr('id', 'upload-file-label')
+    .addClass("audio-button")
+    .appendTo(audioWrapperID);
 };
 
 
@@ -638,40 +643,41 @@ let createPianoDomInput = (ctrlObject, prop, parentWrapper) => {
 
   let ctrlObjectName = ctrlObject.constructor.name;
 
-  let pianoWrapper = myp5.createElement('div');
-  pianoWrapper.addClass(`piano-mode`);
-  pianoWrapper.parent(parentWrapper);
+  let pianoWrapper = document.createElement('div');
+  $(pianoWrapper).addClass(`piano-mode`)
+    .appendTo(parentWrapper);
 
 
   // input to set which keyboard key plays that element
-  let pianoInputKey = myp5.createInput();
-  pianoInputKey.attribute('class', 'keyboard-assigner helper');
-  pianoInputKey.attribute('title', 'Piano Mode Set Keyboard Key');
-  pianoInputKey.attribute('data-helper', 'Basically use the keyboard as a piano and type away.  Assign a value to set for property on keypress.  When the key is pressed it will set the element\'s property to the value specified.');
-  pianoInputKey.attribute('data-ctrl_object', ctrlObjectName);
-  pianoInputKey.attribute('data-prop', prop);
-  pianoInputKey.attribute('data-type', 'key-set');
-  pianoInputKey.parent(pianoWrapper);
-  pianoInputKey.elt.placeholder = "Assign Key";
-  pianoInputKey.elt.onchange = setKeyboardControl;
-  pianoInputKey.elt.maxLength = 1;
+  let pianoInputKey = document.createElement('input');
+  pianoInputKey.type = 'text';
+  $(pianoInputKey).addClass('keyboard-assigner helper')
+    .attr('title', 'Piano Mode Set Keyboard Key')
+    .attr('placeholder', 'Assign Key')
+    .attr('maxLength', '1')
+    .data('helper', 'Basically use the keyboard as a piano and type away.  Assign a value to set for property on keypress.  When the key is pressed it will set the element\'s property to the value specified.')
+    .data('ctrl_object', ctrlObjectName)
+    .data('prop', prop)
+    .data('type', 'key-set')
+    .on("input", setKeyboardControl)
+    .appendTo(pianoWrapper);
 
 
   // input to set what the value will be for that element on that key press
-  let pianoInputValue = myp5.createInput(ctrlObject[prop].currentValue.toString(), 'number');
-  pianoInputValue.value(myp5.random(ctrlObject[prop].min, ctrlObject[prop].max).toFixed(3));
-  pianoInputValue.addClass('helper');
-  pianoInputValue.attribute('title', 'Piano Mode Set Keyboard Key Value');
-  pianoInputValue.attribute('data-helper', ' Basically use the keyboard as a piano and type away.   Assign a value for the element\'s property to go to when its corresponding key is pressed. On key release, the it will go back to the reset value (the value set by the slider).');
-  pianoInputValue.attribute('data-type', 'value-set');
-  pianoInputValue.attribute('data-ctrl_object', ctrlObjectName);
-  pianoInputValue.attribute('data-prop', prop);
-  pianoInputValue.parent(pianoWrapper);
-
-  pianoInputValue.elt.max = ctrlObject[prop].max;  // not sure if i want to set a max or min
-  pianoInputValue.elt.min = ctrlObject[prop].min;  // not sure if i want to set a max or min
-  pianoInputValue.elt.onchange = setKeyboardControl;
-  pianoInputValue.elt.step = Number((ctrlObject[prop].max - ctrlObject[prop].min) / 200).toFixed(3);
+  let pianoInputValue = document.createElement('input');
+  pianoInputValue.type = 'number';
+  $(pianoInputValue).val(myp5.random(ctrlObject[prop].min, ctrlObject[prop].max).toFixed(3))
+    .attr('max', ctrlObject[prop].max)
+    .attr('min', ctrlObject[prop].min)
+    .attr('step', Number((ctrlObject[prop].max - ctrlObject[prop].min) / 200).toFixed(3))
+    .attr('title', 'Piano Mode Set Keyboard Key Value')
+    .data('helper', ' Basically use the keyboard as a piano and type away.   Assign a value for the element\'s property to go to when its corresponding key is pressed. On key release, the it will go back to the reset value (the value set by the slider).')
+    .data('type', 'value-set')
+    .data('ctrl_object', ctrlObjectName)
+    .data('prop', prop)
+    .addClass('helper')
+    .on("input", setKeyboardControl)
+    .appendTo(pianoWrapper);
 };
 
 
@@ -687,10 +693,12 @@ let setKeyboardControl = (e) => {
   "use strict";
   // console.log(e);
 
+
+  //todo reassigning a key is not resetting the value
   let inputValue = e.target.value;
-  let type = e.target.dataset.type;
-  let ctrlObjectName = e.target.dataset.ctrl_object;
-  let property = e.target.dataset.prop;
+  let type = $(e.target).data('type');
+  let ctrlObjectName = $(e.target).data('ctrl_object');
+  let property = $(e.target).data('prop');
   let charCode;
   let propValue;
 
@@ -741,8 +749,8 @@ let setKeyboardControl = (e) => {
     }
   }
 
-  // console.log(keyboardCtrl);
-  // console.log(ctrlElemPropToKeyMap);
+  console.log(keyboardCtrl);
+  console.log(ctrlElemPropToKeyMap);
 };
 
 
