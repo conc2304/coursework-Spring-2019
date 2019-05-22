@@ -278,46 +278,43 @@ let createAudioResponsiveTypeSelector = (ctrlObject, prop, parent) => {
     },
   };
 
-  // console.log(parent);
-  // let radioWrapper = document.createElement('div');
-  // $(radioWrapper).addClass('audio-radio-wrapper')
-  //   .html('BANANANANNANA')
-  //   .add($(parent)[0]);
-  // console.log($(radioWrapper));
+  console.log(parent);
+  let radioWrapper = document.createElement('div');
+  $(radioWrapper).addClass('audio-radio-wrapper')
+    .appendTo(parent);
+
+  let radio;
+  let label;
+  let labelHtml;
+  let titleText;
+  let helperText;
+  let thisOption;
+
+  let aOptions = ctrlObject[prop].audio.responsiveOptions;
+
+  for (let option in aOptions) {
+    if (!aOptions.hasOwnProperty(option)) {
+      continue;
+    }
+
+    console.log(`Build Audio Radio - ${ctrlObjectName}-${prop}`);
+    thisOption = aOptions[option];
+    labelHtml = desc[thisOption].label;
+    titleText = desc[thisOption].title;
+    helperText = desc[thisOption].helper;
+
+    let radio = $('<input type="radio" name="`${ctrlObjectName}-${prop}-responsiveType`" id="`${ctrlObjectName}-${prop}-responsiveType`"/>');
+    radio.addClass('audio-responsive-selector')
+      .appendTo(radioWrapper);
 
 
-  // let radio;
-  // let label;
-  // let labelHtml;
-  // let titleText;
-  // let helperText;
-  // let thisOption;
-  //
-  // let aOptions = ctrlObject[prop].audio.responsiveOptions;
-  //
-  // for (let option in aOptions) {
-  //   if (!aOptions.hasOwnProperty(option)) {
-  //     continue;
-  //   }
-  //
-  //   console.log(`Build Audio Radio - ${ctrlObjectName}-${prop}`);
-  //   thisOption = aOptions[option];
-  //   labelHtml = desc[thisOption].label;
-  //   titleText = desc[thisOption].title;
-  //   helperText = desc[thisOption].helper;
-  //
-  //   let radio = $('<input type="radio" name="`${ctrlObjectName}-${prop}-responsiveType`" id="`${ctrlObjectName}-${prop}-responsiveType`"/>');
-  //   radio.addClass('audio-responsive-selector')
-  //     .appendTo(radioWrapper);
-  //
-  //
-  //   let label = $('<label for="`${ctrlObjectName}-${prop}-responsiveType`"></label>');
-  //   label.addClass('audio-responsive-selector helper')
-  //     .html(labelHtml)
-  //     .attr('title', titleText)
-  //     .data('helper', helperText)
-  //     .appendTo(radioWrapper);
-  // }
+    let label = $('<label for="`${ctrlObjectName}-${prop}-responsiveType`"></label>');
+    label.addClass('audio-responsive-selector helper')
+      .html(labelHtml)
+      .attr('title', titleText)
+      .data('helper', helperText)
+      .appendTo(radioWrapper);
+  }
 
 };
 
