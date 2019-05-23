@@ -704,7 +704,6 @@ let setKeyboardControl = (e) => {
   // console.log(e);
 
 
-  //todo reassigning a key is not resetting the value
   let inputValue = e.target.value;
   let type = $(e.target).data('type');
   let ctrlObjectName = $(e.target).data('ctrl_object');

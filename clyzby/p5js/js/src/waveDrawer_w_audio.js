@@ -19,7 +19,6 @@
  */
 
 
-// TODO  things that are borken/reset: randomize, variable type radio buttons, audio responsive type radio
 
 
 let audio;
