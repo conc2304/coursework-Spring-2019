@@ -101,6 +101,9 @@ let s = (sketch) => {
     applyAudioEnergyValues(fftAnalysis);
 
     playKeyboardKeys();
+    sketch.keyReleased = () => {
+      playPianoKey(sketch.keyCode, false);
+    };
 
     for (let ctrlElement in sketch.ctrlElementsArray) {
       if (!sketch.ctrlElementsArray.hasOwnProperty(ctrlElement)) {

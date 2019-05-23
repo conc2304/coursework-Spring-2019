@@ -237,8 +237,8 @@ let createNumericPropertyCtrlr = (ctrlObject, prop, parentWrapper) => {
     createLockElement(ctrlObject, prop, title);
     createPianoDomInput(ctrlObject, prop, inputWrapper);
     createDomSlider(ctrlObject, prop, inputWrapper);
-    createFrequencySelector(ctrlObject, prop, inputWrapper);
     createAudioResponsiveTypeSelector(ctrlObject, prop, inputWrapper);
+    createFrequencySelector(ctrlObject, prop, inputWrapper);
   }
 };
 
@@ -281,6 +281,11 @@ let createAudioResponsiveTypeSelector = (ctrlObject, prop, parent) => {
       title : "Decrement Loop",
       helper : "Each amplitude reading subtracts from the last reading.  Once it hits the minimum it starts again from the maximum. Benjamin Button mode.",
     },
+    'infinite' : {
+      label : '∞',
+      title : "Infinite Loop",
+      helper : "Each amplitude reading add with out end.",
+    }
   };
 
   let radioWrapper = document.createElement('div');
@@ -298,6 +303,7 @@ let createAudioResponsiveTypeSelector = (ctrlObject, prop, parent) => {
 
   for (let option in aOptions) {
     if (!aOptions.hasOwnProperty(option)) {
+      console.log('skipping');
       continue;
     }
 
@@ -546,14 +552,25 @@ let createDomSlider = (ctrlObject, prop, inputWrapper) => {
 let rangeSliderUpdate = function (values, handle, unencoded, tap, positions) {
   "use strict";
 
+  // console.log(handle);
   let ctrlObjectName = $(this.target).data('ctrl_object');
   let controlObject = myp5[`get${ctrlObjectName}`]();
   let prop = $(this.target).data('prop');
 
-  controlObject[prop].min = Number(values[0]);
-  controlObject[prop].currentValue =  Number(values[1]);
-  controlObject[prop].resetValue =  Number(values[1]);
-  controlObject[prop].max =  Number(values[2]);
+
+  switch (handle) {
+    case 0:
+      controlObject[prop].min = Number(values[0]);
+      break;
+    case 1:
+      controlObject[prop].targetValue = Number(values[1]);
+      controlObject[prop].currentValue = Number(values[1]);
+      controlObject[prop].resetValue = Number(values[1]);
+      break;
+    case 2:
+      controlObject[prop].max = Number(values[2]);
+      break;
+  }
 };
 
 
@@ -626,14 +643,14 @@ let createRadioToggle = (ctrlObject, prop, parentWrapper) => {
  */
 let setRadioValue = (inputElem) => {
   "use strict";
-
+console.log(inputElem);
   let value = $(inputElem).val();
   let controlElementName = $(inputElem).data('ctrl_object');
   let prop = $(inputElem).data('prop');
 
   let controlObject = myp5[`get${controlElementName}`]();
   if (controlObject[prop].lockOn === false) {
-    controlObject[prop].targetValue = value;
+    controlObject[prop].currentValue = value;
   }
 };
 
@@ -803,13 +820,19 @@ let resetSettings = (ctrlElement = false) => {
         continue;
       }
 
+      if (ctrlElem[prop].lockOn === true) {
+        continue;
+      }
+
       if (ctrlElem[prop].attrType === "numeric") {
 
         $(`.range-slider.${ctrlObjectName}-${prop}`)[0]
           .noUiSlider.set([ctrlElem[prop].defaultMin, ctrlElem[prop].defaultValue, ctrlElem[prop].defaultMax]);
+        ctrlElem[prop].targetValue = ctrlElem[prop].defaultValue;
       } else if (ctrlElem[prop].attrType === "variable") {
         $(`input.radio-input.${ctrlObjectName}-${prop}`)
           .val([ctrlElem[prop].defaultValue]);
+        ctrlElem[prop].currentValue = ctrlElem[prop].defaultValue;
       }
 
       if (globalReset === true) {
@@ -826,10 +849,6 @@ let resetSettings = (ctrlElement = false) => {
           $(this).prop('disabled', false);
         });
 
-      }
-
-      if (ctrlElem[prop].lockOn === false) {
-        ctrlElem[prop].targetValue = ctrlElem[prop].defaultValue;
       }
     }
   }
@@ -889,11 +908,15 @@ let randomizeSettings = (ctrlElement = false) => {
         $(`.range-slider.${ctrlObjectName}-${prop}`)[0]
           .noUiSlider.set([null, rVal, null]);
 
+        ctrlElem[prop].targetValue = rVal;
+
       } else if (ctrlElem[prop].attrType === "variable") {
         optLength = ctrlElem[prop].options.length;
         optIndex = getRandomInt(0, optLength - 1);
         rVal = ctrlElem[prop].options[optIndex];
         $(`input.radio-input.${ctrlObjectName}-${prop}`).val([rVal]);
+        ctrlElem[prop].currentValue = rVal;
+
 
         if (typeof(rVal) === "undefined") {
           console.log('stop');
@@ -901,7 +924,6 @@ let randomizeSettings = (ctrlElement = false) => {
       }
 
       if (ctrlElem[prop].lockOn === false) {
-        ctrlElem[prop].targetValue = rVal;
       }
     }
   }

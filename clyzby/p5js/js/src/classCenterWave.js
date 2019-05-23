@@ -8,6 +8,9 @@ class CenterWave {
     this.origin = 0;
     this.bypass = false;
 
+    this.shake = false;
+    this.shakeGain = 0.009;  // should be make this a dial/ controllable by button
+
     //  Numeric Type Attributes
     this.radius = {
       displayLabel : 'Size',
@@ -280,6 +283,11 @@ let slider =
     for (let x = 0; x < this.yPoints.length; x++) {
       let xPos = x * this.xSpacing.currentValue - this.windowWidth/2;
       let yPos = myp5.height/2 + this.yPoints[x] - this.windowHeight/2;
+
+      if (this.shake === true) {
+        xPos +=  myp5.noise(xPos) / this.noiseGain;
+        yPos +=  myp5.noise(yPos) / this.noiseGain;
+      }
 
       this.renderShape(xPos, yPos, this.radius.currentValue);
     }

@@ -217,6 +217,7 @@ i.material-icons:hover {
 
 .settings-wrapper > div {
   margin-top: 20px;
+  text-align: center;
 }
 
 #settings-menu p, #settings-menu span {
@@ -345,8 +346,13 @@ i.material-icons:hover {
   border: 3px solid #0e83cd;
 }
 
-.radio-input-wrapper {
+.settings-wrapper .radio-input-wrapper {
   display: block;
+  text-align: initial;
+}
+
+.radio-option-wrapper {
+  display: inline-block;
 }
 
 label.radio-input:after {
@@ -521,10 +527,15 @@ label.radio-input:after {
 
 
 
+.frequency-selector-wrapper {
+  display: block;
+  text-align: center;
+}
+
 /****  Audio Responsive Controls ****/
 .frequency-selector-wrapper, .audio-radio-wrapper {
-  display: inline-block;
-  vertical-align: middle;
+  /*margin: 10px;*/
+  /*display: block;*/
 }
 
 .frequency-selector-wrapper select {
@@ -557,10 +568,11 @@ label.radio-input:after {
 
 .audio-radio-wrapper {
   border: solid #0e83cd 1px;
-  float: right;
+  /*float: right;*/
   overflow: hidden;
   margin: 3px 0;
   border-radius: 10px;
+  display: inline-block;
 }
 
 .audio-radio-wrapper:hover {

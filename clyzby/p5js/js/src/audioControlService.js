@@ -1,42 +1,40 @@
-
-
 let uploadLoading = false;
 let uploadedAudio;
 // let audio;
 
 // const FREQ_RANGES = {
 let freqBands = {
-  low : {
-    optGroup : 'Low',
-    ranges : [
+  low: {
+    optGroup: 'Low',
+    ranges: [
       [32, 64],
     ]
   },
-  midLow : {
-    optGroup : 'Mid - Low',
-    ranges : [
+  midLow: {
+    optGroup: 'Mid - Low',
+    ranges: [
       [64, 125],
       [125, 250],
     ]
   },
-  mid : {
-    optGroup : 'Mid',
-    ranges : [
+  mid: {
+    optGroup: 'Mid',
+    ranges: [
       [250, 500],
       [500, 1000],
       [1000, 2000],
     ]
   },
-  midHigh : {
-    optGroup : 'Mid - High',
-    ranges : [
+  midHigh: {
+    optGroup: 'Mid - High',
+    ranges: [
       [2000, 4000],
       [4000, 8000],
     ]
   },
-  high : {
-    optGroup : 'High',
-    ranges : [
+  high: {
+    optGroup: 'High',
+    ranges: [
       [8000, 16000],
       [16000, 22000],  // fft analysis breaks at 23,000k hz
     ]
@@ -72,7 +70,6 @@ let uploadedAudioPlay = () => {
 };
 
 
-
 /**
  * Stop and play the audio file
  * and change the display of the pause/play button
@@ -91,7 +88,6 @@ let toggleAudio = () => {
 // end reference
 
 
-
 /**
  * Given each eq band, assign the energy levels for each band to that group
  * to be applied to elements that respond to each of those frequencies
@@ -107,7 +103,7 @@ let get10BandEnergy = (fft) => {
   fftAnalysis[0] = 0;  // account for the default text 'Frequency Ranges'
 
   let range;
-  if(freqBands) {
+  if (freqBands) {
     for (let i in freqBands) {
       if (!freqBands.hasOwnProperty(i)) {
         continue;
@@ -126,7 +122,6 @@ let get10BandEnergy = (fft) => {
 
   return fftAnalysis;
 };
-
 
 
 let audioCtrl = {};
@@ -150,7 +145,7 @@ let setAudioCtrl = (e) => {
     audioCtrl[value] = audioCtrl[value] || {};
     audioCtrl[value][controlEl] = audioCtrl[value][controlEl] || {};
     audioCtrl[value][controlEl][property] = audioCtrl[value][controlEl][property];
-    
+
     elementPropToFQMap[controlEl] = elementPropToFQMap[controlEl] || {};
     elementPropToFQMap[controlEl][property] = value;
   } else {
@@ -181,7 +176,6 @@ let setAudioCtrl = (e) => {
   console.log(audioCtrl);
   console.log(elementPropToFQMap);
 };
-
 
 
 /**
@@ -217,7 +211,11 @@ let applyAudioEnergyValues = (energyValues) => {
       let eqBand = ctrlHandlers[controlElementName][ctrlProp];
       // the value in eq band will be somewhere between 0 and 255
       // we need to scale that between the upper and lower bounds of the element
-      audioValue = myp5.map(energyValues[eqBand], 0, 255, controlObject[ctrlProp].defaultMin, controlObject[ctrlProp].defaultMax);
+      if (energyValues[eqBand] === 0) {
+        continue;
+      } else {
+        audioValue = myp5.map(energyValues[eqBand], 0, 255, controlObject[ctrlProp].min, controlObject[ctrlProp].max);
+      }
 
       // todo create a knob for this in the dom
       audioValue = audioValue * controlObject[ctrlProp].audio.gain;
@@ -227,7 +225,14 @@ let applyAudioEnergyValues = (energyValues) => {
       let setValue;
       let overBy;
       switch (controlObject[ctrlProp].audio.responsiveType) {
-                case "loop up":
+        case "infinite":
+          audioValue = myp5.map(energyValues[eqBand], 0, 255, 0, controlObject[ctrlProp].max);
+          audioValue = audioValue * 0.01;
+          setValue = controlObject[ctrlProp].targetValue + audioValue;
+          break;
+        case "loop up":
+          audioValue = myp5.map(energyValues[eqBand], 0, 255, 0, controlObject[ctrlProp].max);
+
           audioValue = audioValue * 0.01;
           // increase it by how much it went over and then loop from top again
           if (controlObject[ctrlProp].targetValue + audioValue > controlObject[ctrlProp].max) {
@@ -238,6 +243,8 @@ let applyAudioEnergyValues = (energyValues) => {
           }
           break;
         case "loop down":
+          audioValue = myp5.map(energyValues[eqBand], 0, 255, 0, controlObject[ctrlProp].max);
+
           audioValue = audioValue * 0.01;
           // decrease it by how much it went under and then loop from top again
           if (controlObject[ctrlProp].targetValue - audioValue < controlObject[ctrlProp].min) {
@@ -260,7 +267,6 @@ let applyAudioEnergyValues = (energyValues) => {
     }
   }
 };
-
 
 
 function setAudioResponsiveType(radioElem) {
