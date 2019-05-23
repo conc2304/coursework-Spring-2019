@@ -72,15 +72,6 @@ $(() => {
 
 
 
-function setAudioResponsiveType(radioElem) {
-  "use strict";
-
-  console.log($(radioElem).parent().find('input:radio:checked').val());
-  console.log(radioElem);
-}
-
-
-
 /**
  * Iterate through all of the values that we want
  * to give the use control over and based on the
@@ -252,6 +243,7 @@ let createNumericPropertyCtrlr = (ctrlObject, prop, parentWrapper) => {
 };
 
 
+
 /**
  *
  * @param ctrlObject
@@ -321,6 +313,8 @@ let createAudioResponsiveTypeSelector = (ctrlObject, prop, parent) => {
     radio.addClass('audio-responsive-selector')
       .attr('name', inputName)
       .attr('id', inputForId)
+      .data('ctrl_object', ctrlObjectName)
+      .data('prop', prop)
       .appendTo(radioWrapper)
       .val(aOptions[option]);
 
@@ -393,6 +387,7 @@ let setIntroDefaults = () => {
 };
 
 
+
 /**
  *  Create buttons in the DOM to play/pause music and also upload audio
  */
@@ -429,6 +424,7 @@ let createAudioCtrls = () => {
     .addClass("audio-button")
     .appendTo(audioWrapperID);
 };
+
 
 
 /**
@@ -490,6 +486,7 @@ let createFrequencySelector = (ctrlObject, prop, inputWrapper) => {
 };
 
 
+
 /**
  *  Create an html range slider to control the visual elements
  * @param ctrlObject
@@ -514,9 +511,7 @@ let createDomSlider = (ctrlObject, prop, inputWrapper) => {
     .appendTo(inputWrapper);
 
 
-
-
-  // lets us create a custom slider with multiple handles allowing us to have slider handles for a property's min, max, and current value
+  // this lets us create a custom slider with multiple handles allowing us to have slider handles for a property's min, max, and current value
   // @see https://refreshless.com/nouislider
   let customSlider = $(`.range-slider.${ctrlObjectName}-${prop}`)[0];
 
@@ -534,6 +529,7 @@ let createDomSlider = (ctrlObject, prop, inputWrapper) => {
 
   customSlider.noUiSlider.on(`update.$\{ctrlObjectName}-$\{prop}`, rangeSliderUpdate);
 };
+
 
 
 /**
@@ -555,7 +551,8 @@ let rangeSliderUpdate = function (values, handle, unencoded, tap, positions) {
   let prop = $(this.target).data('prop');
 
   controlObject[prop].min = Number(values[0]);
-  controlObject[prop].targetValue =  Number(values[1]);
+  controlObject[prop].currentValue =  Number(values[1]);
+  controlObject[prop].resetValue =  Number(values[1]);
   controlObject[prop].max =  Number(values[2]);
 };
 
@@ -621,6 +618,7 @@ let createRadioToggle = (ctrlObject, prop, parentWrapper) => {
 };
 
 
+
 /**
  * Triggered by an on change even on the radio element.
  * Sets the object's property value to the selected radio option.
@@ -629,16 +627,16 @@ let createRadioToggle = (ctrlObject, prop, parentWrapper) => {
 let setRadioValue = (inputElem) => {
   "use strict";
 
-
   let value = $(inputElem).val();
   let controlElementName = $(inputElem).data('ctrl_object');
   let prop = $(inputElem).data('prop');
 
   let controlObject = myp5[`get${controlElementName}`]();
   if (controlObject[prop].lockOn === false) {
-    controlObject[prop].currentValue = value;
+    controlObject[prop].targetValue = value;
   }
 };
+
 
 
 /**
@@ -831,7 +829,7 @@ let resetSettings = (ctrlElement = false) => {
       }
 
       if (ctrlElem[prop].lockOn === false) {
-        ctrlElem[prop].currentValue = ctrlElem[prop].defaultValue;
+        ctrlElem[prop].targetValue = ctrlElem[prop].defaultValue;
       }
     }
   }
@@ -890,6 +888,7 @@ let randomizeSettings = (ctrlElement = false) => {
 
         $(`.range-slider.${ctrlObjectName}-${prop}`)[0]
           .noUiSlider.set([null, rVal, null]);
+
       } else if (ctrlElem[prop].attrType === "variable") {
         optLength = ctrlElem[prop].options.length;
         optIndex = getRandomInt(0, optLength - 1);
@@ -902,7 +901,7 @@ let randomizeSettings = (ctrlElement = false) => {
       }
 
       if (ctrlElem[prop].lockOn === false) {
-        ctrlElem[prop].currentValue = rVal;
+        ctrlElem[prop].targetValue = rVal;
       }
     }
   }

@@ -44,13 +44,20 @@ let freqBands = {
 };
 
 
-
+/**
+ * On file upload trigger callback to play new file.
+ * @param file
+ */
 let uploaded = (file) => {
   uploadLoading = true;
   uploadedAudio = myp5.loadSound(file.data, uploadedAudioPlay);
 };
 
 
+/**
+ * Callback from when uploaded get called.
+ * Stop the current audio and then upload new audio
+ */
 let uploadedAudioPlay = () => {
 
   uploadLoading = false;
@@ -64,6 +71,12 @@ let uploadedAudioPlay = () => {
   audio.loop();
 };
 
+
+
+/**
+ * Stop and play the audio file
+ * and change the display of the pause/play button
+ */
 let toggleAudio = () => {
   // console.log(elem);
   if (audio.isPlaying()) {
@@ -78,6 +91,14 @@ let toggleAudio = () => {
 // end reference
 
 
+
+/**
+ * Given each eq band, assign the energy levels for each band to that group
+ * to be applied to elements that respond to each of those frequencies
+ * @param fft
+ * @param freqBands - a hardcoded set of frequency bands that we have prebuilt as an eq band
+ * @returns {Array}
+ */
 let get10BandEnergy = (fft) => {
 
   fft.analyze();
@@ -107,9 +128,14 @@ let get10BandEnergy = (fft) => {
 };
 
 
+
 let audioCtrl = {};
 let elementPropToFQMap = {};
-
+/**
+ * On DOM dropdown select:
+ * Map the selected frequency range to the given property and store globally
+ * @param e - the event
+ */
 let setAudioCtrl = (e) => {
   "use strict";
 
@@ -158,6 +184,14 @@ let setAudioCtrl = (e) => {
 
 
 
+/**
+ * Loop through all of the elements that have audio reactive set,
+ * and apply the frequency to the element property.
+ * We map the audio frequency value between the minimum and maximum for the property.
+ * We then adjust the target value using the reset or target value based on responsiveness type
+ * @param energyValues - an array of amplitude readings for each frequency
+ * @returns {boolean}
+ */
 let applyAudioEnergyValues = (energyValues) => {
   "use strict";
 
@@ -194,23 +228,23 @@ let applyAudioEnergyValues = (energyValues) => {
       let overBy;
       switch (controlObject[ctrlProp].audio.responsiveType) {
                 case "loop up":
-          audioValue = audioValue * 0.009;
-          // increase it by how much it went over and then loop from top againgit comm
-          if (controlObject[ctrlProp].currentValue + audioValue > controlObject[ctrlProp].max) {
-            overBy = controlObject[ctrlProp].currentValue + audioValue - controlObject[ctrlProp].max;
+          audioValue = audioValue * 0.01;
+          // increase it by how much it went over and then loop from top again
+          if (controlObject[ctrlProp].targetValue + audioValue > controlObject[ctrlProp].max) {
+            overBy = controlObject[ctrlProp].targetValue + audioValue - controlObject[ctrlProp].max;
             setValue = controlObject[ctrlProp].min + overBy;
           } else {
-            setValue = controlObject[ctrlProp].currentValue + audioValue;
+            setValue = controlObject[ctrlProp].targetValue + audioValue;
           }
           break;
         case "loop down":
-          audioValue = audioValue * 0.009;
-          // decrease it by how much it went under and then loop from top againgit comm
-          if (controlObject[ctrlProp].currentValue - audioValue < controlObject[ctrlProp].min) {
-            overBy = controlObject[ctrlProp].currentValue - audioValue + controlObject[ctrlProp].min;
+          audioValue = audioValue * 0.01;
+          // decrease it by how much it went under and then loop from top again
+          if (controlObject[ctrlProp].targetValue - audioValue < controlObject[ctrlProp].min) {
+            overBy = controlObject[ctrlProp].targetValue - audioValue + controlObject[ctrlProp].min;
             setValue = controlObject[ctrlProp].max - overBy;
           } else {
-            setValue = controlObject[ctrlProp].currentValue - audioValue;
+            setValue = controlObject[ctrlProp].targetValue - audioValue;
           }
           break;
         case "subtract":
@@ -222,11 +256,25 @@ let applyAudioEnergyValues = (energyValues) => {
           break;
       }
 
-      // controlObject[ctrlProp].targetValue = setValue;
-      controlObject[ctrlProp].currentValue = setValue;
+      controlObject[ctrlProp].targetValue = setValue;
     }
   }
 };
 
 
 
+function setAudioResponsiveType(radioElem) {
+  "use strict";
+
+  console.log($(radioElem).parent().find('input:radio:checked').val());
+  console.log(radioElem);
+
+  let value = $(radioElem).val();
+  let controlElementName = $(radioElem).data('ctrl_object');
+  let prop = $(radioElem).data('prop');
+
+  let controlObject = myp5[`get${controlElementName}`]();
+  if (controlObject[prop].lockOn === false) {
+    controlObject[prop].audio.responsiveType = value;
+  }
+}

@@ -5,11 +5,6 @@
  *        - todo this would be better if we can queue music
  * todo - make a playlist, queue music, if possible get music from Spotify (can it be processed through fft though?)
  * todo - add comments to functions and files
- *
- *
- * todo - make audio reactive option additive, subtractive, e
- *
- *
  * todo - gain and fall controls for audio reactive (ie how reactive it is to music and by how much will the animation change)
  * todo - make a toggle to spin/rotate the inner and outer waves like the 3D ones
  * todo - make patterns by saving current config and make them triggerable (ie a pattern bank)
@@ -105,13 +100,14 @@ let s = (sketch) => {
     fftAnalysis = get10BandEnergy(fft);
     applyAudioEnergyValues(fftAnalysis);
 
+    playKeyboardKeys();
 
     for (let ctrlElement in sketch.ctrlElementsArray) {
       if (!sketch.ctrlElementsArray.hasOwnProperty(ctrlElement)) {
         continue;
       }
       tempObj =  sketch.ctrlElementsArray[ctrlElement];
-      // dont render an object if we have made it not visible it
+      // don't render an object if we have made it not visible it
       if (tempObj.bypass === true) {
         continue;
       }
@@ -122,15 +118,12 @@ let s = (sketch) => {
     }
   };
 
-  sketch.keyPressed = () => {
-    playPianoKey(sketch.keyCode, true);
-  };
-  sketch.keyReleased = () => {
-    playPianoKey(sketch.keyCode, false);
-  };
+
 };
 
 
+
+// todo - this probably needs to be moved to a new file
 let renderPolygon = function (x, y, radius, numPoints) {
   'use strict';
   let angle = myp5.TWO_PI / numPoints;

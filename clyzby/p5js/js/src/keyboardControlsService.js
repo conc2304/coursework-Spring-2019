@@ -7,8 +7,6 @@
  * @param key
  * @param pressed
  */
-
-
 let playPianoKey = (key, pressed) => {
   "use strict";
 
@@ -27,10 +25,36 @@ let playPianoKey = (key, pressed) => {
       }
 
       if (pressed) {
-        controlObject[ctrlProp].targetValue = Number(ctrlHandlers[controlElementName][ctrlProp]);
+        controlObject[ctrlProp].targetValue = controlObject[ctrlProp].currentValue = Number(ctrlHandlers[controlElementName][ctrlProp]);
       } else {
-        controlObject[ctrlProp].targetValue = Number(controlObject[ctrlProp].resetValue);
+        controlObject[ctrlProp].targetValue = controlObject[ctrlProp].currentValue = Number(controlObject[ctrlProp].resetValue);
       }
+    }
+  }
+};
+
+
+/**
+ * During the draw cycle, loop through every keyboard key that we
+ * have assigned a value to and if the key is down, then animate it
+ * @returns {boolean}
+ */
+let playKeyboardKeys = () => {
+  "use strict";
+
+  if (!keyboardCtrl) {
+    return false;
+  }
+
+  // key is the charcode for the key
+  for (let key in keyboardCtrl) {
+    if (!keyboardCtrl.hasOwnProperty(key)) {
+      continue;
+    }
+
+    if (myp5.keyIsDown(key)) {
+      // then play the key
+      playPianoKey(key, true);
     }
   }
 };
