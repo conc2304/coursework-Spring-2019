@@ -17,7 +17,7 @@ class CenterWave {
       targetValue : null,
       min : -50,    // this can be edited by the user
       defaultMin : 0,   //  this is the range within which the user can edit the min and max values
-      max : 500,    // this can be edited by the user
+      max : 1500,    // this can be edited by the user
       defaultMax : 2000,   //  this is the range within which the user can edit the min and max values
       attrType : 'numeric',
       audio : {

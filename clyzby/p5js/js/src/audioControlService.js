@@ -113,7 +113,7 @@ let elementPropToFQMap = {};
 let setAudioCtrl = (e) => {
   "use strict";
 
-  console.log(e);
+  // console.log(e);
 
   let controlEl = $(e.target).data('ctrl_object');
   let property = $(e.target).data('prop');

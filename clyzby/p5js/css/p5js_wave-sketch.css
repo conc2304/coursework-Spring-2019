@@ -234,13 +234,18 @@ i.material-icons:hover {
   padding-top: 10px;
 }
 
-#settings-menu .range-slider-wrapper.locked *:not(p), #settings-menu .radio-option-wrap.locked *:not(p) {
+#settings-menu .range-slider-wrapper.locked *:not(p), #settings-menu .radio-input-wrapper.locked *:not(p) {
   opacity: .4;
 }
 
-#settings-menu .range-slider-wrapper.locked p, #settings-menu .radio-option-wrap.locked p {
+#settings-menu .range-slider-wrapper.locked p, #settings-menu .radio-input-wrapper.locked p {
   opacity: .8;
   color: #aa0000
+}
+
+
+*:disabled, .disabled.disabled {
+  cursor: not-allowed;
 }
 
 
@@ -340,7 +345,7 @@ i.material-icons:hover {
   border: 3px solid #0e83cd;
 }
 
-.radio-option-wrap {
+.radio-input-wrapper {
   display: block;
 }
 
@@ -517,15 +522,16 @@ label.radio-input:after {
 
 
 /****  Audio Responsive Controls ****/
-.custom-select-wrapper{
+.frequency-selector-wrapper, .audio-radio-wrapper {
   display: inline-block;
+  vertical-align: middle;
 }
 
-.custom-select-wrapper select {
+.frequency-selector-wrapper select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  padding: 5px 10px;
+  padding: 5px;
   background-color: transparent;
   color: #fff;
   border: 1px solid #095c8f;
@@ -534,27 +540,32 @@ label.radio-input:after {
   cursor: pointer;
 }
 
-.custom-select-wrapper select:after {
+.frequency-selector-wrapper select:after {
   content: 'down';
   font-size: 40px;
   color: red;
 }
 
-.custom-select-wrapper select:focus {
+.frequency-selector-wrapper select:focus {
   outline: none;
 }
 
-.custom-select-wrapper select:hover {
-  border: 1px solid #0e83cd;
+.frequency-selector-wrapper select:hover {
+  border: 2px solid #0e83cd;
 
 }
 
 .audio-radio-wrapper {
-  border: solid #0e83cd 2px;
-  display: inline-block;
-  /*margin: 15px;*/
-  border-radius: 10px;
+  border: solid #0e83cd 1px;
+  float: right;
   overflow: hidden;
+  margin: 3px 0;
+  border-radius: 10px;
+}
+
+.audio-radio-wrapper:hover {
+  border: solid #0e83cd 2px;
+
 }
 
 .audio-radio-wrapper input[type=radio] {
@@ -568,16 +579,16 @@ label.radio-input:after {
   display: inline-block;
   cursor: pointer;
   font-weight: bold;
-  padding: 5px 20px;
+  padding: 3px 15px;
 }
 
 .audio-radio-wrapper input[type=radio]:checked + label{
-  color: #fffq;
+  color: #fff;
   background: #0e83cd;
 }
 
 .audio-radio-wrapper label + input[type=radio] + label {
-  border-left: solid #0e83cd 2px;
+  border-left: solid #0e83cd 1px;
 }
 
 

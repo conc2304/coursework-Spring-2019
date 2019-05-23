@@ -56,7 +56,12 @@ $(() => {
         });
       }, 200
     );
+  });
 
+
+  $("#settings-menu").on('click', '.lock-property', function(){
+    // console.log(this);
+    lockProperty(this);
   });
 
   $("#settings-menu").on('mouseleave', '.helper', function () {
@@ -64,6 +69,16 @@ $(() => {
   });
 
 });  // end document on load
+
+
+
+function setAudioResponsiveType(radioElem) {
+  "use strict";
+
+  console.log($(radioElem).parent().find('input:radio:checked').val());
+  console.log(radioElem);
+}
+
 
 
 /**
@@ -106,8 +121,7 @@ let createDOMControls = (ctrlElements) => {
 
     // create a button to toggle the settings sliders visibility
     let button = document.createElement('button');
-    $(button).css('position', 'relative')
-      .html(ctrlObjectName)
+    $(button).html(ctrlObjectName)
       .attr('id', ctrlObjectName + '-toggle')
       .addClass('settings-toggle-button')
       .mousedown(function () {
@@ -227,7 +241,6 @@ let createNumericPropertyCtrlr = (ctrlObject, prop, parentWrapper) => {
 
     let title = document.createElement('p');
     $(title).html(ctrlObject[prop].displayLabel)
-      .css('position', 'relative')
       .appendTo(inputWrapper);
 
     createLockElement(ctrlObject, prop, title);
@@ -267,18 +280,17 @@ let createAudioResponsiveTypeSelector = (ctrlObject, prop, parent) => {
       helper : "Animate this property to the peak value of the selected audio frequency. Shrinky Dinky like!",
     },
     'loop up' : {
-      label : '>',
+      label : '<',
       title : "Increment Loop",
       helper : "Each amplitude reading adds onto the last reading.  Once it hits the maximum it starts again from the minimum. Grow baby, Grow!",
     },
     'loop down' : {
-      label : '<',
+      label : '>',
       title : "Decrement Loop",
       helper : "Each amplitude reading subtracts from the last reading.  Once it hits the minimum it starts again from the maximum. Benjamin Button mode.",
     },
   };
 
-  console.log(parent);
   let radioWrapper = document.createElement('div');
   $(radioWrapper).addClass('audio-radio-wrapper')
     .appendTo(parent);
@@ -297,25 +309,34 @@ let createAudioResponsiveTypeSelector = (ctrlObject, prop, parent) => {
       continue;
     }
 
-    console.log(`Build Audio Radio - ${ctrlObjectName}-${prop}`);
     thisOption = aOptions[option];
     labelHtml = desc[thisOption].label;
     titleText = desc[thisOption].title;
     helperText = desc[thisOption].helper;
 
-    let radio = $('<input type="radio" name="`${ctrlObjectName}-${prop}-responsiveType`" id="`${ctrlObjectName}-${prop}-responsiveType`"/>');
+    let inputForId = `${ctrlObjectName}-${prop}-${aOptions[option]}-responsiveType`;
+    let inputName = `${ctrlObjectName}-${prop}-responsiveType`;
+
+    let radio = $('<input type="radio" onclick="setAudioResponsiveType(this)">');
     radio.addClass('audio-responsive-selector')
-      .appendTo(radioWrapper);
+      .attr('name', inputName)
+      .attr('id', inputForId)
+      .appendTo(radioWrapper)
+      .val(aOptions[option]);
+
+    if (aOptions[option] === ctrlObject[prop].audio.responsiveType) {
+      radio.prop('checked', true);
+    }
 
 
-    let label = $('<label for="`${ctrlObjectName}-${prop}-responsiveType`"></label>');
+    let label = $('<label></label>');
     label.addClass('audio-responsive-selector helper')
+      .attr('for', inputForId)
       .html(labelHtml)
       .attr('title', titleText)
       .data('helper', helperText)
       .appendTo(radioWrapper);
   }
-
 };
 
 
@@ -333,10 +354,11 @@ let createLockElement = (ctrlObject, prop, parentElem) => {
 
   let lockIcon = document.createElement('i');
   $(lockIcon).html('lock_open')
-    .addClass(`material-icons md-light ${ctrlElemName}-${prop} helper`)
+    .addClass(`material-icons md-light ${ctrlElemName}-${prop} helper lock-property`)
     .data('helper', 'Lock this property\'s settings from being set, randomized, or reset. Only the global reset button will override a locked property.')
+    .data('ctrl_object', ctrlElemName)
+    .data('prop', prop)
     .attr('title', 'Settings Lock')
-    .on('click', lockProperty(ctrlElemName, prop, this))
     .appendTo(parentElem);
 };
 
@@ -424,7 +446,7 @@ let createFrequencySelector = (ctrlObject, prop, inputWrapper) => {
 
   let ctrlObjectName = ctrlObject.constructor.name;
   let selectWrap = document.createElement('div');
-  $(selectWrap).addClass('custom-select-wrapper');
+  $(selectWrap).addClass('frequency-selector-wrapper');
 
   let rangeList = document.createElement("select");
   $(rangeList).addClass("freq-selector helper")
@@ -481,14 +503,6 @@ let createDomSlider = (ctrlObject, prop, inputWrapper) => {
 
   // todo make step a property of the elements
   // todo cont. we can make the sliders non-linear if we want  @see https://refreshless.com/nouislider/slider-values/
-  let step = 0;
-  if (Number.isInteger(ctrlObject[prop].currentValue)) {
-    step = 1;
-  }
-  if ((ctrlObject[prop].max - ctrlObject[prop].min) < 50) {
-    // if the difference between min and max is 10 or less
-    step = (ctrlObject[prop].max - ctrlObject[prop].min) / 250;
-  }
 
   // slider to control the individual property
   let rangeSlider = document.createElement('div');
@@ -497,7 +511,6 @@ let createDomSlider = (ctrlObject, prop, inputWrapper) => {
     .data('prop', prop)
     .data('helper', 'Changes the current value of this property. It also sets the reset value for key press release.  When you release a bound keystroke, the value will release to this value.')
     .attr('title', 'Set element property')
-    // .attr('oninput', 'sliderSetValue(this)')
     .appendTo(inputWrapper);
 
 
@@ -563,13 +576,16 @@ let createRadioToggle = (ctrlObject, prop, parentWrapper) => {
 
 
     let inputWrapper = document.createElement('div');
-    $(inputWrapper).addClass(`radio-option-wrap ${ctrlObjectName}-${prop}`)
+    $(inputWrapper).addClass(`radio-input-wrapper ${ctrlObjectName}-${prop}`)
       .appendTo(parentWrapper);
 
-    let label = document.createElement('p');
-    $(label).css('position', 'relative')
-      .html(ctrlObject[prop].displayLabel)
+    let labelWrapper = document.createElement('div');
+    $(labelWrapper).addClass('title-wrapper')
       .appendTo(inputWrapper);
+
+    let label = document.createElement('p');
+    $(label).html(ctrlObject[prop].displayLabel)
+      .appendTo(labelWrapper);
 
     createLockElement(ctrlObject, prop, label);
 
@@ -583,11 +599,10 @@ let createRadioToggle = (ctrlObject, prop, parentWrapper) => {
 
       optionWrapper = document.createElement('div');
       $(optionWrapper).addClass("radio-option-wrapper")
-        .appendTo(parentWrapper);
+        .appendTo(inputWrapper);
 
       radioInput = $('<input type="radio" onchange="setRadioValue(this)">');
       radioInput.addClass(`radio-input ${ctrlObjectName}-${prop}`)
-        .attr('id', `${ctrlObjectName}-${prop}-radio`)
         .attr('name', `${ctrlObjectName}-${prop}-radio`)
         .val(ctrlObject[prop].options[o])
         .data('ctrl_object', ctrlObjectName)
@@ -614,10 +629,8 @@ let createRadioToggle = (ctrlObject, prop, parentWrapper) => {
 let setRadioValue = (inputElem) => {
   "use strict";
 
-  console.log($(inputElem));
 
   let value = $(inputElem).val();
-  console.log(value);
   let controlElementName = $(inputElem).data('ctrl_object');
   let prop = $(inputElem).data('prop');
 
@@ -746,8 +759,8 @@ let setKeyboardControl = (e) => {
     }
   }
 
-  console.log(keyboardCtrl);
-  console.log(ctrlElemPropToKeyMap);
+  // console.log(keyboardCtrl);
+  // console.log(ctrlElemPropToKeyMap);
 };
 
 
@@ -932,11 +945,21 @@ let toggleVisibility = (ctrlElementName, htmlElem) => {
  * @param prop
  * @param htmlElem
  */
-let lockProperty = (ctrlElementName, prop, htmlElem) => {
+let lockProperty = (htmlElem) => {
   "use strict";
 
+  console.log(htmlElem);
+
+  if ($.isWindow(htmlElem)) {
+    return false;
+  }
+
+
+  let ctrlElementName = $(htmlElem).data('ctrl_object');
+  let prop = $(htmlElem).data('prop');
   let controlObject = myp5[`get${ctrlElementName}`]();
-  let parent = $(htmlElem).parents(".range-slider-wrapper, .radio-option-wrap");
+
+  let parent = $(htmlElem).parents(".range-slider-wrapper, .radio-input-wrapper");
 
 
   $(htmlElem).toggleClass("locked");
@@ -950,6 +973,10 @@ let lockProperty = (ctrlElementName, prop, htmlElem) => {
     parent.find('input, select').each(function () {
       $(this).prop('disabled', true);
     });
+
+    parent.find('.range-slider, .audio-radio-wrapper label, .frequency-selector-wrapper').each(function() {
+      $(this).addClass('disabled');
+    });
   } else {
     $(htmlElem).html('lock_open');
     $(htmlElem).attr('title', 'Lock This Property');
@@ -957,6 +984,11 @@ let lockProperty = (ctrlElementName, prop, htmlElem) => {
     parent.find('input, select').each(function () {
       $(this).prop('disabled', false);
     });
+
+    parent.find('.range-slider, .audio-radio-wrapper label, .frequency-selector-wrapper').each(function() {
+      $(this).removeClass('disabled');
+    });
+
   }
 
   controlObject[prop].lockOn = !controlObject[prop].lockOn;
