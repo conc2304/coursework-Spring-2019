@@ -8,6 +8,27 @@ class CenterWave {
     this.origin = 0;
     this.bypass = false;
 
+    // this.shake = {
+    //   attrType : 'boolean',
+    //   on : false,
+    //   hasParameters : true,
+    //   displayLabel : 'Shake',
+    //   resetValue : 20,
+    //   defaultValue : 20,
+    //   currentValue : 20,
+    //   targetValue : null,
+    //   min : -50,    // this can be edited by the user
+    //   defaultMin : 0,   //  this is the range within which the user can edit the min and max values
+    //   max : 1500,    // this can be edited by the user
+    //   defaultMax : 2000,   //  this is the range within which the user can edit the min and max values
+    //   triggerSource : null,
+    //   lockOn : false,
+    //   easingValue : 0.7,
+    //   noteHeldEasing: 0.1,
+    //   easingMax : 0,
+    //   easingMin : 0,
+    // };
+
     this.shake = false;
     this.shakeGain = 0.009;  // should be make this a dial/ controllable by button
 

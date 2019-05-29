@@ -303,7 +303,6 @@ let createAudioResponsiveTypeSelector = (ctrlObject, prop, parent) => {
 
   for (let option in aOptions) {
     if (!aOptions.hasOwnProperty(option)) {
-      console.log('skipping');
       continue;
     }
 
@@ -372,21 +371,24 @@ let setIntroDefaults = () => {
   "use strict";
 
 
-  // todo maybe add defaults for each of the control objects
-  let defaultValues = ['Q', 'W', 'E', 'R', 'T', 'Y'];
+  // alphabet charcodes fo A-Z = [65 - 90]
+  // number 0-1 = [49 - 57]
 
-  let i = 0;
   $("input.keyboard-assigner").each(function () {
     // console.log(this);
-    $(this)
-      .val(defaultValues[i])
-      .trigger('input');
 
-    i++;
-
-    if (i > defaultValues.length) {
-      return false;
+    let randomCharCode;
+    if (getRandomInt(0, 10) < 4 ) {
+      randomCharCode = getRandomInt(49, 57);
+    } else {
+      randomCharCode = getRandomInt(65, 90);
     }
+
+    let character = String.fromCharCode(randomCharCode);
+
+    $(this)
+      .val(character)
+      .trigger('input');
   });
 
   $($(".freq-selector")[0]).val("2000 - 4000 Hz").trigger("change");
@@ -601,11 +603,19 @@ let createRadioToggle = (ctrlObject, prop, parentWrapper) => {
     $(label).html(ctrlObject[prop].displayLabel)
       .appendTo(labelWrapper);
 
+    createPianoDomInput(ctrlObject,prop, inputWrapper);
+
+    let innerWrapper = document.createElement('div');
+    $(innerWrapper).addClass('inner-radio-wrapper')
+      .appendTo(inputWrapper);
+
     createLockElement(ctrlObject, prop, label);
 
     let optionWrapper;
     let radioInput;
     let radioLabel;
+
+
     for (let o in ctrlObject[prop].options) {
       if (!ctrlObject[prop].options.hasOwnProperty(o)) {
         continue;
@@ -613,7 +623,7 @@ let createRadioToggle = (ctrlObject, prop, parentWrapper) => {
 
       optionWrapper = document.createElement('div');
       $(optionWrapper).addClass("radio-option-wrapper")
-        .appendTo(inputWrapper);
+        .appendTo(innerWrapper);
 
       radioInput = $('<input type="radio" onchange="setRadioValue(this)">');
       radioInput.addClass(`radio-input ${ctrlObjectName}-${prop}`)

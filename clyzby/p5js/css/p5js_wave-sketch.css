@@ -606,6 +606,11 @@ label.radio-input:after {
 
 
 /***  Radio Buttons for variable attribute type properties)***/
+.inner-radio-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
 
 .radio-option-wrapper label {
   margin-left: 5px;

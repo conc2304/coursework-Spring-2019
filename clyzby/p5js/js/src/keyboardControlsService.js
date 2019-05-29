@@ -24,11 +24,25 @@ let playPianoKey = (key, pressed) => {
         continue;
       }
 
-      if (pressed) {
-        controlObject[ctrlProp].targetValue = controlObject[ctrlProp].currentValue = Number(ctrlHandlers[controlElementName][ctrlProp]);
-      } else {
-        controlObject[ctrlProp].targetValue = controlObject[ctrlProp].currentValue = Number(controlObject[ctrlProp].resetValue);
+      if (controlObject[ctrlProp].attrType === 'numeric') {
+        if (pressed) {
+          controlObject[ctrlProp].targetValue = controlObject[ctrlProp].currentValue = Number(ctrlHandlers[controlElementName][ctrlProp]);
+        } else {
+          controlObject[ctrlProp].targetValue = controlObject[ctrlProp].currentValue = Number(controlObject[ctrlProp].resetValue);
+        }
       }
+
+      if (controlObject[ctrlProp].attrType === 'variable') {
+        if (pressed) {
+         controlObject[ctrlProp].currentValue = getNextVariableOption(controlObject, ctrlProp);
+        } else {
+          let ctrlObjectName = controlObject.constructor.name;
+          $(`input.radio-input.${ctrlObjectName}-${ctrlProp}`)
+            .val([controlObject[ctrlProp].currentValue]);
+        }
+
+      }
+
     }
   }
 };

@@ -153,6 +153,8 @@ let lockAttributes = (element) => {
   return lockSet;
 };
 
+
+
 /**
  *
  * @param ctrlElement   - the instance whose attributes we are changing
@@ -168,10 +170,10 @@ let getNumericValueToSet = (ctrlElement, attr, velocity, triggerSource) => {
   // 127 is the max value returned by the midi controller
   let triggerMax = (triggerSource !== Drum_Pad_Hit) ? 127 : 60;
   let triggerMin = (triggerSource !== Drum_Pad_Hit) ? 0 : -40;
-  let returnValue = myp5.map(velocity, 0, triggerMax, min, max);
 
-  return returnValue;
+  return myp5.map(velocity, 0, triggerMax, min, max);
 };
+
 
 
 /**
@@ -182,7 +184,9 @@ let getNumericValueToSet = (ctrlElement, attr, velocity, triggerSource) => {
  */
 let getNextVariableOption = (ctrlElement, attr) => {
   "use strict";
-  if (!ctrlElement[attr].options) return;
+  if (!ctrlElement[attr].options) {
+    return;
+  }
 
   let numOptions = ctrlElement[attr].options.length;
   let index = ctrlElement[attr].options.indexOf(ctrlElement[attr].currentValue);
@@ -249,33 +253,5 @@ let runSequence = (MIDImessage) => {
   console.log(MIDImessage);
 };
 
-// for each attibute of a control element
-// go through and set their reset value
-// todo - find a way to get the threeDWaves back into their original formation
-let resetElements = () => {
-  "use strict";
 
-  let element;
-  let attr;
-
-  for (element in availableElements) {
-    ctrlElement = getCtrlElement(availableElements[element]);
-    ctrlElement.origin = 0;
-
-    for (attr in ctrlElement) {
-      if (ctrlElement[attr].hasOwnProperty('resetValue')) {
-        if (ctrlElement[attr].attrType === 'numeric') {
-          ctrlElement[attr].targetValue = ctrlElement[attr].resetValue;
-        }
-        if (ctrlElement[attr].attrType === 'variable') {
-          ctrlElement[attr].currentValue = ctrlElement[attr].resetValue;
-        }
-
-      }
-      if (ctrlElement[attr].hasOwnProperty('lockOn')) {
-        ctrlElement[attr].lockOn = false;
-      }
-    }
-  }
-};
 
