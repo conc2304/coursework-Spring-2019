@@ -237,12 +237,75 @@ let createNumericPropertyCtrlr = (ctrlObject, prop, parentWrapper) => {
     createLockElement(ctrlObject, prop, title);
     createPianoDomInput(ctrlObject, prop, inputWrapper);
     createDomSlider(ctrlObject, prop, inputWrapper);
-    createAudioResponsiveTypeSelector(ctrlObject, prop, inputWrapper);
-    createFrequencySelector(ctrlObject, prop, inputWrapper);
+
+    let audioWrapper = document.createElement('div');
+    $(audioWrapper).addClass('audio-controllers-wrapper')
+      .appendTo(inputWrapper);
+
+    createGainDial(ctrlObject, prop, audioWrapper);
+
+    let audioReactiveWrapper = document.createElement('div');
+    $(audioReactiveWrapper).addClass('audio-reactive-wrapper')
+      .appendTo(audioWrapper);
+
+    createAudioResponsiveTypeSelector(ctrlObject, prop, audioReactiveWrapper);
+    createFrequencySelector(ctrlObject, prop, audioReactiveWrapper);
   }
 };
 
 
+
+/**
+ * Create a dial knob in the DOM to control the gain of the audio reactive component.
+ * @param ctrlObject
+ * @param prop
+ * @param parentWrapper
+ * @returns {boolean}
+ */
+let createGainDial = (ctrlObject, prop, parentWrapper) => {
+  "use strict";
+
+  if (!ctrlObject[prop].audio || !ctrlObject[prop].audio.gain) {
+    return false;
+  }
+
+  let ctrlObjectName = ctrlObject.constructor.name;
+  let dialWrap = document.createElement('div');
+  $(dialWrap).addClass('gain-dial-wrapper')
+    // .data('helper', 'Control how much of an effect the component reacts to the audio.  The higher the number the greater the boom.')
+    .appendTo(parentWrapper);
+
+  let dial = document.createElement('input');
+  $(dial).prop('type', 'text')
+    .addClass('gain-knob')
+    // .addClass('helper')
+    // .data('helper', 'Control how much of an effect the component reacts to the audio.  The higher the number the greater the boom.')
+    .prop('title', 'Control how much of an effect the component reacts to the audio.  The higher the number the greater the boom.')
+    .val(ctrlObject[prop].audio.gain)
+    .appendTo(dialWrap);
+
+  let label = document.createElement('p');
+  $(label).html('Gain')
+    .appendTo(dialWrap)
+    .addClass('helper')
+    .data('helper', 'Control how much of an effect the component reacts to the audio.  The higher the number the greater the boom.');
+
+  $(dial).knob({
+    'min': 0,
+    'max': 2,
+    'step':  0.1,
+    'angleArc': 250,
+    'angleOffset': -125,
+    'inputColor': '#fff',
+    'fgColor' : '#0e83cd',
+    'bgColor' : '#095c8f',
+    'height' : 50,
+    'width' : 50,
+    'release' : function (v) {
+      ctrlObject[prop].audio.gain = v;
+    }
+  });
+};
 
 /**
  *

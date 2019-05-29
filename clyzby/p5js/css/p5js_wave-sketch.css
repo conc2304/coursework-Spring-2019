@@ -35,7 +35,7 @@ body {
 }
 
 .helper {
-  z-index: 5;
+  z-index: 10;
 }
 
 #settings-menu::-webkit-scrollbar-track {
@@ -228,7 +228,7 @@ i.material-icons:hover {
 }
 
 .range-slider-wrapper p {
-  padding-top: 25px;
+  /*padding-top: 25px;*/
 }
 
 .range-slider-wrapper i {
@@ -562,13 +562,25 @@ label.radio-input:after {
 }
 
 .frequency-selector-wrapper select:hover {
-  border: 2px solid #0e83cd;
+  border: solid #fff 1px;
+}
 
+
+.gain-dial-wrapper, .audio-reactive-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+}
+.gain-dial-wrapper {
+  margin-right: 30px;
+}
+
+#settings-menu .gain-dial-wrapper p {
+  padding: initial;
+  margin-top: 0px;
 }
 
 .audio-radio-wrapper {
   border: solid #0e83cd 1px;
-  /*float: right;*/
   overflow: hidden;
   margin: 3px 0;
   border-radius: 10px;
@@ -576,8 +588,7 @@ label.radio-input:after {
 }
 
 .audio-radio-wrapper:hover {
-  border: solid #0e83cd 2px;
-
+  border: solid #fff 1px;
 }
 
 .audio-radio-wrapper input[type=radio] {
