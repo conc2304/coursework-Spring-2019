@@ -4,9 +4,7 @@
  * todo - audio controls to be more like a remote - pause, play, stop, rewind, ff, volume
  *        - todo this would be better if we can queue music
  * todo - make a playlist, queue music, if possible get music from Spotify (can it be processed through fft though?)
- * todo - add comments to functions and files
- * todo - gain and fall controls for audio reactive (ie how reactive it is to music and by how much will the animation change)
- * todo - make a toggle to spin/rotate the inner and outer waves like the 3D ones
+ * todo - make a toggle to spin/rotate the ingitner and outer waves like the 3D ones
  * todo - make patterns by saving current config and make them triggerable (ie a pattern bank)
  * todo - convert this entire thing into an angular web app #Angular8!
  * todo - loading animation
