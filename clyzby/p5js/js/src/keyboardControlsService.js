@@ -40,9 +40,7 @@ let playPianoKey = (key, pressed) => {
           $(`input.radio-input.${ctrlObjectName}-${ctrlProp}`)
             .val([controlObject[ctrlProp].currentValue]);
         }
-
       }
-
     }
   }
 };

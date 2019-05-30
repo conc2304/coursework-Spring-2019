@@ -299,7 +299,7 @@ class OuterWaves {
  * Based on the current wave period and spacing between x points
  * get the location of the y points to be rendered in the wave
  */
-OuterWaves.prototype.calcWave = function (yOffset) {
+OuterWaves.prototype.calcWave = function () {
   "use strict";
 
   let dx = (myp5.TWO_PI / this.period.currentValue ) * this.xSpacing.currentValue;
@@ -307,7 +307,7 @@ OuterWaves.prototype.calcWave = function (yOffset) {
   this.origin += this.velocity.currentValue;
   let x = this.origin;
   for (let i = 0; i < this.yPoints.length; i++) {
-    this.yPoints[i] = Math[this.waveType.currentValue](x) * this.amplitude.currentValue - yOffset;
+    this.yPoints[i] = Math[this.waveType.currentValue](x) * this.amplitude.currentValue;
     x += dx;
   }
 };

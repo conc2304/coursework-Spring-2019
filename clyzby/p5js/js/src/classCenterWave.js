@@ -281,13 +281,13 @@ class CenterWave {
  * Based on the current wave period and spacing between x points
  * get the location of the y points to be rendered in the wave
  */
-CenterWave.prototype.calcWave = function (yOffset) {
+CenterWave.prototype.calcWave = function () {
   let dx = (myp5.TWO_PI / this.period.currentValue ) * this.xSpacing.currentValue;
   this.waveType.currentValue = (this.waveType.options.includes(this.waveType.currentValue)) ? this.waveType.currentValue : 'sin';
   this.origin += this.velocity.currentValue;
   let x = this.origin;
   for (let i = 0; i < this.yPoints.length; i++) {
-    this.yPoints[i] = Math[this.waveType.currentValue](x) * this.amplitude.currentValue - yOffset;
+    this.yPoints[i] = Math[this.waveType.currentValue](x) * this.amplitude.currentValue;
     x += dx;
   }
 };

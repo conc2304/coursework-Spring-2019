@@ -1,6 +1,5 @@
 let uploadLoading = false;
 let uploadedAudio;
-// let audio;
 
 // const FREQ_RANGES = {
 let freqBands = {
@@ -42,6 +41,7 @@ let freqBands = {
 };
 
 
+
 /**
  * On file upload trigger callback to play new file.
  * @param file
@@ -50,6 +50,7 @@ let uploaded = (file) => {
   uploadLoading = true;
   uploadedAudio = myp5.loadSound(file.data, uploadedAudioPlay);
 };
+
 
 
 /**
@@ -64,10 +65,12 @@ let uploadedAudioPlay = () => {
     console.log('is playing');
     audio.stop();
   }
+  audio.stop();
   audio = uploadedAudio;
   audio.play();
   audio.loop();
 };
+
 
 
 /**
@@ -86,6 +89,7 @@ let toggleAudio = () => {
   }
 };
 // end reference
+
 
 
 /**
@@ -122,6 +126,7 @@ let get10BandEnergy = (fft) => {
 
   return fftAnalysis;
 };
+
 
 
 let audioCtrl = {};
@@ -176,6 +181,7 @@ let setAudioCtrl = (e) => {
   console.log(audioCtrl);
   console.log(elementPropToFQMap);
 };
+
 
 
 /**
@@ -269,7 +275,12 @@ let applyAudioEnergyValues = (energyValues) => {
 };
 
 
-function setAudioResponsiveType(radioElem) {
+
+/**
+ * From radio input change the value of the responsive type for that contorl element
+ * @param radioElem
+ */
+let setAudioResponsiveType = (radioElem) => {
   "use strict";
 
   console.log($(radioElem).parent().find('input:radio:checked').val());
@@ -283,4 +294,97 @@ function setAudioResponsiveType(radioElem) {
   if (controlObject[prop].lockOn === false) {
     controlObject[prop].audio.responsiveType = value;
   }
-}
+};
+
+
+let randomizeAudioCtrls = () => {
+  "use strict";
+  console.log('stuff');
+
+  randomizeAudioFrequency();
+  randomizeAudioResponsiveOption();
+};
+
+
+
+/**
+ * Iterate through each of the input radios and randomize their
+ * value based on the number of inputs by radio group name
+ */
+let randomizeAudioResponsiveOption = (ctrlObjectName = false) => {
+
+  let radioNamesArr = [];
+  let selector;
+  if (ctrlObjectName === false) {
+    selector = 'input.audio-responsive-selector';
+  } else {
+    selector = `#${ctrlObjectName}-wrapper input.audio-responsive-selector`;
+  }
+
+  $(selector).each(function () {
+    if (!radioNamesArr.includes(this.name)) {
+      radioNamesArr.push(this.name);
+    }
+  });
+
+  for (let radioGroup in radioNamesArr) {
+    if (!radioNamesArr.hasOwnProperty(radioGroup)) {
+      continue;
+    }
+
+    let groupName = radioNamesArr[radioGroup];
+    if (ctrlObjectName === false) {
+      selector = `input.audio-responsive-selector[name*=${groupName}]`;
+    } else {
+      selector = `#${ctrlObjectName}-wrapper input.audio-responsive-selector[name*=${groupName}]`;
+    }
+
+    let $radioGroup = $(selector);
+    let radioLength = $radioGroup.length;
+    let rVal = getRandomInt(1, radioLength) - 1;
+
+    rVal = $radioGroup[rVal].value;
+
+    $radioGroup.each(function () {
+      $(this).val([rVal]);
+    });
+  }
+};
+
+
+
+/**
+ * Go through each of the frequency dropdowns and randomize each value
+ */
+let randomizeAudioFrequency = (ctrlObjectName = false) => {
+
+  let randomOption;
+  let optionsLength;
+  let rVal;
+  let selector;
+
+  if (ctrlObjectName === false) {
+    selector = 'select.freq-selector';
+  } else {
+    selector = `#${ctrlObjectName}-wrapper select.freq-selector`;
+  }
+
+  $(selector).each(function(){
+
+    optionsLength = this.options.length;
+    randomOption = getRandomInt(0, optionsLength);
+
+    console.log($(this));
+
+    if (typeof this.options[randomOption] === 'undefined') {
+      console.log('stop');
+      return true;
+    }
+
+    rVal = this.options[randomOption].value;
+
+    $(this)
+      .val(rVal)
+      .trigger('change');
+  });
+};

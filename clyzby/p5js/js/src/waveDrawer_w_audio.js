@@ -4,8 +4,9 @@
  * todo - audio controls to be more like a remote - pause, play, stop, rewind, ff, volume
  *        - todo this would be better if we can queue music
  * todo - make a playlist, queue music, if possible get music from Spotify (can it be processed through fft though?)
- * todo - make a toggle to spin/rotate the ingitner and outer waves like the 3D ones
+ * todo - make a toggle to spin/rotate the inner and outer waves like the 3D ones
  * todo - make patterns by saving current config and make them triggerable (ie a pattern bank)
+ * todo - put controls into an iFrame
  * todo - convert this entire thing into an angular web app #Angular8!
  * todo - loading animation
  *
@@ -114,7 +115,7 @@ let s = (sketch) => {
       }
       tempObj.easeInto();
       tempObj.yPoints = new Array(Math.floor(tempObj.waveWidth / tempObj.xSpacing.currentValue));
-      tempObj.calcWave(0);
+      tempObj.calcWave();
       tempObj.render();
     }
   };
