@@ -78,7 +78,6 @@ let uploadedAudioPlay = () => {
  * and change the display of the pause/play button
  */
 let toggleAudio = () => {
-  // console.log(elem);
   if (audio.isPlaying()) {
     audio.pause();
     $("#play-audio").html('&#9658;');
@@ -223,10 +222,7 @@ let applyAudioEnergyValues = (energyValues) => {
         audioValue = myp5.map(energyValues[eqBand], 0, 255, controlObject[ctrlProp].min, controlObject[ctrlProp].max);
       }
 
-      // todo create a knob for this in the dom
       audioValue = audioValue * controlObject[ctrlProp].audio.gain;
-
-      // todo should the lock affect this? should random and reset affect these
 
       let setValue;
       let overBy;
@@ -283,8 +279,8 @@ let applyAudioEnergyValues = (energyValues) => {
 let setAudioResponsiveType = (radioElem) => {
   "use strict";
 
-  console.log($(radioElem).parent().find('input:radio:checked').val());
-  console.log(radioElem);
+  // console.log($(radioElem).parent().find('input:radio:checked').val());
+  // console.log(radioElem);
 
   let value = $(radioElem).val();
   let controlElementName = $(radioElem).data('ctrl_object');
@@ -297,10 +293,12 @@ let setAudioResponsiveType = (radioElem) => {
 };
 
 
+/**
+ * Randomize both the frequency and the responsive method for each of the elements
+ * with audio responsive elements
+ */
 let randomizeAudioCtrls = () => {
   "use strict";
-  console.log('stuff');
-
   randomizeAudioFrequency();
   randomizeAudioResponsiveOption();
 };
@@ -311,15 +309,20 @@ let randomizeAudioCtrls = () => {
  * Iterate through each of the input radios and randomize their
  * value based on the number of inputs by radio group name
  */
-let randomizeAudioResponsiveOption = (ctrlObjectName = false) => {
+let randomizeAudioResponsiveOption = (ctrlObjectName, reset) => {
 
   let radioNamesArr = [];
   let selector;
-  if (ctrlObjectName === false) {
+
+  console.log(ctrlObjectName);
+
+  if (!ctrlObjectName || typeof(ctrlObjectName) === 'undefined') {
     selector = 'input.audio-responsive-selector';
   } else {
     selector = `#${ctrlObjectName}-wrapper input.audio-responsive-selector`;
   }
+
+  console.log(selector)
 
   $(selector).each(function () {
     if (!radioNamesArr.includes(this.name)) {
@@ -333,7 +336,7 @@ let randomizeAudioResponsiveOption = (ctrlObjectName = false) => {
     }
 
     let groupName = radioNamesArr[radioGroup];
-    if (ctrlObjectName === false) {
+    if (!ctrlObjectName || typeof(ctrlObjectName) === 'undefined') {
       selector = `input.audio-responsive-selector[name*=${groupName}]`;
     } else {
       selector = `#${ctrlObjectName}-wrapper input.audio-responsive-selector[name*=${groupName}]`;
@@ -341,7 +344,21 @@ let randomizeAudioResponsiveOption = (ctrlObjectName = false) => {
 
     let $radioGroup = $(selector);
     let radioLength = $radioGroup.length;
-    let rVal = getRandomInt(1, radioLength) - 1;
+    let rVal;
+
+    if (!radioLength) {
+      continue;
+    }
+
+    if (reset === true) {
+      rVal = 0;
+    } else {
+      rVal = getRandomInt(1, radioLength) - 1;
+    }
+
+    if (typeof($radioGroup) === 'undefined' || typeof($radioGroup[rVal]) === 'undefined' ) {
+      continue;
+    }
 
     rVal = $radioGroup[rVal].value;
 
@@ -354,16 +371,18 @@ let randomizeAudioResponsiveOption = (ctrlObjectName = false) => {
 
 
 /**
- * Go through each of the frequency dropdowns and randomize each value
+ * Go through each of the frequency dropdowns and
+ * randomize each value
  */
-let randomizeAudioFrequency = (ctrlObjectName = false) => {
+let randomizeAudioFrequency = (ctrlObjectName, reset) => {
+  "use strict";
 
   let randomOption;
   let optionsLength;
   let rVal;
   let selector;
 
-  if (ctrlObjectName === false) {
+  if (!ctrlObjectName) {
     selector = 'select.freq-selector';
   } else {
     selector = `#${ctrlObjectName}-wrapper select.freq-selector`;
@@ -372,12 +391,14 @@ let randomizeAudioFrequency = (ctrlObjectName = false) => {
   $(selector).each(function(){
 
     optionsLength = this.options.length;
-    randomOption = getRandomInt(0, optionsLength);
 
-    console.log($(this));
+    if (reset === true) {
+      randomOption = 0;
+    } else {
+      randomOption = getRandomInt(0, optionsLength);
+    }
 
     if (typeof this.options[randomOption] === 'undefined') {
-      console.log('stop');
       return true;
     }
 

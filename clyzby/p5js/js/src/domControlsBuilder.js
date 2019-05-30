@@ -20,6 +20,10 @@ $(() => {
     randomizeSettings();
   });
 
+  $("#randomize-audio-reactive").click(() => {
+    randomizeAudioCtrls();
+  });
+
 
   $("#toggle-help").click(() => {
     $("#toggle-help").toggleClass("inactive");
@@ -858,13 +862,13 @@ let setKeyboardControl = (e) => {
  * Go through each of the properties and set the current value to the defaultValue.
  * @param ctrlElement
  */
-let resetSettings = (ctrlElement = false) => {
-  // "use strict";
+let resetSettings = (ctrlElement) => {
+  "use strict";
 
   let ctrlElementsArray = [];
 
   let globalReset;
-  if (ctrlElement === false) {
+  if (!ctrlElement) {
     globalReset = true;
     ctrlElementsArray = myp5.ctrlElementsArray;
   } else {
@@ -876,10 +880,15 @@ let resetSettings = (ctrlElement = false) => {
   }
 
 
+  randomizeAudioResponsiveOption(false, true);
+  randomizeAudioFrequency(false, true);
+
   for (let i in ctrlElementsArray) {
     if (!ctrlElementsArray.hasOwnProperty(i)) {
       continue;
     }
+
+
 
     let ctrlElem = ctrlElementsArray[i];
     let ctrlObjectName = ctrlElem.constructor.name;
