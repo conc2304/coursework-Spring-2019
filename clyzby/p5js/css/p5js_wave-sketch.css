@@ -99,7 +99,7 @@ body {
 #sub-menu {
   width: 449px;
   position: fixed;
-  z-index: 5;
+  z-index: 10;
   background: rgb(0, 0, 0);
   background: linear-gradient(180deg, rgba(0, 0, 0, 1) 66%, rgba(0, 0, 0, 0) 100%);
 }
@@ -110,6 +110,7 @@ body {
 }
 
 #audio-control-panel {
+  box-sizing: border-box;
   padding: 30px 20px;
   text-align: center;
   width: 439px;

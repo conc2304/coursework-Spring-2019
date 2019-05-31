@@ -513,6 +513,15 @@ ThreeDWave.prototype.calcWave = function () {
  * Paint the object onto the screen based on the object's attributes.
  */
 ThreeDWave.prototype.render = function () {
+  "use strict";
+
+  this.easeInto();
+  if (this.xSpacing.currentValue <= 0) {
+    this.xSpacing.currentValue = this.xSpacing.min / 2;
+  }
+  this.yPoints = new Array(Math.floor(this.waveWidth / this.xSpacing.currentValue));
+  this.calcWave();
+
 
   this.rotateWave();
   myp5.push();

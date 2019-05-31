@@ -319,6 +319,13 @@ OuterWaves.prototype.calcWave = function () {
 OuterWaves.prototype.render = function () {
   "use strict";
 
+  this.easeInto();
+  if (this.xSpacing.currentValue <= 0) {
+    this.xSpacing.currentValue = this.xSpacing.min / 2;
+  }
+  this.yPoints = new Array(Math.floor(this.waveWidth / this.xSpacing.currentValue));
+  this.calcWave();
+
   myp5.push();
   this.setColor();
   let m, r, s;

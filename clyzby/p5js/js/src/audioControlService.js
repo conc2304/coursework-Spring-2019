@@ -297,10 +297,10 @@ let setAudioResponsiveType = (radioElem) => {
  * Randomize both the frequency and the responsive method for each of the elements
  * with audio responsive elements
  */
-let randomizeAudioCtrls = () => {
+let randomizeAudioCtrls = (ctrlObjectName) => {
   "use strict";
-  randomizeAudioFrequency();
-  randomizeAudioResponsiveOption();
+  randomizeAudioFrequency(ctrlObjectName);
+  randomizeAudioResponsiveOption(ctrlObjectName);
 };
 
 

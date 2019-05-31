@@ -143,7 +143,7 @@ class CenterWave {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
-        gain : 1,
+        gain : .6,
         fall : 1, // not sure what this will do yet
       },
       triggerSource : null,
@@ -282,6 +282,8 @@ class CenterWave {
  * get the location of the y points to be rendered in the wave
  */
 CenterWave.prototype.calcWave = function () {
+  "use strict";
+
   let dx = (myp5.TWO_PI / this.period.currentValue ) * this.xSpacing.currentValue;
   this.waveType.currentValue = (this.waveType.options.includes(this.waveType.currentValue)) ? this.waveType.currentValue : 'sin';
   this.origin += this.velocity.currentValue;
@@ -298,6 +300,14 @@ CenterWave.prototype.calcWave = function () {
 
 let slider =
   CenterWave.prototype.render = function() {
+  "use strict";
+
+  this.easeInto();
+  if (this.xSpacing.currentValue <= 0) {
+    this.xSpacing.currentValue = this.xSpacing.min / 2;
+  }
+  this.yPoints = new Array(Math.floor(this.waveWidth / this.xSpacing.currentValue));
+  this.calcWave();
 
     myp5.push();
     this.setColor();

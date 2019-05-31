@@ -183,6 +183,12 @@ let addMasterElementControls = (ctrlElem, parent) => {
       helper: 'Toggles whether this element is visible or not.',
     },
     {
+      htmlIcon: 'waves',
+      title: 'Randomize Audio Reactions',
+      onclick: `randomizeAudioCtrls('${ctrlElemName}')`,
+      helper: 'Randomize what frequency range an element reacts to.  Randomize how that frequency range changes the element\'s property',
+    },
+    {
       htmlIcon: 'shuffle',
       title: 'Randomize',
       onclick: `randomizeSettings('${ctrlElemName}')`,
@@ -193,7 +199,7 @@ let addMasterElementControls = (ctrlElem, parent) => {
       title: 'Reset Visuals',
       onclick: `resetSettings('${ctrlElemName}')`,
       helper: 'Randomize every property in this element to their original default state.  This does not affect the audio reactive controllers.',
-    }
+    },
   ];
 
   for (let i in icons) {
