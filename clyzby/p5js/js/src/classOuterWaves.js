@@ -65,9 +65,9 @@ class OuterWaves {
       defaultValue: 0.025,
       currentValue: 0.025,
       targetValue: null,
-      min: 0.01, // this can be edited by the user
-      defaultMin: 0.01, // this is the range within which the user can edit the min and max values
-      max: 1,  // this can be edited by the user
+      min: -0.5, // this can be edited by the user
+      defaultMin: -1, // this is the range within which the user can edit the min and max values
+      max: 0.5,  // this can be edited by the user
       defaultMax: 1, // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
       audio : {
@@ -127,7 +127,8 @@ class OuterWaves {
       },
       triggerSource: null,
       lockOn: false,
-      easingValue: null,
+      easingValue: 0.1,
+      noteHeldEasing: 0.1,
       easingMax: 0,
       easingMin: 0,
     };
