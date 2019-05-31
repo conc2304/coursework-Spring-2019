@@ -55,7 +55,7 @@ let freqBands = {
       [8000, 10000],
       [10000, 12500],
       [12500, 16000],
-      [16000, 22000],  // fft analysis breaks at 23,000k hz
+      [16000, 20000],  // fft analysis breaks at 23,000k hz
     ]
   },
 };
