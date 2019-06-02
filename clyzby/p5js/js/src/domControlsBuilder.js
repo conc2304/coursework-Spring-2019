@@ -464,7 +464,8 @@ let setIntroDefaults = () => {
       .trigger('input');
   });
 
-  $($(".freq-selector")[0]).val("2000 - 4000 Hz").trigger("change");
+
+  $($(".freq-selector")[0]).val("2000 - 2500 Hz").trigger("change");
 };
 
 
