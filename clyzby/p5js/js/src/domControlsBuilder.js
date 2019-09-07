@@ -490,10 +490,10 @@ let createMidiAssigner = (ctrlObject, prop, parentWrapper) => {
   let midiAssigner = document.createElement('input');
   midiAssigner.type = 'text';
   $(midiAssigner).addClass('midi-assigner helper')
-    .attr('title', 'Midi Mode Assign Input')
-    .attr('placeholder', 'Assign Midi Input')
+    .attr('title', 'Midi Mode Bind Input')
+    .attr('placeholder', 'Bind Midi Input')
     .attr('maxLength', '3')
-    .data('helper', 'Program a midi input to control this element. When the midi input is pressed it will set the element\'s property to the the midi input\'s velocity')
+    .data('helper', 'Program a Midi input to control this element. When the Midi input is pressed it will set the element\'s property to the the Midi input\'s velocity')
     .data('ctrl_object', ctrlObjectName)
     .data('prop', prop)
     .data('type', 'midi-set')
@@ -718,6 +718,10 @@ let createRadioToggle = (ctrlObject, prop, parentWrapper) => {
     let label = document.createElement('p');
     $(label).html(ctrlObject[prop].displayLabel)
       .appendTo(labelWrapper);
+
+    if (midiAvailable) {
+      createMidiAssigner(ctrlObject, prop, inputWrapper);
+    }
 
     createPianoDomInput(ctrlObject,prop, inputWrapper);
 
