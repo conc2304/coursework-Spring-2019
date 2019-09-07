@@ -20,7 +20,6 @@
   <script src="/clyzby/files/vendor/nouislider/nouislider.js"></script>
   <script src="/clyzby/files/vendor/jquery.knob.js"></script>
   <script src="js/src/easingService.js"></script>
-  <script src="js/src/midiCtrlConfig.js"></script>
   <script src="js/src/waveDrawer_w_audio.js"></script>
   <script src="js/src/classCenterWave.js"></script>
   <script src="js/src/classOuterWaves.js"></script>
@@ -55,13 +54,24 @@
         shuffle
       </i>
       <i id="randomize-audio-reactive" class="global-control material-icons md-light helper"
-         title="Randomize Audio Reactive" data-helper="Randomizes all of the audio reactive selectors. This will assign each element's properties to respond to one of the frequency ranges.  This will also randomly set the audio reactive mode randomly for each of the elements' properties.">
+         title="Randomize Audio Reactive"
+         data-helper="Randomizes all of the audio reactive selectors. This will assign each element's properties to respond to one of the frequency ranges.  This will also randomly set the audio reactive mode randomly for each of the elements' properties.">
         waves
       </i>
+
+      <i id="toggle-midi-assigner" class="global-control material-icons md-light helper inactive"
+          title="Toggle the Midi Assigner"
+          data-helper="Enable/Disable the input to assign a visual element to a midi input.  When Midi Assigner is enabled Midi notes will be bypassed.">
+        keyboard
+      </i>
+
       <i id="toggle-help" class="global-control material-icons md-light helper"
-         title="Toggle Help" data-helper="Enable or Disable this help box. The help box will tell you what each intractable element does.">
+         title="Toggle Help"
+         data-helper="Enable or Disable this help box. The help box will tell you what each intractable element does.">
         help
       </i>
+
+
     </div>
     <div class="clear"></div>
   </div>

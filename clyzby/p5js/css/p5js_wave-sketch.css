@@ -168,8 +168,10 @@ i.material-icons:hover {
   position: relative;
   color: #000;
 }
-
-.ctrlObject-settings .piano-mode input {
+.ctrlObject-settings .input-assigner {
+  margin-bottom: 10px;
+}
+.ctrlObject-settings .input-assigner input {
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   display: inline-block;
@@ -189,7 +191,7 @@ i.material-icons:hover {
   text-align: center;
 }
 
-.ctrlObject-settings .piano-mode input:hover {
+.ctrlObject-settings .input-assigner input:hover {
   -webkit-animation: flash linear 2s infinite;
   animation: flash linear 2s infinite;
 }
@@ -212,7 +214,7 @@ i.material-icons:hover {
   }
 }
 
-.ctrlObject-settings .piano-mode input:last-child {
+.ctrlObject-settings .input-assigner input:last-child {
   margin-left: 8px;
 }
 

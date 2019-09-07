@@ -29,6 +29,15 @@ $(() => {
     $("#toggle-help").toggleClass("inactive");
   });
 
+  if (!midiAvailable){
+    $('#toggle-midi-assigner').remove();
+  } else {
+    $("#toggle-midi-assigner").click(() => {
+      $("#toggle-midi-assigner").toggleClass("inactive");
+      $(".midi-wrapper").toggle();
+    });
+  }
+
 
 
   // on hover mouse over/leave show/hide the value of the range slider handle
@@ -231,7 +240,6 @@ let addMasterElementControls = (ctrlElem, parent) => {
 let createNumericPropertyCtrlr = (ctrlObject, prop, parentWrapper) => {
   "use strict";
 
-
   if (ctrlObject[prop].attrType === 'numeric') {
 
 
@@ -245,6 +253,9 @@ let createNumericPropertyCtrlr = (ctrlObject, prop, parentWrapper) => {
       .appendTo(inputWrapper);
 
     createLockElement(ctrlObject, prop, title);
+    if (midiAvailable) {
+      createMidiAssigner(ctrlObject, prop, inputWrapper);
+    }
     createPianoDomInput(ctrlObject, prop, inputWrapper);
     createDomSlider(ctrlObject, prop, inputWrapper);
 
@@ -282,14 +293,11 @@ let createGainDial = (ctrlObject, prop, parentWrapper) => {
   let ctrlObjectName = ctrlObject.constructor.name;
   let dialWrap = document.createElement('div');
   $(dialWrap).addClass('gain-dial-wrapper')
-    // .data('helper', 'Control how much of an effect the component reacts to the audio.  The higher the number the greater the boom.')
     .appendTo(parentWrapper);
 
   let dial = document.createElement('input');
   $(dial).prop('type', 'text')
     .addClass('gain-knob')
-    // .addClass('helper')
-    // .data('helper', 'Control how much of an effect the component reacts to the audio.  The higher the number the greater the boom.')
     .prop('title', 'Control how much of an effect the component reacts to the audio.  The higher the number the greater the boom.')
     .val(ctrlObject[prop].audio.gain)
     .appendTo(dialWrap);
@@ -469,9 +477,43 @@ let setIntroDefaults = () => {
 };
 
 
+let createMidiAssigner = (ctrlObject, prop, parentWrapper) => {
+
+  let ctrlObjectName = ctrlObject.constructor.name;
+
+  let midiAssignerWrapper = document.createElement('div');
+  $(midiAssignerWrapper).addClass(`input-assigner midi-wrapper`)
+    .appendTo(parentWrapper);
+
+
+  // input to set which keyboard key plays that element
+  let midiAssigner = document.createElement('input');
+  midiAssigner.type = 'text';
+  $(midiAssigner).addClass('midi-assigner helper')
+    .attr('title', 'Midi Mode Assign Input')
+    .attr('placeholder', 'Assign Midi Input')
+    .attr('maxLength', '3')
+    .data('helper', 'Program a midi input to control this element. When the midi input is pressed it will set the element\'s property to the the midi input\'s velocity')
+    .data('ctrl_object', ctrlObjectName)
+    .data('prop', prop)
+    .data('type', 'midi-set')
+    .on("input", setKeyboardControl)
+    .appendTo(midiAssignerWrapper);
+
+  let icon = document.createElement('i');
+  $(icon).addClass('material-icons md-light helper')
+    .html('delete_forever')
+    .attr('title', 'Unbind Midi')
+    .data('helper', 'Removes the Midi input binding to this control element.')
+    .attr('onclick', `unbindMidiCtrl('${ctrlObjectName}', '${prop}', this)`)
+    .appendTo(midiAssignerWrapper);
+
+};
+
+
 
 /**
- *  Create buttons in the DOM to play/pause music and also upload audio
+ *  Create buttons in the DOM to play/pause music and  also upload audio
  */
 let createAudioCtrls = () => {
   "use strict";
@@ -483,7 +525,7 @@ let createAudioCtrls = () => {
     .addClass("audio-button")
     .attr('id', 'play-audio')
     .on("click", toggleAudio)
-    .appendTo(audioWrapperID)
+    .appendTo(audioWrapperID);
 
   let tooltip = document.createElement('span');
   $(tooltip).addClass('tooltip')
@@ -493,10 +535,10 @@ let createAudioCtrls = () => {
 
   // we will hide the default file input bc its ugly and use the label
   let uploadButton = myp5.createFileInput(uploaded);
-  uploadButton.parent(audioWrapperID);
-  uploadButton.addClass("upload-button");
-  uploadButton.attribute('id', 'upload-file');
-  uploadButton.attribute('name', 'upload-file');
+  uploadButton.parent(audioWrapperID)
+    .addClass("upload-button")
+    .attribute('id', 'upload-file')
+    .attribute('name', 'upload-file');
 
   // instead we will see the label for it and labels have the same function as the actual input
   let label = document.createElement('label');
@@ -753,7 +795,7 @@ let createPianoDomInput = (ctrlObject, prop, parentWrapper) => {
   let ctrlObjectName = ctrlObject.constructor.name;
 
   let pianoWrapper = document.createElement('div');
-  $(pianoWrapper).addClass(`piano-mode`)
+  $(pianoWrapper).addClass(`input-assigner`)
     .appendTo(parentWrapper);
 
 
@@ -801,7 +843,6 @@ let ctrlElemPropToKeyMap = {};
 let setKeyboardControl = (e) => {
   "use strict";
   // console.log(e);
-
 
   let inputValue = e.target.value;
   let type = $(e.target).data('type');
@@ -894,8 +935,6 @@ let resetSettings = (ctrlElement) => {
     if (!ctrlElementsArray.hasOwnProperty(i)) {
       continue;
     }
-
-
 
     let ctrlElem = ctrlElementsArray[i];
     let ctrlObjectName = ctrlElem.constructor.name;
@@ -1050,8 +1089,6 @@ let toggleVisibility = (ctrlElementName, htmlElem) => {
  * Lock the property so that the values can't be changed
  * Set the icon and parent wrapper to a locked stated
  * Disable the inputs and selects
- * @param ctrlElementName
- * @param prop
  * @param htmlElem
  */
 let lockProperty = (htmlElem) => {
@@ -1117,3 +1154,18 @@ let getRandomInt = (min, max) => {
 
 
 
+let unbindMidiCtrl = (controlElem, property, elem) => {
+  let $elem = $(elem);
+  let $input = $elem.parents('.input-assigner').children('input.midi-assigner');
+  let noteVal = $input.val().replace(/[^0-9]+/, '');
+  let configToDelete = [controlElem, property];
+  $input.val('');
+
+  for (let binding in midiCtrlMap[noteVal]) {
+    if (JSON.stringify(midiCtrlMap[noteVal][binding]) === JSON.stringify(configToDelete)) {
+      delete midiCtrlMap[noteVal][binding];
+      midiCtrlMap[noteVal] = midiCtrlMap[noteVal].filter(val => val);
+    }
+  }
+
+};

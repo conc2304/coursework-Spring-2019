@@ -10,6 +10,27 @@
  */
 
 
+
+/**
+ * The channel / command set in the configuration of the midi controller set through it's software
+ * @type {number}
+ */
+const Note_Pressed   = 159;
+const Note_Held      = 175;
+const Note_Off       = 143;
+const Knob_Active    = 176;
+const Drum_Pad_Hit   = 153;
+
+
+
+/** midi note number : [
+ *    instance to control,
+ *    attribute of instance,
+ *  ]
+ **/
+
+
+let midiCtrlMap = {};  // array of attributes to control (allows for a 1 to many change)
 let notesHeld = [];  // an array of all the notes being held at once
 
 /**
@@ -18,25 +39,25 @@ let notesHeld = [];  // an array of all the notes being held at once
  */
 let noteOn = (MIDImessage) => {
   'use strict';
-  console.log('NOTE ON');
+  // console.log('NOTE ON');
   setElementAttribute(MIDImessage.data, MIDImessage.timeStamp, Note_Pressed);
 };
 
 let noteHeld = (MIDImessage) => {
   "use strict";
-  console.log('Note Held');
+  // console.log('Note Held');
   setElementAttribute(MIDImessage.data, MIDImessage.timeStamp, Note_Held);
 };
 
 let noteOff = (MIDImessage) => {
   "use strict";
-  console.log('OFF CALLBACK');
+  // console.log('OFF CALLBACK');
   setElementAttribute(MIDImessage.data, MIDImessage.timeStamp, Note_Off);
 };
 
 let drumHit = (MIDImessage) => {
   "use strict";
-  console.log('Drum_Pad_Hit');
+  // console.log('Drum_Pad_Hit');
   let velocity = (MIDImessage.data.length > 2) ? MIDImessage.data[2] : 0; // a velocity value might not be included with a noteOff command
 
   if (velocity > 0) {
@@ -47,10 +68,9 @@ let drumHit = (MIDImessage) => {
 /**
  * Set the attribute of one of the instances corresponding to the note pressed
  * based on the velocity of the note
- * @param note        -  the value of the note pressed
- * @param velocity    -  how hard the note was pressed
- * @param noteIsOff   -  whether the note is being pressed or released
- * @param isKnob      -  whether it is a knob or a pad press
+ * @param MIDImessageData   - contains, channel, note, and velocity
+ * @param timeStamp
+ * @param triggerSource
  */
 let setElementAttribute = (MIDImessageData, timeStamp, triggerSource) => {
   "use strict";
@@ -59,8 +79,20 @@ let setElementAttribute = (MIDImessageData, timeStamp, triggerSource) => {
   let note = MIDImessageData[1];
   let velocity = (MIDImessageData.length > 2) ? MIDImessageData[2] : 0; // a velocity value might not be included with a noteOff command
 
-  console.log(`channel: ${channel}`);
-  let configsToSet = (triggerSource === Drum_Pad_Hit) ? drumPad[note] : mpd218[note];
+
+  if ($("#toggle-midi-assigner").hasClass('inactive') && $(':focus').hasClass('midi-assigner')) {
+    setMidiCtrl(midiCtrlMap, note);
+    return;
+  }
+
+  if (!midiCtrlMap[note]) {
+    return;
+  }
+
+  // console.log(`channel: ${channel}`);
+  let configsToSet = (triggerSource === Drum_Pad_Hit) ?
+    drumPad[note] :
+    midiCtrlMap[note];
   for (let i = 0; i < configsToSet.length; i++) {
     let element = configsToSet[i][0];
     let attr = configsToSet[i][1];
@@ -74,7 +106,7 @@ let setElementAttribute = (MIDImessageData, timeStamp, triggerSource) => {
         lockBeingSet = lockAttributes(element);
       }
       if (lockBeingSet === true) {
-        return
+        return;
       } else {
         continue;
       }
@@ -117,6 +149,40 @@ let setElementAttribute = (MIDImessageData, timeStamp, triggerSource) => {
     }
   }
 };
+
+
+let setMidiCtrl = (midiCtrlMap, note) => {
+  let midiInputEl = $(':focus');
+  midiInputEl.val(`Midi Note : ${note}`);
+
+  let controlEl = midiInputEl.data('ctrl_object');
+  let property = midiInputEl.data('prop');
+  let config = [controlEl, property];
+
+  for (let noteMap in midiCtrlMap) {
+    if (!midiCtrlMap[noteMap]) {
+      continue;
+    }
+    for (let binding in midiCtrlMap[noteMap]) {
+      if (!midiCtrlMap[noteMap][binding]) {
+        continue;
+      }
+
+      if (JSON.stringify(midiCtrlMap[noteMap][binding]) === JSON.stringify(config)) {
+        delete midiCtrlMap[noteMap][binding];
+        midiCtrlMap[noteMap] = midiCtrlMap[noteMap].filter(val => val);
+      }
+
+      if (midiCtrlMap[noteMap] === undefined) {
+        delete midiCtrlMap[noteMap];
+      }
+    }
+  }
+
+  midiCtrlMap[note] = midiCtrlMap[note] || [];
+  midiCtrlMap[note].push(config);
+};
+
 
 
 let addNoteHeld = (note, timeStamp, element, attr) => {
@@ -218,13 +284,10 @@ let getCtrlElement = (instanceName) => {
   switch (instanceName) {
     case 'centerwave':
       return myp5.getCenterWave();
-      break;
     case 'outerwaves' :
       return myp5.getOuterWaves();
-      break;
     case 'threedwave' :
       return myp5.getThreeDWave();
-      break;
   }
 };
 

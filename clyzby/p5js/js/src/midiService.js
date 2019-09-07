@@ -48,7 +48,7 @@ function getMIDIMessage(message) {
   let velocity = (message.data.length > 2) ? message.data[2] : 0; // a velocity value might not be included with a noteOff command
   let timeStamp = message.timeStamp;
 
-  console.log(`c: ${command} n: ${note} v: ${velocity} t: ${timeStamp}`);
+  // console.log(`c: ${command} n: ${note} v: ${velocity} t: ${timeStamp}`);
 
   switch (command) {
     case Note_Pressed:
