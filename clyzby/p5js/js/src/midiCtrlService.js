@@ -115,7 +115,6 @@ let setElementAttribute = (MIDImessageData, timeStamp, triggerSource) => {
     let element = configsToSet[i][0];
     let attr = configsToSet[i][1];
     let ctrlElement = myp5[`get${element}`]();
-    let lockBeingSet = false;
 
     if (triggerSource !== Knob_Active) {
       if (triggerSource !== Note_Off) {
