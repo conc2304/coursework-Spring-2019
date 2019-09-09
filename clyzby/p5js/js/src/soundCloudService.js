@@ -3,19 +3,21 @@
 // var urlList = [];
 // var nameList = [];
 // var currentIndex = 0;
-// var buttonPlay = document.getElementById('play');
-// var buttonPrev = document.getElementById('prev');
-// var buttonNext = document.getElementById('next');
-// var selectSound = document.getElementById('selectSound');
-// var songName = document.getElementById('songname');
-// var songTime = document.getElementById('songtime');
-// var loadingBar = document.getElementById('loadingBar');
-// var progressBar = document.getElementById('progressBar');
+// var buttonPlay = $('#play');
+// var buttonPrev = $('#prev');
+// var buttonNext = $('#next');
+// var selectSound = $('#selectSound');
+// var songName = $('#songname');
+// var songTime = $('#songtime');
+// var loadingBar = $('#loadingBar');
+// var progressBar = $('#progressBar');
 // var seconds, minutes, bass, mid, treble, list, ntgr;
 //
 // //SoundCloud
 // var CLIENT_ID = 'NmW1FlPaiL94ueEu7oziOWjYEzZzQDcK';
-// var PLAYLIST_URL = 'https://soundcloud.com/fftb/sets/party';
+// var PLAYLIST_URL = 'https://soundcloud.com/clyzby/likes';
+// // var PLAYLIST_URL = 'https://soundcloud.com/fftb/sets/party';
+//
 // SC.initialize({
 //   client_id: CLIENT_ID
 // });

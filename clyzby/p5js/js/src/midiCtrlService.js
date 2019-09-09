@@ -55,10 +55,27 @@ let noteOff = (MIDImessage) => {
   setElementAttribute(MIDImessage.data, MIDImessage.timeStamp, Note_Off);
 };
 
+
+/**
+ * Trigger a change in a control element when a knob is active.
+ * @param MIDImessage
+ */
+let knobActive = (MIDImessage) => {
+  "use strict";
+  console.log('KNOB ACTIVE');
+  console.log(MIDImessage);
+
+  let channel = MIDImessage.data[0];
+  let note = MIDImessage.data[1];
+  let velocity = (MIDImessage.data.length > 2) ? MIDImessage.data[2] : MIDImessage.data[1]; // a velocity value might not be included with a noteOff command
+
+  setElementAttribute(MIDImessage.data, MIDImessage.timeStamp, Knob_Active);
+};
+
 let drumHit = (MIDImessage) => {
   "use strict";
   // console.log('Drum_Pad_Hit');
-  let velocity = (MIDImessage.data.length > 2) ? MIDImessage.data[2] : 0; // a velocity value might not be included with a noteOff command
+  let velocity = (MIDImessage.data.length > 2) ? MIDImessage.data[2] : MIDImessage.data[1]; // a velocity value might not be included with a noteOff command
 
   if (velocity > 0) {
     setElementAttribute(MIDImessage.data, MIDImessage.timeStamp, Drum_Pad_Hit);
@@ -77,7 +94,7 @@ let setElementAttribute = (MIDImessageData, timeStamp, triggerSource) => {
 
   let channel = MIDImessageData[0];
   let note = MIDImessageData[1];
-  let velocity = (MIDImessageData.length > 2) ? MIDImessageData[2] : 0; // a velocity value might not be included with a noteOff command
+  let velocity = (MIDImessageData.length > 2) ? MIDImessageData[2] : MIDImessageData[1]; // a velocity value might not be included with a noteOff command
 
 
   if ($("#toggle-midi-assigner").hasClass('inactive') && $(':focus').hasClass('midi-assigner')) {
@@ -93,24 +110,12 @@ let setElementAttribute = (MIDImessageData, timeStamp, triggerSource) => {
   let configsToSet = (triggerSource === Drum_Pad_Hit) ?
     drumPad[note] :
     midiCtrlMap[note];
+
   for (let i = 0; i < configsToSet.length; i++) {
     let element = configsToSet[i][0];
     let attr = configsToSet[i][1];
-    let ctrlElement = getCtrlElement(element);
+    let ctrlElement = myp5[`get${element}`]();
     let lockBeingSet = false;
-
-    // if we re setting a lock we dont want to trigger
-    // the other attribute changes associated with that note
-    if (attr === 'lock') {
-      if (triggerSource !== Note_Off) {   // if we trigger on not off it will immediately unlock
-        lockBeingSet = lockAttributes(element);
-      }
-      if (lockBeingSet === true) {
-        return;
-      } else {
-        continue;
-      }
-    }
 
     if (triggerSource !== Knob_Active) {
       if (triggerSource !== Note_Off) {
@@ -121,12 +126,14 @@ let setElementAttribute = (MIDImessageData, timeStamp, triggerSource) => {
     }
 
     // don't change the value if it is locked
-    if (ctrlElement[attr].hasOwnProperty('lockOn') && ctrlElement[attr].lockOn === true) return;
+    if (ctrlElement[attr].hasOwnProperty('lockOn') && ctrlElement[attr].lockOn === true) {
+      return;
+    }
 
     let type = ctrlElement[attr].attrType;
     let value;
 
-    if (triggerSource === Note_Off) {
+    if (triggerSource === Note_Off || velocity === 0) {
       ctrlElement[attr].targetValue = ctrlElement[attr].resetValue;
       return;
     }
@@ -199,25 +206,25 @@ let addNoteHeld = (note, timeStamp, element, attr) => {
   }
 };
 
-// when the lock button is pressed in conjunction
-// with any pad that is controlling the same instance
-// hold that value until it is unlocked
-let lockAttributes = (element) => {
-  "use strict";
-
-  // loop through all of the notes held
-  // and check if the any of them control the same element
-  let ctrlElement;
-  let lockSet = false;
-  for (let i in notesHeld) {
-    if (notesHeld[i][2] === element && notesHeld[i][3] !== 'lock') {
-      ctrlElement = getCtrlElement(element);
-      ctrlElement[notesHeld[i][3]].lockOn = !ctrlElement[notesHeld[i][3]].lockOn;
-      lockSet = true;
-    }
-  }
-  return lockSet;
-};
+// // when the lock button is pressed in conjunction
+// // with any pad that is controlling the same instance
+// // hold that value until it is unlocked
+// let lockAttributes = (element) => {
+//   "use strict";
+//
+//   // loop through all of the notes held
+//   // and check if the any of them control the same element
+//   let ctrlElement;
+//   let lockSet = false;
+//   for (let i in notesHeld) {
+//     if (notesHeld[i][2] === element && notesHeld[i][3] !== 'lock') {
+//       ctrlElement = myp5[`get${element}`]();
+//       ctrlElement[notesHeld[i][3]].lockOn = !ctrlElement[notesHeld[i][3]].lockOn;
+//       lockSet = true;
+//     }
+//   }
+//   return lockSet;
+// };
 
 
 
@@ -274,38 +281,7 @@ let removeNotesHeld = (note) => {
   }
 };
 
-/**
- * Returns the instance object to be controlled
- * @param instanceName
- */
-let getCtrlElement = (instanceName) => {
-  "use strict";
-  instanceName = instanceName.toLowerCase();
-  switch (instanceName) {
-    case 'centerwave':
-      return myp5.getCenterWave();
-    case 'outerwaves' :
-      return myp5.getOuterWaves();
-    case 'threedwave' :
-      return myp5.getThreeDWave();
-  }
-};
 
-/**
- * Trigger a change in a control element when a knob is active.
- * @param MIDImessage
- */
-let knobActive = (MIDImessage) => {
-  "use strict";
-  console.log('KNOB ACTIVE');
-  console.log(MIDImessage);
-
-  let channel = MIDImessage.data[0];
-  let note = MIDImessage.data[1];
-  let velocity = (MIDImessage.data.length > 2) ? MIDImessage.data[2] : 0; // a velocity value might not be included with a noteOff command
-
-  setElementAttribute(MIDImessage.data, MIDImessage.timeStamp, Knob_Active);
-};
 
 /**
  * Run a sequence based on a trigger  // todo
