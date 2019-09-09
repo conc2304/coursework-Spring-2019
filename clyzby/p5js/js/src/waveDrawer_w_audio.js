@@ -57,6 +57,7 @@ let s = (sketch) => {
 
     sketch.createCanvas(sketch.windowWidth, sketch.windowHeight, sketch.WEBGL);
     sketch.polygon = renderPolygon;
+    sketch.colorMode(sketch.HSB);
 
     // make a method to retrieve the elements externally by the myp5 namespace
     for (let ctrlElement in sketch.ctrlElementsArray) {

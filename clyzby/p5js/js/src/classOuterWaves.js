@@ -35,6 +35,7 @@ class OuterWaves {
       easingMax: 0,
       easingMin: 0,
     };
+
     this.radius = {
       displayLabel: 'Size',
       resetValue: 10,
@@ -59,6 +60,7 @@ class OuterWaves {
       easingMax: 0,
       easingMin: 0,
     };
+
     this.velocity = {
       displayLabel: 'Velocity',
       resetValue: 0.025,
@@ -108,6 +110,7 @@ class OuterWaves {
       easingMax: 0,
       easingMin: 0,
     };
+
     this.ySpacing = {
       displayLabel: 'Y Spacing',
       resetValue: 30,
@@ -156,6 +159,7 @@ class OuterWaves {
       easingMax: 0,
       easingMin: 0,
     };
+
     this.period = {
       displayLabel: 'Period',
       resetValue: 500,
@@ -181,79 +185,55 @@ class OuterWaves {
       easingMin: 0,
     };
 
-    this.colorR = {
-      displayLabel: 'Color Red',
-      resetValue: 100,
-      defaultValue: 100,
-      currentValue: 200,
-      targetValue: null,
-      min: 0,  // this can be edited by the user
-      defaultMin: 0, // this is the range within which the user can edit the min and max values
-      max: 255,  // this can be edited by the user
-      defaultMax: 255, // this is the range within which the user can edit the min and max values
-      attrType: 'numeric',
+    this.hue = {
+      displayLabel : 'Color',
+      resetValue : 100,
+      defaultValue : 100,
+      currentValue : 200,
+      targetValue : null,
+      min : 0,    // this can be edited by the user
+      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
+      max : 360,    // this can be edited by the user
+      defaultMax : 360,   //  this is the range within which the user can edit the min and max values
+      attrType : 'numeric',
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
         gain : 1,
         fall : 1, // not sure what this will do yet
       },
-      triggerSource: null,
-      lockOn: false,
-      easingValue: 0.1,
-      noteHeldEasing: 0.1,
-      easingMax: 0,
-      easingMin: 0,
-    };
-    this.colorG = {
-      displayLabel: 'Color Green',
-      resetValue: 100,
-      defaultValue: 100,
-      currentValue: 200,
-      targetValue: null,
-      min: 0,  // this can be edited by the user
-      defaultMin: 0, // this is the range within which the user can edit the min and max values
-      max: 255,  // this can be edited by the user
-      defaultMax: 255, // this is the range within which the user can edit the min and max values
-      attrType: 'numeric',
-      audio : {
-        responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
-        gain : 1,
-        fall : 1, // not sure what this will do yet
-      },
-      triggerSource: null,
-      lockOn: false,
-      easingValue: 0.1,
-      noteHeldEasing: 0.05,
-      easingMax: 0,
-      easingMin: 0,
-    };
-    this.colorB = {
-      displayLabel: 'Color Blue',
-      resetValue: 100,
-      defaultValue: 100,
-      currentValue: 200,
-      targetValue: null,
-      min: 0,  // this can be edited by the user
-      defaultMin: 0, // this is the range within which the user can edit the min and max values
-      max: 255,  // this can be edited by the user
-      defaultMax: 255, // this is the range within which the user can edit the min and max values
-      attrType: 'numeric',
-      audio : {
-        responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
-        gain : 1,
-        fall : 1, // not sure what this will do yet
-      },
-      triggerSource: null,
-      lockOn: false,
-      easingValue: 0.1,
-      noteHeldEasing: 0.05,
-      easingMax: 0,
-      easingMin: 0,
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.1,
+      easingMax : 0,
+      easingMin : 0,
     };
 
+    this.saturation = {
+      displayLabel : 'Saturation',
+      resetValue : 100,
+      defaultValue : 100,
+      currentValue : 100,
+      targetValue : null,
+      min : 0,    // this can be edited by the user
+      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
+      max : 100,    // this can be edited by the user
+      defaultMax : 100,   //  this is the range within which the user can edit the min and max values
+      attrType : 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.1,
+      easingMax : 0,
+      easingMin : 0,
+    };
 
     //  Variable Type Attributes
     this.waveType = {
@@ -361,12 +341,12 @@ OuterWaves.prototype.setColor = function () {
 
   switch (this.stroke.currentValue) {
     case 'Outline':
-      myp5.stroke(this.colorR.currentValue, this.colorG.currentValue, this.colorB.currentValue);
+      myp5.stroke(this.hue.currentValue, this.saturation.currentValue, 100);
       myp5.noFill();
       break;
     case 'Filled':
       myp5.noStroke();
-      myp5.fill(this.colorR.currentValue, this.colorG.currentValue, this.colorB.currentValue);
+      myp5.fill(this.hue.currentValue, this.saturation.currentValue, 100);
       break;
   }
 };
