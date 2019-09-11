@@ -1,8 +1,46 @@
 let uploadLoading = false;
 let uploadedAudio;
 
-// const FREQ_RANGES = {
-let freqBands = {
+let freqBands10 = {
+  low: {
+    optGroup: 'Low',
+    ranges: [
+      [32, 64],
+    ]
+  },
+  midLow: {
+    optGroup: 'Mid - Low',
+    ranges: [
+      [64, 125],
+      [125, 250],
+    ]
+  },
+  mid: {
+    optGroup: 'Mid',
+    ranges: [
+      [250, 500],
+      [500, 1000],
+      [1000, 2000],
+    ]
+  },
+  midHigh: {
+    optGroup: 'Mid - High',
+    ranges: [
+      [2000, 4000],
+      [4000, 8000],
+    ]
+  },
+  high: {
+    optGroup: 'High',
+    ranges: [
+      [8000, 16000],
+      [16000, 22000],  // fft analysis breaks at 23,000k hz
+    ]
+  },
+};
+
+
+let freqBands31 = {
   low: {
     optGroup: 'Low',
     ranges: [
@@ -60,6 +98,8 @@ let freqBands = {
   },
 };
 
+
+let freqBands = freqBands10;
 
 
 /**

@@ -473,7 +473,8 @@ let setIntroDefaults = () => {
   });
 
 
-  $($(".freq-selector")[0]).val("2000 - 2500 Hz").trigger("change");
+  let freqToAssign = freqBands.midLow.ranges[0];
+  $($(".freq-selector")[0]).val(`${freqToAssign[0]} - ${freqToAssign[1]} Hz`).trigger("change");
 };
 
 
@@ -1042,7 +1043,8 @@ let randomizeSettings = (ctrlElement = false) => {
 
         ctrlElem[prop].targetValue = rVal;
 
-      } else if (ctrlElem[prop].attrType === "variable") {
+      }
+      else if (ctrlElem[prop].attrType === "variable") {
         optLength = ctrlElem[prop].options.length;
         optIndex = getRandomInt(0, optLength - 1);
         rVal = ctrlElem[prop].options[optIndex];

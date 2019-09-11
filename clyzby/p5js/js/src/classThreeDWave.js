@@ -520,18 +520,18 @@ ThreeDWave.prototype.render = function () {
  * Sets the rotational speed along the X, Y, and Z axis of the individual wave.
  */
 ThreeDWave.prototype.rotateWave = function () {
-  myp5.rotateX(this.waveRotateX.currentValue);
-  myp5.rotateY(this.waveRotateY.currentValue);
-  myp5.rotateZ(this.waveRotateZ.currentValue);
+  myp5.rotateX(myp5.frameCount * 0.01 * this.waveRotateX.currentValue);
+  myp5.rotateY(myp5.frameCount * 0.01 * this.waveRotateY.currentValue);
+  myp5.rotateZ(myp5.frameCount * 0.01 * this.waveRotateZ.currentValue);
 };
 
 /**
  * Sets the rotational speed along the X, Y, and Z axis of each shape
  */
 ThreeDWave.prototype.rotateShape = function () {
-  myp5.rotateX(this.rotateX.currentValue);
-  myp5.rotateY(this.rotateY.currentValue);
-  myp5.rotateZ(this.rotateZ.currentValue);
+  myp5.rotateX(myp5.frameCount * 0.01 * this.rotateX.currentValue);
+  myp5.rotateY(myp5.frameCount * 0.01 * this.rotateY.currentValue);
+  myp5.rotateZ(myp5.frameCount * 0.01 * this.rotateZ.currentValue);
 };
 
 /**
@@ -565,9 +565,9 @@ ThreeDWave.prototype.renderShape = function () {
   myp5.push();
 
   // this.rotateShape();
-  myp5.rotateZ(this.rotateZ.currentValue);
-  myp5.rotateY(this.rotateY.currentValue);
-  myp5.rotateX(this.rotateX.currentValue);
+  myp5.rotateZ(myp5.frameCount * 0.01 * this.rotateZ.currentValue);
+  myp5.rotateY(myp5.frameCount * 0.01 * this.rotateY.currentValue);
+  myp5.rotateX(myp5.frameCount * 0.01 * this.rotateX.currentValue);
 
   // myp5.rotateX(myp5.frameCount * 0.01);
   // myp5.rotateY(myp5.frameCount * 0.01);
