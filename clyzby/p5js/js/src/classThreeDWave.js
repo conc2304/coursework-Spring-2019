@@ -455,7 +455,7 @@ class ThreeDWave {
       currentValue: 'Outline',
       targetValue: null,
       attrType: 'variable',
-      options: ['Outline', 'Filled and Outline',],
+      options: ['Outline', 'Fill + Outline',],
       lockOn: false,
     };
 
@@ -544,10 +544,10 @@ ThreeDWave.prototype.setColor = function () {
       myp5.stroke(this.hue.currentValue, this.saturation.currentValue, 100);
       myp5.noFill();
       break;
-    case 'Filled and Outline':
+    case 'Fill + Outline':
       myp5.strokeWeight(1);
       myp5.stroke(this.hue.currentValue, this.saturation.currentValue, 100);
-      myp5.fill(this.hue.currentValue, this.saturation.currentValue, 100);
+      myp5.fill(this.hue.currentValue + myp5.frameCount, this.saturation.currentValue, 100);
       break;
   }
 };
