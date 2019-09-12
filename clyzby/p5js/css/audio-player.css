@@ -1,9 +1,67 @@
+#audio-control-panel {
+  box-sizing: border-box;
+  padding: 30px 20px;
+  text-align: center;
+  width: 439px;
+  position: fixed;
+  z-index: 5;
+  bottom: 0;
+  left: 0;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 66%, rgba(0, 0, 0, 0) 100%);
+}
+
+#audio-control-panel span.tooltip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 10px auto;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  border-radius: 50px;
+  background-color: #000;
+  box-shadow: 0 15px 35px rgba(147, 147, 224, 0.1),
+  0 5px 15px rgba(225, 225, 225, 0.16);
+
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+
+#playlist-wrapper {
+  height: 200px;
+  max-height: 200px;
+  overflow-y: scroll;
+  transition: height 1s;
+}
+
+#playlist-wrapper.minimized {
+  height: 0;
+}
+
+#minimize-playlist {
+  position: absolute;
+  right: 0;
+}
+
+#ctrlObject-control-panel.audio-player-open {
+  padding-bottom:425px;
+}
+
+
 
 #audio-player ul {
   padding: 0 0 10px 0;
 }
 
-#audio-player #playlist li {
+#audio-player #playlist-wrapper li {
   list-style: none;
   color: #fff;
   margin-bottom: 10px;
@@ -113,22 +171,35 @@ progress#progressBar[aria-valuenow]:before {
   background: #0eb1ff;
 }
 
-#playlist-wrapper {
-  height: 200px;
-  max-height: 200px;
-  overflow-y: scroll;
-  transition: height 1s;
+
+
+.ctrl-bttns {
+  position: relative;
 }
 
-#playlist-wrapper.minimized {
-  height: 0;
-}
-
-#minimize-playlist {
+#playlist-title {
+  color: #fff;
   position: absolute;
-  right: 0;
+  left: 0;
 }
 
 
 
 
+
+
+
+
+/*  For non-soundcloud audio integration*/
+#play-audio.audio-button {
+  width: 80px;
+}
+
+#play-audio:hover + span.tooltip {
+  bottom: 75%;
+  opacity: 0.9;
+}
+
+#upload-file-label {
+  padding: 0 20px;
+}

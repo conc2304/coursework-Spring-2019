@@ -3,15 +3,20 @@ let urlList = [];
 let tracks = [];
 let currentIndex = 0;
 let buttonPlay = $('#play');
-let selectSound = $('#selectSound');
-let songName = $('#songname');
-let songTime = $('#songtime');
+let playlistWrapper = $('#playlist-wrapper');
+let songName = $('#song-name');
+let songTime = $('#song-time');
 let loadingBar = $('#loadingBar');
 let progressBar = $('#progressBar');
-let list;
 let fft;
 
+let CLIENT_ID = 'NmW1FlPaiL94ueEu7oziOWjYEzZzQDcK';
+let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/safe-bass';
+
+
 $(() => {
+
+  resolveSoundCloudLink(PLAYLIST_URL);
 
   $('#play').click(() => {
     playCurrentSound();
@@ -25,7 +30,7 @@ $(() => {
     changeSong(prev, null);
   });
 
-  $('#selectSound').click((e) => {
+  $('#playlist-wrapper').click((e) => {
     let listItem = e.target;
     changeSong(select, listItem);
   });
@@ -36,30 +41,41 @@ $(() => {
     audio.onended(endSong);
   });
 
-});
-//SoundCloud
-let CLIENT_ID = 'NmW1FlPaiL94ueEu7oziOWjYEzZzQDcK';
-let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/safe-bass';
-// let PLAYLIST_URL = 'https://soundcloud.com/atyya';
-// let PLAYLIST_URL = 'https://soundcloud.com/clyzby/likes';
-// var PLAYLIST_URL = 'https://soundcloud.com/fftb/sets/party';
+  $('#minimize-playlist').click(() => {
+    playlistWrapper.toggleClass('minimized');
+    $('#ctrlObject-control-panel').toggleClass('audio-player-open');
 
-SC.initialize({
-  client_id: CLIENT_ID
-});
-
-SC.resolve(PLAYLIST_URL)
-  .then(function (playlist) {
-    tracks = playlist.tracks || playlist;
-
-    for (let i = 0; i < tracks.length; i++) {
-      urlList.push(tracks[i].stream_url + '?client_id=' + CLIENT_ID);
+    if (playlistWrapper.hasClass('minimized')) {
+      $('#minimize-playlist').html('keyboard_arrow_up');
+    } else {
+      $('#minimize-playlist').html('keyboard_arrow_down');
     }
-    selectSound.append(createPlaylist(tracks));
-  })
-  .catch(function (error) {
-    console.log(error);
   });
+
+});
+
+
+let resolveSoundCloudLink = (url) => {
+  SC.initialize({
+    client_id: CLIENT_ID
+  });
+
+  SC.resolve(url)
+    .then(function (playlist) {
+      console.log(playlist);
+      tracks = playlist.tracks || playlist;
+
+      console.log(tracks);
+      for (let i = 0; i < tracks.length; i++) {
+        urlList.push(tracks[i].stream_url + '?client_id=' + CLIENT_ID);
+      }
+      playlistWrapper.html('');
+      playlistWrapper.append(createPlaylist(playlist));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 
 
 
@@ -80,7 +96,7 @@ function progress(percent) {
   loadingBar.val((percent * 100) + 1);
   console.log((percent * 100) + 1);
 
-  songName.html(tracks[currentIndex].title);
+  songName.html(`<a href="${tracks[currentIndex].permalink_url}" title="Link to song on SoundCloud" target="_blank">${tracks[currentIndex].title}`);
   songTime.html(((percent * 100) + 1).toFixed() + '%');
 }
 
@@ -105,7 +121,7 @@ function setup(loadsong) {
 
 
 
-// //Controls
+//  Audio Controls
 function playCurrentSound() {
   if (!audio.isPlaying() && !audio.isPaused()) {
     buttonPlay.html("pause");
@@ -152,7 +168,14 @@ function createPlaylist(playlistData) {
   let list = document.createElement('ul');
   let ntgr = "odd";
 
-  for (var i = 0; i < playlistData.length; i++) {
+  if (playlistData.title) {
+    console.log(playlistData.title)
+    $('#playlist-title').html(playlistData.title);
+  }
+
+  let tracks = playlistData.tracks || playlistData;
+
+  for (var i = 0; i < tracks.length; i++) {
     let songItem = document.createElement('li');
     if (ntgr === "odd") {
       songItem.classList.add('even');
@@ -165,22 +188,24 @@ function createPlaylist(playlistData) {
       songItem.classList.add('active');
     }
     
-    let songUserHtml = `<p class="playlist-username"><a href="${playlistData[i].user.permalink_url}" target=""_blank">${playlistData[i].user.username}</a></p>`;
-    let songTitleHtml = `<p class="playlist-song-title">${playlistData[i].title}</p>`;
+    let songUserHtml = `<p class="playlist-username"><a href="${tracks[i].user.permalink_url}" target="_blank">${tracks[i].user.username}</a></p>`;
+    let songTitleHtml = `<p class="playlist-song-title">${tracks[i].title}</p>`;
 
     songItem.innerHTML = songUserHtml + songTitleHtml;
     list.appendChild(songItem);
   }
-  
+
+
+
   return list;
 }
 
 
 function setSong() {
-  selectSound.find("li").removeClass('active');
+  playlistWrapper.find("li").removeClass('active');
   for (var i = 0; i < urlList.length; i++) {
     if (tracks[i] === tracks[currentIndex]) {
-      selectSound.find("li")[i].addClass('active');
+      playlistWrapper.find("li")[i].addClass('active');
     }
   }
 }

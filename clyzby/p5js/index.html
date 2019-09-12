@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css?family=Montserrat%7cOswald" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/p5js_wave-sketch.css" rel="stylesheet">
+  <link href="css/audio-player.css" rel="stylesheet">
   <link href="/clyzby/files/vendor/nouislider/nouislider.css" rel="stylesheet">
 
   <script src="js/libraries/p5.js"></script>
@@ -51,7 +52,8 @@
         restore
       </i>
       <i id="randomize-settings" class="global-control material-icons md-light helper"
-         title="Randomize Everything" data-helper="Randomizes all values for every element and property. Excludes audio reactive control">
+         title="Randomize Everything"
+         data-helper="Randomizes all values for every element and property. Excludes audio reactive control">
         shuffle
       </i>
       <i id="randomize-audio-reactive" class="global-control material-icons md-light helper"
@@ -61,8 +63,8 @@
       </i>
 
       <i id="toggle-midi-assigner" class="global-control material-icons md-light helper inactive hide"
-          title="Toggle the Midi Assigner"
-          data-helper="Enable/Disable the input to assign a visual element to a midi input.  When Midi Assigner is enabled Midi notes will be bypassed.">
+         title="Toggle the Midi Assigner"
+         data-helper="Enable/Disable the input to assign a visual element to a midi input.  When Midi Assigner is enabled Midi notes will be bypassed.">
         keyboard
       </i>
 
@@ -76,27 +78,33 @@
     <div class="clear"></div>
   </div>
 
+
+
   <!-- populated by p5js via domControlsBuilder.js -->
   <div id="ctrlObject-control-panel"></div>
   <div id="audio-control-panel">
-    <div id="player">
-      <div class="songinfo">
-        <div id="songname"></div>
-        <div id="songtime"></div>
+    <div id="audio-player">
+      <div class="song-info">
+        <div id="song-name"><img
+          src="https://developers.soundcloud.com/assets/powered_by_white-371bd6967352fcc89673d4c81f7e5661.png"
+          alt="Powered by SoundCloud"></div>
+        <div id="song-time"></div>
       </div>
       <div class="progress">
         <progress id="loadingBar" value="0" max="100"></progress>
         <progress id="progressBar" value="0" max="100"></progress>
       </div>
-      <div id="p5_loading" class="loadingclass"></div>
-      <div class="controls">
-        <div class="ctrlbttns">
+      <div class="audio-controls">
+        <div class="ctrl-bttns">
+          <h4 id="playlist-title"></h4>
           <i id="prev" class="global-control material-icons md-light helper">skip_previous</i>
           <i id="play" class="global-control material-icons md-light helper">play_arrow</i>
           <i id="next" class="global-control material-icons md-light helper">skip_next</i>
+          <i id="minimize-playlist" class="global-control material-icons md-light helper" title="Show/Hide Playlist">keyboard_arrow_up</i>
         </div>
       </div>
-      <nav id="selectSound"></nav>
+
+      <div id="playlist-wrapper" class="minimized"></div>
     </div>
   </div>
 </div> <!-- end #settings-menu -->
