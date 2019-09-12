@@ -77,7 +77,7 @@
 
   <!-- populated by p5js via domControlsBuilder.js -->
   <div id="ctrlObject-control-panel"></div>
-  <div id="audio-control-panel" style="background: white;">
+  <div id="audio-control-panel">
     <div id="player">
       <div id="canvaswrapper"></div>
       <div class="songinfo">
@@ -91,15 +91,9 @@
       <div id="p5_loading" class="loadingclass"></div>
       <div class="controls">
         <div class="ctrlbttns">
-          <button type="button" id="prev">
-            <i class="global-control material-icons md-light helper">skip_previous</i>
-          </button>
-          <button type="button" id="play">
-            <i class="global-control material-icons md-light helper">play_arrow</i>
-          </button>
-          <button type="button" id="next">
-            <i class="global-control material-icons md-light helper">skip_next</i>
-          </button>
+          <i id="prev" class="global-control material-icons md-light helper">skip_previous</i>
+          <i id="play" class="global-control material-icons md-light helper">play_arrow</i>
+          <i id="next" class="global-control material-icons md-light helper">skip_next</i>
         </div>
       </div>
       <nav id="selectSound"></nav>

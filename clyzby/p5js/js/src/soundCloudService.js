@@ -3,19 +3,18 @@ let urlList = [];
 let nameList = [];
 let currentIndex = 0;
 let buttonPlay = $('#play');
-let buttonPrev = $('#prev');
-let buttonNext = $('#next');
 let selectSound = $('#selectSound');
 let songName = $('#songname');
 let songTime = $('#songtime');
 let loadingBar = $('#loadingBar');
 let progressBar = $('#progressBar');
-let seconds, minutes, bass, mid, treble, list, ntgr;
+let list;
 let fft;
 
 //SoundCloud
 let CLIENT_ID = 'NmW1FlPaiL94ueEu7oziOWjYEzZzQDcK';
 let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/safe-bass';
+// let PLAYLIST_URL = 'https://soundcloud.com/atyya';
 // let PLAYLIST_URL = 'https://soundcloud.com/clyzby/likes';
 // var PLAYLIST_URL = 'https://soundcloud.com/fftb/sets/party';
 
@@ -25,17 +24,20 @@ SC.initialize({
 
 SC.resolve(PLAYLIST_URL)
   .then(function (playlist) {
-    let tracks;
-    if (playlist.tracks) {
-      tracks = playlist.tracks;
-    } else if (playlist.length && playlist[0].stream_url) {
-      tracks = playlist;
-    }
-    for (var i = 0; i < tracks.length; i++) {
+    let tracks = playlist.tracks || playlist;
+    let songData = [];
+
+    for (let i = 0; i < tracks.length; i++) {
       urlList.push(tracks[i].stream_url + '?client_id=' + CLIENT_ID);
-      nameList.push(tracks[i].title);
+      // nameList.push(tracks[i].title);
+      // songData[i] = {
+      //   title : tracks[i].title,
+      //   user : tracks[i].user.username,
+      //   url : tracks[i].permalink_url,
+      //   albumArt : tracks[i].artwork_url,
+      // };
     }
-    selectSound.append(createPlaylist(nameList));
+    selectSound.append(createPlaylist(tracks));
   })
   .catch(function (error) {
     console.log(error);
@@ -57,10 +59,10 @@ function error(fail) {
 }
 
 function progress(percent) {
-  loadingBar.value = (percent * 100) + 1;
+  loadingBar.val((percent * 100) + 1);
   console.log((percent * 100) + 1);
-  songName.innerHTML = nameList[currentIndex];
-  songTime.innerHTML = ((percent * 100) + 1).toFixed() + '%';
+  songName.html(nameList[currentIndex]);
+  songTime.html(((percent * 100) + 1).toFixed() + '%');
 }
 
 //
@@ -80,10 +82,6 @@ function setup(loadsong) {
   peakDetect = new p5.PeakDetect(20,100);
   fft.setInput(audio);
   amplitude.setInput(audio);
-  pixelDensity(1);
-  // var cnv = createCanvas(document.getElementById('canvaswrapper').offsetWidth, document.getElementById('canvaswrapper').offsetHeight);
-  // cnv.parent('canvaswrapper');
-  // noFill();
 }
 
 
@@ -132,15 +130,15 @@ function setup(loadsong) {
 // //Controls
 function playCurrentSound() {
   if (!audio.isPlaying() && !audio.isPaused()) {
-    buttonPlay.id = "pause";
+    buttonPlay.html("pause");
     setup(urlList[currentIndex]);
     setSong();
   } else if (audio.isPaused()) {
-    buttonPlay.id = "pause";
+    buttonPlay.html("pause");
     audio.play();
   } else {
     audio.pause();
-    buttonPlay.id = "play";
+    buttonPlay.html("play_arrow");
   }
 }
 
@@ -161,7 +159,7 @@ function changeSong(btn, listItem) {
   }
   if (btn === select) {
     for (var i = 0; i < urlList.length; i++) {
-      if (nameList[i] === listitem.innerHTML) {
+      if (nameList[i] === listItem.html()) {
         currentIndex = i;
         playCurrentSound();
       }
@@ -172,34 +170,43 @@ function changeSong(btn, listItem) {
 
 
 //Playlist
-function createPlaylist(array) {
-  var list = document.createElement('ul');
-  for (var i = 0; i < array.length; i++) {
-    listitem = document.createElement('li');
-    if (ntgr == "odd") {
-      listitem.classList.add('even');
+function createPlaylist(playlistData) {
+  let list = document.createElement('ul');
+  let ntgr = "odd";
+
+  for (var i = 0; i < playlistData.length; i++) {
+    let songItem = document.createElement('li');
+    if (ntgr === "odd") {
+      songItem.classList.add('even');
       ntgr = "even";
     } else {
-      listitem.classList.add('odd');
+      songItem.classList.add('odd');
       ntgr = "odd";
     }
-    if (i == 0) {
-      listitem.classList.add('active');
+    if (i === 0) {
+      songItem.classList.add('active');
     }
-    listitem.appendChild(document.createTextNode(array[i]));
-    list.appendChild(listitem);
+    
+    let songUserHtml = `<p class="playlist-username"><a href="${playlistData[i].user.permalink_url}">${playlistData[i].user.username}</a></p>`;
+    let songTitleHtml = `<p class="playlist-song-title">${playlistData[i].title}</p>`;
+
+    songItem.innerHTML = songUserHtml + songTitleHtml;
+    list.appendChild(songItem);
   }
+  
   return list;
 }
 
+
 function setSong() {
   for (var i = 0; i < urlList.length; i++) {
-    selectSound.getElementsByTagName("li")[i].classList.remove('active');
+    selectSound.children("li").removeClass('active');
     if (nameList[i] === nameList[currentIndex]) {
-      selectSound.getElementsByTagName("li")[i].classList.add('active');
+      selectSound.children("li").addClass('active');
     }
   }
 }
+
 
 //endSong
 function endSong() {
@@ -211,7 +218,7 @@ function endSong() {
     }
     setup(urlList[currentIndex]);
     setSong();
-    progressBar.value = audio.currentTime();
+    progressBar.val(audio.currentTime());
   }
 }
 

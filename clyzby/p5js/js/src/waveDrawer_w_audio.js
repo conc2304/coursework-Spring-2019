@@ -105,11 +105,14 @@ let s = (sketch) => {
   sketch.draw = () => {
     sketch.background(0);
 
-    seconds = Math.floor(audio.currentTime() % 60);
-    minutes = Math.floor(audio.currentTime() / 60);
+    let seconds = Math.floor(audio.currentTime() % 60);
+    let minutes = Math.floor(audio.currentTime() / 60);
     if (audio.isLoaded() && !audio.isPaused()) {
-      songTime.innerHTML = ('0' + minutes).substr(-2) + ':' + ('0' + seconds).substr(-2);
-      progressBar.value = 100 * (audio.currentTime() / audio.duration());
+
+      let time = ('0' + minutes).substr(-2) + ':' + ('0' + seconds).substr(-2);
+      songTime.html(time);
+      let downloadProgress = 100 * (audio.currentTime() / audio.duration())
+      progressBar.val(downloadProgress);
     }
 
     fftAnalysis = getEQEnergy(fft);
