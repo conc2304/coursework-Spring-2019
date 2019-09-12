@@ -697,7 +697,10 @@ label.radio-input:after {
   margin-bottom: 10px;
 }
 
-
+#player #songtime, #player #songname {
+  color: #fff;
+  padding-bottom: 10px;
+}
 
 #player a {
   color: #fff;

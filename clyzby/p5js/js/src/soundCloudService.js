@@ -1,6 +1,6 @@
 //Variable
 let urlList = [];
-let nameList = [];
+let tracks = [];
 let currentIndex = 0;
 let buttonPlay = $('#play');
 let selectSound = $('#selectSound');
@@ -11,6 +11,32 @@ let progressBar = $('#progressBar');
 let list;
 let fft;
 
+$(() => {
+
+  $('#play').click(() => {
+    playCurrentSound();
+  });
+
+  $('#next').click(() => {
+    changeSong(next, null);
+  });
+
+  $('#prev').click(() => {
+    changeSong(prev, null);
+  });
+
+  $('#selectSound').click((e) => {
+    let listItem = e.target;
+    changeSong(select, listItem);
+  });
+
+  $('#progressBar').click((progbar) => {
+    let percent = (progbar.offsetX / progbar.target.offsetWidth);
+    audio.jump(audio.duration() * percent);
+    audio.onended(endSong);
+  });
+
+});
 //SoundCloud
 let CLIENT_ID = 'NmW1FlPaiL94ueEu7oziOWjYEzZzQDcK';
 let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/safe-bass';
@@ -24,18 +50,10 @@ SC.initialize({
 
 SC.resolve(PLAYLIST_URL)
   .then(function (playlist) {
-    let tracks = playlist.tracks || playlist;
-    let songData = [];
+    tracks = playlist.tracks || playlist;
 
     for (let i = 0; i < tracks.length; i++) {
       urlList.push(tracks[i].stream_url + '?client_id=' + CLIENT_ID);
-      // nameList.push(tracks[i].title);
-      // songData[i] = {
-      //   title : tracks[i].title,
-      //   user : tracks[i].user.username,
-      //   url : tracks[i].permalink_url,
-      //   albumArt : tracks[i].artwork_url,
-      // };
     }
     selectSound.append(createPlaylist(tracks));
   })
@@ -61,7 +79,8 @@ function error(fail) {
 function progress(percent) {
   loadingBar.val((percent * 100) + 1);
   console.log((percent * 100) + 1);
-  songName.html(nameList[currentIndex]);
+
+  songName.html(tracks[currentIndex].title);
   songTime.html(((percent * 100) + 1).toFixed() + '%');
 }
 
@@ -75,7 +94,6 @@ function touchStarted() {
 //
 //Setup
 function setup(loadsong) {
-  console.log('LOADING FFT');
   audio = myp5.loadSound(loadsong, success, error, progress);
   fft = new p5.FFT();
   amplitude = new p5.Amplitude();
@@ -84,46 +102,6 @@ function setup(loadsong) {
   amplitude.setInput(audio);
 }
 
-
-//
-// //Draw
-// function draw() {
-//
-//   clear();
-//
-//   seconds = Math.floor(audio.currentTime() % 60);
-//   minutes = Math.floor(audio.currentTime() / 60);
-//   if (audio.isLoaded() && !audio.isPaused()) {
-//     songTime.innerHTML = ('0' + minutes).substr(-2) + ':' + ('0' + seconds).substr(-2);
-//     progressBar.value = 100 * (audio.currentTime() / audio.duration());
-//   }
-//   fft.analyze();
-//
-//   //energy
-//   bass = fft.getEnergy("bass") / 100;
-//   treble = fft.getEnergy("treble") / 100;
-//   mid = fft.getEnergy("mid") / 100;
-//
-//   //amplitude
-//   var level = amplitude.getLevel();
-//
-//   //peakDetect
-//   peakDetect.update(fft);
-//   if ( peakDetect.isDetected ) {
-//
-//   } else {
-//
-//   }
-//   //spectrum
-//   var spectrum = fft.analyze();
-//   beginShape();
-//   strokeWeight(2);
-//   for (i = 0; i<spectrum.length; i++) {
-//     vertex((width/spectrum.length)*i, map((spectrum[i]), 0, 255, height/2, 0));
-//   }
-//   endShape();
-// };
-//
 
 
 
@@ -157,9 +135,9 @@ function changeSong(btn, listItem) {
     currentIndex = Math.max(currentIndex - 1, 0);
     playCurrentSound();
   }
-  if (btn === select) {
+  if (btn === select && listItem) {
     for (var i = 0; i < urlList.length; i++) {
-      if (nameList[i] === listItem.html()) {
+      if (tracks[i].title === listItem.innerHTML) {
         currentIndex = i;
         playCurrentSound();
       }
@@ -187,7 +165,7 @@ function createPlaylist(playlistData) {
       songItem.classList.add('active');
     }
     
-    let songUserHtml = `<p class="playlist-username"><a href="${playlistData[i].user.permalink_url}">${playlistData[i].user.username}</a></p>`;
+    let songUserHtml = `<p class="playlist-username"><a href="${playlistData[i].user.permalink_url}" target=""_blank">${playlistData[i].user.username}</a></p>`;
     let songTitleHtml = `<p class="playlist-song-title">${playlistData[i].title}</p>`;
 
     songItem.innerHTML = songUserHtml + songTitleHtml;
@@ -199,10 +177,10 @@ function createPlaylist(playlistData) {
 
 
 function setSong() {
+  selectSound.find("li").removeClass('active');
   for (var i = 0; i < urlList.length; i++) {
-    selectSound.children("li").removeClass('active');
-    if (nameList[i] === nameList[currentIndex]) {
-      selectSound.children("li").addClass('active');
+    if (tracks[i] === tracks[currentIndex]) {
+      selectSound.find("li")[i].addClass('active');
     }
   }
 }

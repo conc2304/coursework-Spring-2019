@@ -2,7 +2,6 @@
 $(() => {
   "use strict";
 
-  console.log('READY AF');
   $("#settings-close").click(() => {
     $("#settings-menu").fadeOut();
     $("#settings-open").fadeIn();
@@ -38,30 +37,6 @@ $(() => {
 
 
   // audio controls
-
-  $('#play').click(() => {
-    playCurrentSound();
-  });
-
-  $('#next').click(() => {
-    changeSong(next, null);
-  });
-
-  $('#prev').click(() => {
-    changeSong(prev, null);
-  });
-
-  $('#selectSound').click((e) => {
-    let listItem = e.target;
-    changeSong(select, listItem);
-  });
-
-  $('#progressBar').click((progbar) => {
-    let percent = (progbar.offsetX / this.offsetWidth);
-    audio.jump(audio.duration() * percent);
-    audio.onended(endSong);
-  });
-
 
   // on hover mouse over/leave show/hide the value of the range slider handle
   $("#settings-menu").on('mouseover', '.noUi-handle', function() {
