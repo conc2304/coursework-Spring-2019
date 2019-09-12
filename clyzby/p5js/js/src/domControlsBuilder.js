@@ -30,14 +30,11 @@ $(() => {
     $("#toggle-help").toggleClass("inactive");
   });
 
-  if (!midiAvailable){
-    $('#toggle-midi-assigner').remove();
-  } else {
-    $("#toggle-midi-assigner").click(() => {
-      $("#toggle-midi-assigner").toggleClass("inactive");
-      $(".midi-wrapper").toggle();
-    });
-  }
+
+  $("#toggle-midi-assigner").click(() => {
+    $("#toggle-midi-assigner").toggleClass("inactive");
+    $(".midi-wrapper").toggle();
+  });
 
 
   // audio controls
@@ -125,7 +122,9 @@ let createDOMControls = (ctrlElements) => {
     return {};
   }
 
-
+  if (midiAvailable) {
+    $("#toggle-midi-assigner").show();
+  }
   // create audio control config buttons
   createAudioCtrls();
 
