@@ -158,7 +158,11 @@ let toggleAudio = () => {
  * @param freqBands - a hardcoded set of frequency bands that we have prebuilt as an eq band
  * @returns {Array}
  */
-let get10BandEnergy = (fft) => {
+let getEQEnergy = (fft) => {
+
+  if (!fft) {
+    return;
+  }
 
   fft.analyze();
 
@@ -254,7 +258,7 @@ let setAudioCtrl = (e) => {
 let applyAudioEnergyValues = (energyValues) => {
   "use strict";
 
-  if (energyValues.size < 1) {
+  if (!energyValues || energyValues.size < 1) {
     return false;
   }
 

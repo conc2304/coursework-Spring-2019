@@ -24,22 +24,27 @@ let s = (sketch) => {
   let outerWaves;
   let threeDWave;
   let domCtrl = {};
-  let fft;
+  // let fft, amplitude, peakDetect;
 
 
 
   // keep all 'custom' code here
 
-  sketch.preload = () => {
+  sketch.preload = (loadsong) => {
+    console.log('preload');
     sketch.objects = {};
     sketch.objects.lambo = myp5.loadModel('files/3d_obj/lp670.obj', true);
     sketch.objects.glock = myp5.loadModel('files/3d_obj/Glock 3d.obj', true);
     // todo find a way to display the name of the audio file  // hard code the original maybe? parse it out from the end of the file name?
     // audio = myp5.loadSound('/clyzby/p5js/files/audio/CharlestheFirst - Chynna - The Conversation.wav');
-    audio = myp5.loadSound('/clyzby/p5js/files/audio/PUFF - TSURUDA x HUXLEY ANNE.mp3');
+    // audio = myp5.loadSound('/clyzby/p5js/files/audio/PUFF - TSURUDA x HUXLEY ANNE.mp3');
     // audio = myp5.loadSound('/clyzby/p5js/files/audio/Pushloop - Deep, Dark & Dangerous Mix 015.mp3');
-    audio.pause();
-    fft = new p5.FFT();
+    // audio = myp5.loadSound(loadsong, success, error, progress);
+    // audio.pause();
+    // fft = new p5.FFT();
+    // amplitude = new p5.Amplitude();
+    // peakDetect = new p5.PeakDetect(20,100);
+    // fft.setInput(audio);
 
     // this is where each different "sketch" should change - this should be the only customizing
     // all future controllable objects should integrate via this
@@ -54,6 +59,9 @@ let s = (sketch) => {
 
 
   sketch.setup = () => {
+
+    console.log('test');
+
 
     sketch.createCanvas(sketch.windowWidth, sketch.windowHeight, sketch.WEBGL);
     sketch.polygon = renderPolygon;
@@ -97,7 +105,14 @@ let s = (sketch) => {
   sketch.draw = () => {
     sketch.background(0);
 
-    fftAnalysis = get10BandEnergy(fft);
+    seconds = Math.floor(audio.currentTime() % 60);
+    minutes = Math.floor(audio.currentTime() / 60);
+    if (audio.isLoaded() && !audio.isPaused()) {
+      songTime.innerHTML = ('0' + minutes).substr(-2) + ':' + ('0' + seconds).substr(-2);
+      progressBar.value = 100 * (audio.currentTime() / audio.duration());
+    }
+
+    fftAnalysis = getEQEnergy(fft);
     applyAudioEnergyValues(fftAnalysis);
 
     playKeyboardKeys();
