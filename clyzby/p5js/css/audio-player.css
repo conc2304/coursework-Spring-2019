@@ -55,6 +55,9 @@
   padding-bottom:425px;
 }
 
+#audio-player a:hover {
+  text-decoration: underline;
+}
 
 
 #audio-player ul {
