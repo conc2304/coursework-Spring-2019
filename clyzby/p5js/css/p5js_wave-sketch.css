@@ -155,10 +155,10 @@ i.material-icons:hover {
   position: relative;
   color: #000;
 }
-.ctrlObject-settings .input-assigner {
+.input-assigner {
   margin-bottom: 10px;
 }
-.ctrlObject-settings .input-assigner input {
+.input-assigner input {
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   display: inline-block;
@@ -178,7 +178,7 @@ i.material-icons:hover {
   text-align: center;
 }
 
-.ctrlObject-settings .input-assigner input:hover {
+.input-assigner input:hover {
   -webkit-animation: flash linear 2s infinite;
   animation: flash linear 2s infinite;
 }
@@ -201,7 +201,7 @@ i.material-icons:hover {
   }
 }
 
-.ctrlObject-settings .input-assigner input:last-child {
+.input-assigner input:last-child {
   margin-left: 8px;
 }
 

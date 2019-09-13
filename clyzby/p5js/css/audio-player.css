@@ -90,6 +90,10 @@
   margin: 0;
 }
 
+#audio-player .input-assigner input{
+  width: 100%;
+}
+
 
 .progress {
   position: relative;
@@ -182,7 +186,6 @@ progress#progressBar[aria-valuenow]:before {
 
 #playlist-title {
   color: #fff;
-  position: absolute;
   left: 0;
 }
 
@@ -206,3 +209,4 @@ progress#progressBar[aria-valuenow]:before {
 #upload-file-label {
   padding: 0 20px;
 }
+

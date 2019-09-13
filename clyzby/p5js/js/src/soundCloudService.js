@@ -4,6 +4,7 @@ let tracks = [];
 let currentIndex = 0;
 let buttonPlay = $('#play');
 let playlistWrapper = $('#playlist-wrapper');
+let playlistContainer = $("#playlist-song-container");
 let songName = $('#song-name');
 let songTime = $('#song-time');
 let loadingBar = $('#loadingBar');
@@ -56,24 +57,38 @@ $(() => {
 
 
 let resolveSoundCloudLink = (url) => {
+
+  if (!url) {
+    url = $("#soundcloud-link-resolver").val();
+  }
   SC.initialize({
     client_id: CLIENT_ID
   });
 
   SC.resolve(url)
-    .then(function (playlist) {
-      console.log(playlist);
-      tracks = playlist.tracks || playlist;
+    .then(function (response) {
+      console.log(response);
+      tracks = [];
+      if (response.kind === 'track') {
+        tracks.push(response);
+      }
+
+      if (response.kind === "playlist") {
+        tracks = response.tracks;
+      }
 
       console.log(tracks);
       for (let i = 0; i < tracks.length; i++) {
         urlList.push(tracks[i].stream_url + '?client_id=' + CLIENT_ID);
       }
-      playlistWrapper.html('');
-      playlistWrapper.append(createPlaylist(playlist));
+      $("#soundcloud-link-resolver").val('');
+      playlistContainer.html('');
+      playlistContainer.append(createPlaylist(response));
     })
     .catch(function (error) {
       console.log(error);
+      alert('Unable to resolve soundcloud url: ' + error);
+      $("#soundcloud-link-resolver").val('');
     });
 };
 
@@ -164,16 +179,23 @@ function changeSong(btn, listItem) {
 
 
 //Playlist
-function createPlaylist(playlistData) {
-  let list = document.createElement('ul');
-  let ntgr = "odd";
+function createPlaylist(responseData) {
 
-  if (playlistData.title) {
-    console.log(playlistData.title)
-    $('#playlist-title').html(playlistData.title);
+  let tracks = [];
+  if (responseData.kind === 'track') {
+    tracks.push(responseData);
+    $('#playlist-title').hide();
   }
 
-  let tracks = playlistData.tracks || playlistData;
+  if (responseData.kind === "playlist") {
+    tracks = responseData.tracks;
+    console.log(responseData.title)
+    $('#playlist-title').show();
+    $('#playlist-title').html(responseData.title);
+  }
+
+  let list = document.createElement('ul');
+  let ntgr = "odd";
 
   for (var i = 0; i < tracks.length; i++) {
     let songItem = document.createElement('li');
@@ -195,17 +217,15 @@ function createPlaylist(playlistData) {
     list.appendChild(songItem);
   }
 
-
-
   return list;
 }
 
 
 function setSong() {
-  playlistWrapper.find("li").removeClass('active');
+  playlistContainer.find("li").removeClass('active');
   for (var i = 0; i < urlList.length; i++) {
     if (tracks[i] === tracks[currentIndex]) {
-      playlistWrapper.find("li")[i].addClass('active');
+      playlistContainer.find("li")[i].addClass('active');
     }
   }
 }

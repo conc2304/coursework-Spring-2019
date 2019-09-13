@@ -96,7 +96,6 @@
       </div>
       <div class="audio-controls">
         <div class="ctrl-bttns">
-          <h4 id="playlist-title"></h4>
           <i id="prev" class="global-control material-icons md-light helper">skip_previous</i>
           <i id="play" class="global-control material-icons md-light helper">play_arrow</i>
           <i id="next" class="global-control material-icons md-light helper">skip_next</i>
@@ -104,7 +103,14 @@
         </div>
       </div>
 
-      <div id="playlist-wrapper" class="minimized"></div>
+      <form onsubmit="resolveSoundCloudLink(); return false" class="input-assigner">
+        <input id="soundcloud-link-resolver" placeholder="Enter SoundCloud Link" type="text">
+      </form>
+
+      <div id="playlist-wrapper" class="minimized">
+        <h5 id="playlist-title"></h5>
+        <div id="playlist-song-container"></div>
+      </div>
     </div>
   </div>
 </div> <!-- end #settings-menu -->
