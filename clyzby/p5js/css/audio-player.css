@@ -8,7 +8,7 @@
   bottom: 0;
   left: 0;
   background: rgb(0, 0, 0);
-  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 66%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0) 100%);
 }
 
 #audio-control-panel span.tooltip {
@@ -42,9 +42,20 @@
   transition: height 1s;
 }
 
+#playlist-song-container li {
+  list-style: none;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+#playlist-song-container li.active p{
+  color: #0e83cd;
+
+}
 #playlist-wrapper.minimized {
   height: 0;
 }
+
 
 #minimize-playlist {
   position: absolute;
@@ -64,7 +75,7 @@
   padding: 0 0 10px 0;
 }
 
-#audio-player #playlist-wrapper li {
+#playlist-wrapper li {
   list-style: none;
   color: #fff;
   margin-bottom: 10px;

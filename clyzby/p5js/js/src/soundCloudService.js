@@ -12,12 +12,12 @@ let progressBar = $('#progressBar');
 let fft;
 
 let CLIENT_ID = 'NmW1FlPaiL94ueEu7oziOWjYEzZzQDcK';
-let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/safe-bass';
+// let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/safe-bass';
+let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/depth';
 
 
 $(() => {
 
-  resolveSoundCloudLink(PLAYLIST_URL);
 
   $('#play').click(() => {
     playCurrentSound();
@@ -53,7 +53,10 @@ $(() => {
     }
   });
 
+  resolveSoundCloudLink(PLAYLIST_URL);
 });
+
+
 
 
 let resolveSoundCloudLink = (url) => {
@@ -61,6 +64,7 @@ let resolveSoundCloudLink = (url) => {
   if (!url) {
     url = $("#soundcloud-link-resolver").val();
   }
+
   SC.initialize({
     client_id: CLIENT_ID
   });
@@ -81,13 +85,16 @@ let resolveSoundCloudLink = (url) => {
       for (let i = 0; i < tracks.length; i++) {
         urlList.push(tracks[i].stream_url + '?client_id=' + CLIENT_ID);
       }
-      $("#soundcloud-link-resolver").val('');
-      playlistContainer.html('');
+      if (playlistWrapper.hasClass('minimized')) {
+        $("#minimize-playlist").click();
+      }
       playlistContainer.append(createPlaylist(response));
     })
     .catch(function (error) {
       console.log(error);
-      alert('Unable to resolve soundcloud url: ' + error);
+      // alert('Unable to resolve soundcloud url: ' + error);
+    })
+    .then(() => {
       $("#soundcloud-link-resolver").val('');
     });
 };
@@ -181,6 +188,8 @@ function changeSong(btn, listItem) {
 //Playlist
 function createPlaylist(responseData) {
 
+  playlistContainer.html('');
+
   let tracks = [];
   if (responseData.kind === 'track') {
     tracks.push(responseData);
@@ -225,7 +234,7 @@ function setSong() {
   playlistContainer.find("li").removeClass('active');
   for (var i = 0; i < urlList.length; i++) {
     if (tracks[i] === tracks[currentIndex]) {
-      playlistContainer.find("li")[i].addClass('active');
+      $(playlistContainer.find("li")[i]).addClass('active');
     }
   }
 }
@@ -233,15 +242,17 @@ function setSong() {
 
 //endSong
 function endSong() {
+
   if (!audio.isPaused() && (audio.currentTime() === '0' || audio.currentTime().toString().split(".")[0] === audio.duration().toString().split(".")[0])) {
     if (currentIndex === (urlList.length - 1)) {
       currentIndex = '0';
     } else {
       currentIndex = Math.min(currentIndex + 1, urlList.length - 1);
     }
+    progressBar.val(audio.currentTime());
     setup(urlList[currentIndex]);
     setSong();
-    progressBar.val(audio.currentTime());
+    audio.play();
   }
 }
 
