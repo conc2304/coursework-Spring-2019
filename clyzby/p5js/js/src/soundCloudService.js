@@ -205,7 +205,7 @@ function changeSong(btn, listItem) {
     playCurrentSound();
   }
   if (btn === select && listItem) {
-    for (var i = 0; i < urlList.length; i++) {
+    for (let i = 0; i < urlList.length; i++) {
       if (tracks[i].title === listItem.innerHTML) {
         currentIndex = i;
         playCurrentSound();
@@ -240,7 +240,6 @@ function createPlaylist(responseData) {
   }
 
 
-
   urlList = [];
   for (let i = 0; i < playlist.length; i++) {
     urlList.push(playlist[i].stream_url + '?client_id=' + CLIENT_ID);
@@ -253,7 +252,7 @@ function createPlaylist(responseData) {
   let list = document.createElement('ul');
   let ntgr = "odd";
 
-  for (var i = 0; i < playlist.length; i++) {
+  for (let i = 0; i < playlist.length; i++) {
     let songItem = document.createElement('li');
     if (ntgr === "odd") {
       songItem.classList.add('even');
@@ -279,7 +278,7 @@ function createPlaylist(responseData) {
 
 function setSong() {
   playlistContainer.find("li").removeClass('active');
-  for (var i = 0; i < urlList.length; i++) {
+  for (let i = 0; i < urlList.length; i++) {
     if (tracks[i] === tracks[currentIndex]) {
       $(playlistContainer.find("li")[i]).addClass('active');
     }
