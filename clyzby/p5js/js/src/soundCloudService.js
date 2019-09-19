@@ -1,215 +1,261 @@
-// //Variable
-// var sound;
-// var urlList = [];
-// var nameList = [];
-// var currentIndex = 0;
-// var buttonPlay = $('#play');
-// var buttonPrev = $('#prev');
-// var buttonNext = $('#next');
-// var selectSound = $('#selectSound');
-// var songName = $('#songname');
-// var songTime = $('#songtime');
-// var loadingBar = $('#loadingBar');
-// var progressBar = $('#progressBar');
-// var seconds, minutes, bass, mid, treble, list, ntgr;
+//Variable
+let urlList = [];
+let tracks = [];
+let currentIndex = 0;
+let buttonPlay = $('#play');
+let playlistWrapper = $('#playlist-wrapper');
+let playlistContainer = $("#playlist-song-container");
+let songName = $('#song-name');
+let songTime = $('#song-time');
+let loadingBar = $('#loadingBar');
+let progressBar = $('#progressBar');
+let fft;
+
+let CLIENT_ID = 'NmW1FlPaiL94ueEu7oziOWjYEzZzQDcK';
+// let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/safe-bass';
+let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/depth';
+
+
+$(() => {
+
+
+  $('#play').click(() => {
+    playCurrentSound();
+  });
+
+  $('#next').click(() => {
+    changeSong(next, null);
+  });
+
+  $('#prev').click(() => {
+    changeSong(prev, null);
+  });
+
+  $('#playlist-wrapper').click((e) => {
+    let listItem = e.target;
+    changeSong(select, listItem);
+  });
+
+  $('#progressBar').click((progbar) => {
+    let percent = (progbar.offsetX / progbar.target.offsetWidth);
+    audio.jump(audio.duration() * percent);
+    audio.onended(endSong);
+  });
+
+  $('#minimize-playlist').click(() => {
+    playlistWrapper.toggleClass('minimized');
+    $('#ctrlObject-control-panel').toggleClass('audio-player-open');
+
+    if (playlistWrapper.hasClass('minimized')) {
+      $('#minimize-playlist').html('keyboard_arrow_up');
+    } else {
+      $('#minimize-playlist').html('keyboard_arrow_down');
+    }
+  });
+
+  resolveSoundCloudLink(PLAYLIST_URL);
+});
+
+
+
+
+let resolveSoundCloudLink = (url) => {
+
+  if (!url) {
+    url = $("#soundcloud-link-resolver").val();
+  }
+
+  SC.initialize({
+    client_id: CLIENT_ID
+  });
+
+  SC.resolve(url)
+    .then(function (response) {
+      console.log(response);
+      tracks = [];
+      if (response.kind === 'track') {
+        tracks.push(response);
+      }
+
+      if (response.kind === "playlist") {
+        tracks = response.tracks;
+      }
+
+      console.log(tracks);
+      for (let i = 0; i < tracks.length; i++) {
+        urlList.push(tracks[i].stream_url + '?client_id=' + CLIENT_ID);
+      }
+      if (playlistWrapper.hasClass('minimized')) {
+        $("#minimize-playlist").click();
+      }
+      playlistContainer.append(createPlaylist(response));
+    })
+    .catch(function (error) {
+      console.log(error);
+      // alert('Unable to resolve soundcloud url: ' + error);
+    })
+    .then(() => {
+      $("#soundcloud-link-resolver").val('');
+    });
+};
+
+
+
+
+//loadSound callbacks
+function success() {
+  console.log('Sound is loaded : ' + audio.isLoaded());
+  audio.playMode('restart');
+  audio.play();
+  audio.onended(endSong);
+}
+
+function error(fail) {
+  console.log(fail);
+}
+
+function progress(percent) {
+  loadingBar.val((percent * 100) + 1);
+  console.log((percent * 100) + 1);
+
+  songName.html(`<a href="${tracks[currentIndex].permalink_url}" title="Link to song on SoundCloud" target="_blank">${tracks[currentIndex].title}`);
+  songTime.html(((percent * 100) + 1).toFixed() + '%');
+}
+
 //
-// //SoundCloud
-// var CLIENT_ID = 'NmW1FlPaiL94ueEu7oziOWjYEzZzQDcK';
-// var PLAYLIST_URL = 'https://soundcloud.com/clyzby/likes';
-// // var PLAYLIST_URL = 'https://soundcloud.com/fftb/sets/party';
+function touchStarted() {
+  if (getAudioContext().state !== 'running') {
+    getAudioContext().resume();
+  }
+}
+
 //
-// SC.initialize({
-//   client_id: CLIENT_ID
-// });
-// SC.resolve(PLAYLIST_URL).then(function(playlist){
-//   for(var i=0;i<playlist.tracks.length;i++) {
-//     urlList.push(playlist.tracks[i].stream_url + '?client_id=' + CLIENT_ID);
-//     nameList.push(playlist.tracks[i].title);
-//   }
-//   selectSound.appendChild(createPlaylist(nameList));
-// }).catch(function(error){
-//   console.log(error);
-// });
-//
-// //Buttons
-// buttonPlay.addEventListener('click', function() {
-//   playCurrentSound();
-// }, false);
-// buttonPrev.addEventListener('click', function() {
-//   changeSong(prev);
-// }, false);
-// buttonNext.addEventListener('click', function() {
-//   changeSong(next);
-// }, false);
-// selectSound.addEventListener('click', function(eve) {
-//   listitem = eve.target;
-//   changeSong(select);
-// }, false);
-// progressBar.addEventListener("click", function(progbar) {
-//   var percent = (progbar.offsetX / this.offsetWidth);
-//   sound.jump(sound.duration()*percent);
-//   sound.onended(endSong);
-// }, false);
-//
-// //loadSound callbacks
-// function success() {
-//   console.log('Sound is loaded : ' + sound.isLoaded());
-//   sound.playMode('restart');
-//   sound.play();
-//   sound.onended(endSong);
-// }
-// function error(fail) {
-//   console.log(fail);
-// }
-// function progress(percent) {
-//   loadingBar.value = (percent*100) + 1;
-//   console.log((percent*100) + 1);
-//   songName.innerHTML = nameList[currentIndex];
-//   songTime.innerHTML = ((percent*100) + 1).toFixed() + '%';
-// }
-//
-// //Preload
-// function preload() {
-//
-// }
-//
-// function touchStarted() {
-//   if (getAudioContext().state !== 'running') {
-//     getAudioContext().resume();
-//   }
-// }
-//
-// //Setup
-// function setup(loadsong) {
-//   sound = loadSound(loadsong, success, error, progress);
-//   fft = new p5.FFT();
-//   amplitude = new p5.Amplitude();
-//   peakDetect = new p5.PeakDetect(20,100);
-//   fft.setInput(sound);
-//   amplitude.setInput(sound);
-//   pixelDensity(1);
-//   var cnv = createCanvas(document.getElementById('canvaswrapper').offsetWidth, document.getElementById('canvaswrapper').offsetHeight);
-//   cnv.parent('canvaswrapper');
-//   noFill();
-// };
-//
-// //Draw
-// function draw() {
-//
-//   clear();
-//
-//   seconds = Math.floor(sound.currentTime() % 60);
-//   minutes = Math.floor(sound.currentTime() / 60);
-//   if (sound.isLoaded() && !sound.isPaused()) {
-//     songTime.innerHTML = ('0' + minutes).substr(-2) + ':' + ('0' + seconds).substr(-2);
-//     progressBar.value = 100 * (sound.currentTime() / sound.duration());
-//   }
-//   fft.analyze();
-//
-//   //energy
-//   bass = fft.getEnergy("bass") / 100;
-//   treble = fft.getEnergy("treble") / 100;
-//   mid = fft.getEnergy("mid") / 100;
-//
-//   //amplitude
-//   var level = amplitude.getLevel();
-//
-//   //peakDetect
-//   peakDetect.update(fft);
-//   if ( peakDetect.isDetected ) {
-//
-//   } else {
-//
-//   }
-//   //spectrum
-//   var spectrum = fft.analyze();
-//   beginShape();
-//   strokeWeight(2);
-//   for (i = 0; i<spectrum.length; i++) {
-//     vertex((width/spectrum.length)*i, map((spectrum[i]), 0, 255, height/2, 0));
-//   }
-//   endShape();
-// };
-//
-// //Controls
-// function playCurrentSound() {
-//   if (!sound.isPlaying() && !sound.isPaused()) {
-//     buttonPlay.id = "pause";
-//     setup(urlList[currentIndex]);
-//     setSong();
-//   } else if (sound.isPaused()) {
-//     buttonPlay.id = "pause";
-//     sound.play();
-//   } else {
-//     sound.pause();
-//     buttonPlay.id = "play";
-//   }
-// }
-// function changeSong(btn) {
-//   if (sound.isPaused()) {
-//     sound.play();
-//   }
-//   sound.stop();
-//   sound.onended(pauseEndSong);
-//   if (btn == next) {
-//     currentIndex = Math.min(currentIndex + 1, urlList.length - 1);
-//     playCurrentSound();
-//   }
-//   if (btn == prev) {
-//     currentIndex = Math.max(currentIndex - 1, 0);
-//     playCurrentSound();
-//   }
-//   if (btn == select) {
-//     for (var i=0;i<urlList.length;i++) {
-//       if (nameList[i] == listitem.innerHTML) {
-//         currentIndex = i;
-//         playCurrentSound();
-//       }
-//     }
-//   }
-//   setSong();
-// }
-// //Playlist
-// function createPlaylist(array) {
-//   var list = document.createElement('ul');
-//   for(var i = 0; i < array.length; i++) {
-//     listitem = document.createElement('li');
-//     if (ntgr == "odd") {
-//       listitem.classList.add('even');
-//       ntgr = "even";
-//     } else {
-//       listitem.classList.add('odd');
-//       ntgr = "odd";
-//     }
-//     if (i == 0) {
-//       listitem.classList.add('active');
-//     }
-//     listitem.appendChild(document.createTextNode(array[i]));
-//     list.appendChild(listitem);
-//   }
-//   return list;
-// }
-// function setSong() {
-//   for (var i=0;i<urlList.length;i++) {
-//     selectSound.getElementsByTagName("li")[i].classList.remove('active');
-//     if (nameList[i] == nameList[currentIndex]) {
-//       selectSound.getElementsByTagName("li")[i].classList.add('active');
-//     }
-//   }
-// }
-// //endSong
-// function endSong() {
-//   if (!sound.isPaused() && (sound.currentTime() == '0' || sound.currentTime().toString().split(".")[0] == sound.duration().toString().split(".")[0])) {
-//     if (currentIndex == (urlList.length - 1)) {
-//       currentIndex = '0';
-//     } else {
-//       currentIndex = Math.min(currentIndex + 1, urlList.length - 1);
-//     }
-//     setup(urlList[currentIndex]);
-//     setSong();
-//     progressBar.value = sound.currentTime();
-//   }
-// }
-// function pauseEndSong() {
-//   console.log('set pauseEndSong');
-// }
+//Setup
+function setup(loadsong) {
+  audio = myp5.loadSound(loadsong, success, error, progress);
+  fft = new p5.FFT();
+  amplitude = new p5.Amplitude();
+  peakDetect = new p5.PeakDetect(20,100);
+  fft.setInput(audio);
+  amplitude.setInput(audio);
+}
+
+
+
+
+//  Audio Controls
+function playCurrentSound() {
+  if (!audio.isPlaying() && !audio.isPaused()) {
+    buttonPlay.html("pause");
+    setup(urlList[currentIndex]);
+    setSong();
+  } else if (audio.isPaused()) {
+    buttonPlay.html("pause");
+    audio.play();
+  } else {
+    audio.pause();
+    buttonPlay.html("play_arrow");
+  }
+}
+
+
+function changeSong(btn, listItem) {
+  if (audio.isPaused()) {
+    audio.play();
+  }
+  audio.stop();
+  audio.onended(pauseEndSong);
+  if (btn === next) {
+    currentIndex = Math.min(currentIndex + 1, urlList.length - 1);
+    playCurrentSound();
+  }
+  if (btn === prev) {
+    currentIndex = Math.max(currentIndex - 1, 0);
+    playCurrentSound();
+  }
+  if (btn === select && listItem) {
+    for (var i = 0; i < urlList.length; i++) {
+      if (tracks[i].title === listItem.innerHTML) {
+        currentIndex = i;
+        playCurrentSound();
+      }
+    }
+  }
+  setSong();
+}
+
+
+//Playlist
+function createPlaylist(responseData) {
+
+  playlistContainer.html('');
+
+  let tracks = [];
+  if (responseData.kind === 'track') {
+    tracks.push(responseData);
+    $('#playlist-title').hide();
+  }
+
+  if (responseData.kind === "playlist") {
+    tracks = responseData.tracks;
+    console.log(responseData.title)
+    $('#playlist-title').show();
+    $('#playlist-title').html(responseData.title);
+  }
+
+  let list = document.createElement('ul');
+  let ntgr = "odd";
+
+  for (var i = 0; i < tracks.length; i++) {
+    let songItem = document.createElement('li');
+    if (ntgr === "odd") {
+      songItem.classList.add('even');
+      ntgr = "even";
+    } else {
+      songItem.classList.add('odd');
+      ntgr = "odd";
+    }
+    if (i === 0) {
+      songItem.classList.add('active');
+    }
+    
+    let songUserHtml = `<p class="playlist-username"><a href="${tracks[i].user.permalink_url}" target="_blank">${tracks[i].user.username}</a></p>`;
+    let songTitleHtml = `<p class="playlist-song-title">${tracks[i].title}</p>`;
+
+    songItem.innerHTML = songUserHtml + songTitleHtml;
+    list.appendChild(songItem);
+  }
+
+  return list;
+}
+
+
+function setSong() {
+  playlistContainer.find("li").removeClass('active');
+  for (var i = 0; i < urlList.length; i++) {
+    if (tracks[i] === tracks[currentIndex]) {
+      $(playlistContainer.find("li")[i]).addClass('active');
+    }
+  }
+}
+
+
+//endSong
+function endSong() {
+
+  if (!audio.isPaused() && (audio.currentTime() === '0' || audio.currentTime().toString().split(".")[0] === audio.duration().toString().split(".")[0])) {
+    if (currentIndex === (urlList.length - 1)) {
+      currentIndex = '0';
+    } else {
+      currentIndex = Math.min(currentIndex + 1, urlList.length - 1);
+    }
+    progressBar.val(audio.currentTime());
+    setup(urlList[currentIndex]);
+    setSong();
+    audio.play();
+  }
+}
+
+function pauseEndSong() {
+  console.log('set pauseEndSong');
+}

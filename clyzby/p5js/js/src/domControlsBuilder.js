@@ -29,16 +29,14 @@ $(() => {
     $("#toggle-help").toggleClass("inactive");
   });
 
-  if (!midiAvailable){
-    $('#toggle-midi-assigner').remove();
-  } else {
-    $("#toggle-midi-assigner").click(() => {
-      $("#toggle-midi-assigner").toggleClass("inactive");
-      $(".midi-wrapper").toggle();
-    });
-  }
+
+  $("#toggle-midi-assigner").click(() => {
+    $("#toggle-midi-assigner").toggleClass("inactive");
+    $(".midi-wrapper").toggle();
+  });
 
 
+  // audio controls
 
   // on hover mouse over/leave show/hide the value of the range slider handle
   $("#settings-menu").on('mouseover', '.noUi-handle', function() {
@@ -99,7 +97,9 @@ let createDOMControls = (ctrlElements) => {
     return {};
   }
 
-
+  if (midiAvailable) {
+    $("#toggle-midi-assigner").show();
+  }
   // create audio control config buttons
   createAudioCtrls();
 
@@ -518,36 +518,38 @@ let createMidiAssigner = (ctrlObject, prop, parentWrapper) => {
  */
 let createAudioCtrls = () => {
   "use strict";
-  let audioWrapperID = "#audio-control-panel";
-
-
-  let playButton = document.createElement("div");
-  $(playButton).html("Play")
-    .addClass("audio-button")
-    .attr('id', 'play-audio')
-    .on("click", toggleAudio)
-    .appendTo(audioWrapperID);
-
-  let tooltip = document.createElement('span');
-  $(tooltip).addClass('tooltip')
-    .html('There is a built in audio file.<br>But you can also upload your own!')
-    .appendTo(audioWrapperID);
-
-
-  // we will hide the default file input bc its ugly and use the label
-  let uploadButton = myp5.createFileInput(uploaded);
-  uploadButton.parent(audioWrapperID)
-    .addClass("upload-button")
-    .attribute('id', 'upload-file')
-    .attribute('name', 'upload-file');
-
-  // instead we will see the label for it and labels have the same function as the actual input
-  let label = document.createElement('label');
-  $(label).html('Upload Audio')
-    .attr('for', 'upload-file')
-    .attr('id', 'upload-file-label')
-    .addClass("audio-button")
-    .appendTo(audioWrapperID);
+  // let audioWrapperID = "#audio-control-panel";
+  //
+  //
+  //
+  //
+  // let playButton = document.createElement("div");
+  // $(playButton).html("Play")
+  //   .addClass("audio-button")
+  //   .attr('id', 'play-audio')
+  //   .on("click", toggleAudio)
+  //   .appendTo(audioWrapperID);
+  //
+  // let tooltip = document.createElement('span');
+  // $(tooltip).addClass('tooltip')
+  //   .html('There is a built in audio file.<br>But you can also upload your own!')
+  //   .appendTo(audioWrapperID);
+  //
+  //
+  // // we will hide the default file input bc its ugly and use the label
+  // let uploadButton = myp5.createFileInput(uploaded);
+  // uploadButton.parent(audioWrapperID)
+  //   .addClass("upload-button")
+  //   .attribute('id', 'upload-file')
+  //   .attribute('name', 'upload-file');
+  //
+  // // instead we will see the label for it and labels have the same function as the actual input
+  // let label = document.createElement('label');
+  // $(label).html('Upload Audio')
+  //   .attr('for', 'upload-file')
+  //   .attr('id', 'upload-file-label')
+  //   .addClass("audio-button")
+  //   .appendTo(audioWrapperID);
 };
 
 
