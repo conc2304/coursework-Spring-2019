@@ -103,7 +103,7 @@ async function resolveSoundCloudLink(url) {
     });
 
 
-    let tracks = [];
+    tracks = [];
 
     if (scResponse.kind === 'track') {
       tracks.push(scResponse);
@@ -219,13 +219,12 @@ function changeSong(btn, listItem) {
 //Playlist
 function createPlaylist(responseData) {
 
-
-
   playlistContainer.html('');
 
-  let tracks = [];
+
+  let playlist = [];
   if (responseData.kind === 'track') {
-    tracks.push(responseData);
+    playlist.push(responseData);
     $('#playlist-title').hide();
   }
 
@@ -234,7 +233,7 @@ function createPlaylist(responseData) {
   }
 
   if (responseData.kind === "playlist" || responseData.kind === "user") {
-    tracks = responseData.tracks;
+    playlist = responseData.tracks;
     console.log(responseData.title)
     $('#playlist-title').show();
     $('#playlist-title').html(responseData.title);
@@ -242,9 +241,11 @@ function createPlaylist(responseData) {
 
 
 
-  for (let i = 0; i < tracks.length; i++) {
-    urlList.push(tracks[i].stream_url + '?client_id=' + CLIENT_ID);
+  urlList = [];
+  for (let i = 0; i < playlist.length; i++) {
+    urlList.push(playlist[i].stream_url + '?client_id=' + CLIENT_ID);
   }
+
   if (playlistWrapper.hasClass('minimized')) {
     $("#minimize-playlist").click();
   }
@@ -252,7 +253,7 @@ function createPlaylist(responseData) {
   let list = document.createElement('ul');
   let ntgr = "odd";
 
-  for (var i = 0; i < tracks.length; i++) {
+  for (var i = 0; i < playlist.length; i++) {
     let songItem = document.createElement('li');
     if (ntgr === "odd") {
       songItem.classList.add('even');
@@ -265,8 +266,8 @@ function createPlaylist(responseData) {
       songItem.classList.add('active');
     }
     
-    let songUserHtml = `<p class="playlist-username"><a href="${tracks[i].user.permalink_url}" target="_blank">${tracks[i].user.username}</a></p>`;
-    let songTitleHtml = `<p class="playlist-song-title">${tracks[i].title}</p>`;
+    let songUserHtml = `<p class="playlist-username"><a href="${playlist[i].user.permalink_url}" target="_blank">${playlist[i].user.username}</a></p>`;
+    let songTitleHtml = `<p class="playlist-song-title">${playlist[i].title}</p>`;
 
     songItem.innerHTML = songUserHtml + songTitleHtml;
     list.appendChild(songItem);
