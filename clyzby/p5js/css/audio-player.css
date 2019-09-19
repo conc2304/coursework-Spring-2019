@@ -99,11 +99,24 @@
 #audio-player .playlist-username, #audio-player .playlist-song-title {
   text-align: left;
   margin: 0;
+  cursor: pointer;
 }
 
-#audio-player .input-assigner input{
+#soundcloud-link-resolver {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  display: inline-block;
+  position: relative;
+  border: 1px solid #d4d4d4;
+  color: #fff;
+  line-height: 20px;
+  text-align: center;
+  padding: 5px 0;
+  background-color: black;
+  text-transform: uppercase;
   width: 100%;
 }
+
 
 
 .progress {

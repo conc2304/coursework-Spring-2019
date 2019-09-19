@@ -30,9 +30,9 @@ $(() => {
   });
 
 
-  $("#toggle-midi-assigner").click(() => {
-    $("#toggle-midi-assigner").toggleClass("inactive");
-    $(".midi-wrapper").toggle();
+  $("#toggle-input-assigner").click(() => {
+    $("#toggle-input-assigner").toggleClass("inactive");
+    $(".input-assigner").toggle();
   });
 
 
@@ -58,12 +58,16 @@ $(() => {
       helpText = $(this).attr('title');
     }
 
+    let offsets = $(this).offset();
+
     // delay the helper a little
     setTimeout(function () {
         $("#help-text").fadeOut(function () {
-          $(this).html(helpText);
-          $(this).fadeIn();
-          $("#help-section").show();
+          $(this).html(helpText)
+            .fadeIn();
+          
+          $("#help-section").show()
+            .css('top', `${offsets.top}px`);;
         });
       }, 200
     );
@@ -97,9 +101,6 @@ let createDOMControls = (ctrlElements) => {
     return {};
   }
 
-  if (midiAvailable) {
-    $("#toggle-midi-assigner").show();
-  }
   // create audio control config buttons
   createAudioCtrls();
 
@@ -293,20 +294,21 @@ let createGainDial = (ctrlObject, prop, parentWrapper) => {
   let ctrlObjectName = ctrlObject.constructor.name;
   let dialWrap = document.createElement('div');
   $(dialWrap).addClass('gain-dial-wrapper')
-    .appendTo(parentWrapper);
+    .appendTo(parentWrapper)
+    .addClass('helper')
+    .data('helper', 'Control how much of an effect the component reacts to the audio.  The higher the number the greater the boom.')
+    .prop('title', 'Visual Loudness');
+    ;
 
   let dial = document.createElement('input');
   $(dial).prop('type', 'text')
     .addClass('gain-knob')
-    .prop('title', 'Control how much of an effect the component reacts to the audio.  The higher the number the greater the boom.')
     .val(ctrlObject[prop].audio.gain)
     .appendTo(dialWrap);
 
   let label = document.createElement('p');
-  $(label).html('Gain')
-    .appendTo(dialWrap)
-    .addClass('helper')
-    .data('helper', 'Control how much of an effect the component reacts to the audio.  The higher the number the greater the boom.');
+  $(label).html('Loudness')
+    .appendTo(dialWrap);
 
   $(dial).knob({
     'min': 0,

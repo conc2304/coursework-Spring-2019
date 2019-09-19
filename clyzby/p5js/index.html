@@ -44,29 +44,7 @@
   <div id="sub-menu">
     <div class="icon-wrapper">
 
-      <i id="settings-close" class="material-icons md-light helper" title="Close Menu">
-        close
-      </i>
-      <i id="reset-settings" class="global-control material-icons md-light helper"
-         title="Master Reset" data-helper="Reset All Values. Excludes audio reactive control">
-        restore
-      </i>
-      <i id="randomize-settings" class="global-control material-icons md-light helper"
-         title="Randomize Everything"
-         data-helper="Randomizes all values for every element and property. Excludes audio reactive control">
-        shuffle
-      </i>
-      <i id="randomize-audio-reactive" class="global-control material-icons md-light helper"
-         title="Randomize Audio Reactive"
-         data-helper="Randomizes all of the audio reactive selectors. This will assign each element's properties to respond to one of the frequency ranges.  This will also randomly set the audio reactive mode randomly for each of the elements' properties.">
-        waves
-      </i>
-
-      <i id="toggle-midi-assigner" class="global-control material-icons md-light helper inactive hide"
-         title="Toggle the Midi Assigner"
-         data-helper="Enable/Disable the input to assign a visual element to a midi input.  When Midi Assigner is enabled Midi notes will be bypassed.">
-        keyboard
-      </i>
+      <h6 class="master-control-heading">Master Controls</h6>
 
       <i id="toggle-help" class="global-control material-icons md-light helper"
          title="Toggle Help"
@@ -74,7 +52,34 @@
         help
       </i>
 
+      <i id="toggle-input-assigner" class="global-control material-icons md-light helper"
+        title="Toggle the Input Binders"
+        data-helper="This will show/hide the fields that allow you to map and bind keyboard keys and/or midi controller inputs to control visual properties.">
+      keyboard
+    </i>
+
+      <i id="randomize-audio-reactive" class="global-control material-icons md-light helper"
+         title="Randomize Audio Reactive"
+         data-helper="Randomizes all of the audio reactive selectors. This will assign each element's properties to respond to one of the frequency ranges.  This will also randomly set the audio reactive mode randomly for each of the elements' properties.">
+        waves
+      </i>
+
+      <i id="randomize-settings" class="global-control material-icons md-light helper"
+         title="Randomize Everything"
+         data-helper="Randomizes all values for every element and property. Excludes audio reactive control">
+        shuffle
+      </i>
+
+      <i id="reset-settings" class="global-control material-icons md-light helper"
+         title="Master Reset" data-helper="Reset All Values. Excludes audio reactive control">
+        restore
+      </i>
     </div>
+
+    <i id="settings-close" class="material-icons md-light helper" title="Close Menu">
+      close
+    </i>
+
     <div class="clear"></div>
   </div>
 
@@ -103,7 +108,7 @@
         </div>
       </div>
 
-      <form onsubmit="resolveSoundCloudLink(); return false" class="input-assigner">
+      <form onsubmit="resolveSoundCloudLink(); return false">
         <input id="soundcloud-link-resolver" placeholder="Enter SoundCloud Link" type="text">
       </form>
 
