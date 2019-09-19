@@ -288,7 +288,7 @@ class ThreeDWave {
         gain: 1,
         fall: 1,
       },
-      easingValue: 0.009,
+      easingValue: 0.9,
       noteHeldEasing: 0.002,
       easingMax: 0,
       easingMin: 0,
@@ -313,7 +313,7 @@ class ThreeDWave {
         gain: 1,
         fall: 1,
       },
-      easingValue: 0.009,
+      easingValue: 0.9,
       noteHeldEasing: 0.002,
       easingMax: 0,
       easingMin: 0,
@@ -338,7 +338,7 @@ class ThreeDWave {
         gain: 1,
         fall: 1,
       },
-      easingValue: 0.009,
+      easingValue: 0.9,
       noteHeldEasing: 0.002,
       easingMax: 0,
       easingMin: 0,
@@ -520,9 +520,9 @@ ThreeDWave.prototype.render = function () {
  * Sets the rotational speed along the X, Y, and Z axis of the individual wave.
  */
 ThreeDWave.prototype.rotateWave = function () {
-  myp5.rotateX(myp5.frameCount * 0.01 * this.waveRotateX.currentValue);
-  myp5.rotateY(myp5.frameCount * 0.01 * this.waveRotateY.currentValue);
-  myp5.rotateZ(myp5.frameCount * 0.01 * this.waveRotateZ.currentValue);
+  myp5.rotateX(myp5.frameCount * 0.001 * this.waveRotateX.currentValue);
+  myp5.rotateY(myp5.frameCount * 0.001 * this.waveRotateY.currentValue);
+  myp5.rotateZ(myp5.frameCount * 0.001 * this.waveRotateZ.currentValue);
 };
 
 /**

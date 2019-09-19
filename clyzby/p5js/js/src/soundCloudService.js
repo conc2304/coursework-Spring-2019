@@ -53,13 +53,35 @@ $(() => {
     }
   });
 
+  $("form#soundcloud-link-form").submit((e) => {
+
+    let url = $("#soundcloud-link-resolver").val();
+    let response = resolveSoundCloudLink(url);
+    e.preventDefault;
+    return false;
+  });
+
   resolveSoundCloudLink(PLAYLIST_URL);
 });
 
 
+let scGetTracksByUser = (uid, limit) => {
+  return SC.get(
+    "/tracks",
+    {
+      user_id: uid,
+      limit: limit
+    },
+    function(response) {
+      console.log(response);
+      return response;
+    }
+  );
+
+};
 
 
-let resolveSoundCloudLink = (url) => {
+async function resolveSoundCloudLink(url) {
 
   if (!url) {
     url = $("#soundcloud-link-resolver").val();
@@ -69,37 +91,46 @@ let resolveSoundCloudLink = (url) => {
     client_id: CLIENT_ID
   });
 
-  SC.resolve(url)
+  let scResponse = await SC.resolve(url)
     .then(function (response) {
       console.log(response);
-      tracks = [];
-      if (response.kind === 'track') {
-        tracks.push(response);
-      }
 
-      if (response.kind === "playlist") {
-        tracks = response.tracks;
-      }
-
-      console.log(tracks);
-      for (let i = 0; i < tracks.length; i++) {
-        urlList.push(tracks[i].stream_url + '?client_id=' + CLIENT_ID);
-      }
-      if (playlistWrapper.hasClass('minimized')) {
-        $("#minimize-playlist").click();
-      }
-      playlistContainer.append(createPlaylist(response));
+      return response;
     })
     .catch(function (error) {
       console.log(error);
       // alert('Unable to resolve soundcloud url: ' + error);
-    })
-    .then(() => {
-      $("#soundcloud-link-resolver").val('');
     });
+
+
+    tracks = [];
+
+    if (scResponse.kind === 'track') {
+      tracks.push(scResponse);
+    }
+    else if (scResponse.kind === "playlist") {
+      tracks = scResponse.tracks;
+    }
+    else if (scResponse.kind === "user") {
+      let uid = Number(scResponse.uri.split("/").pop());
+      tracks = await scGetTracksByUser(uid, 50);
+      scResponse.tracks = tracks;
+    }
+    else if (scResponse[0] && scResponse[0].kind && scResponse[0].kind === "track") {
+      tracks = scResponse;
+      scResponse = {
+        kind : 'playlist',
+        tracks : scResponse,
+        title : url,
+      };
+    }
+
+    if (tracks.length) {
+      playlistContainer.append(createPlaylist(scResponse));
+    }
+
+    $("#soundcloud-link-resolver").val('');
 };
-
-
 
 
 //loadSound callbacks
@@ -174,7 +205,7 @@ function changeSong(btn, listItem) {
     playCurrentSound();
   }
   if (btn === select && listItem) {
-    for (var i = 0; i < urlList.length; i++) {
+    for (let i = 0; i < urlList.length; i++) {
       if (tracks[i].title === listItem.innerHTML) {
         currentIndex = i;
         playCurrentSound();
@@ -190,23 +221,38 @@ function createPlaylist(responseData) {
 
   playlistContainer.html('');
 
-  let tracks = [];
+
+  let playlist = [];
   if (responseData.kind === 'track') {
-    tracks.push(responseData);
+    playlist.push(responseData);
     $('#playlist-title').hide();
   }
 
-  if (responseData.kind === "playlist") {
-    tracks = responseData.tracks;
+  if (responseData.kind === "user") {
+    responseData.title = responseData.username;
+  }
+
+  if (responseData.kind === "playlist" || responseData.kind === "user") {
+    playlist = responseData.tracks;
     console.log(responseData.title)
     $('#playlist-title').show();
     $('#playlist-title').html(responseData.title);
   }
 
+
+  urlList = [];
+  for (let i = 0; i < playlist.length; i++) {
+    urlList.push(playlist[i].stream_url + '?client_id=' + CLIENT_ID);
+  }
+
+  if (playlistWrapper.hasClass('minimized')) {
+    $("#minimize-playlist").click();
+  }
+
   let list = document.createElement('ul');
   let ntgr = "odd";
 
-  for (var i = 0; i < tracks.length; i++) {
+  for (let i = 0; i < playlist.length; i++) {
     let songItem = document.createElement('li');
     if (ntgr === "odd") {
       songItem.classList.add('even');
@@ -219,8 +265,8 @@ function createPlaylist(responseData) {
       songItem.classList.add('active');
     }
     
-    let songUserHtml = `<p class="playlist-username"><a href="${tracks[i].user.permalink_url}" target="_blank">${tracks[i].user.username}</a></p>`;
-    let songTitleHtml = `<p class="playlist-song-title">${tracks[i].title}</p>`;
+    let songUserHtml = `<p class="playlist-username"><a href="${playlist[i].user.permalink_url}" target="_blank">${playlist[i].user.username}</a></p>`;
+    let songTitleHtml = `<p class="playlist-song-title">${playlist[i].title}</p>`;
 
     songItem.innerHTML = songUserHtml + songTitleHtml;
     list.appendChild(songItem);
@@ -232,7 +278,7 @@ function createPlaylist(responseData) {
 
 function setSong() {
   playlistContainer.find("li").removeClass('active');
-  for (var i = 0; i < urlList.length; i++) {
+  for (let i = 0; i < urlList.length; i++) {
     if (tracks[i] === tracks[currentIndex]) {
       $(playlistContainer.find("li")[i]).addClass('active');
     }
