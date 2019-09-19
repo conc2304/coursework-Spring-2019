@@ -26,7 +26,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions: ['add', 'subtract'],
         gain: 1,
         fall: 1,
       },
@@ -52,7 +52,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions: ['add', 'subtract'],
         gain: 1,
         fall: 1,
       },
@@ -78,7 +78,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions: ['add', 'subtract'],
         gain: 1,
         fall: 1,
       },
@@ -104,7 +104,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions: ['add', 'subtract'],
         gain: 1,
         fall: 1,
       },
@@ -130,7 +130,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions: ['add', 'subtract'],
         gain: 1,
         fall: 1,
       },
@@ -153,7 +153,7 @@ class ThreeDWave {
       attrType : 'numeric',
       audio : {
         responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions : ['add', 'subtract'],
         gain : 1,
         fall : 1, // not sure what this will do yet
       },
@@ -178,7 +178,7 @@ class ThreeDWave {
       attrType : 'numeric',
       audio : {
         responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions : ['add', 'subtract'],
         gain : 1,
         fall : 1, // not sure what this will do yet
       },
@@ -206,7 +206,7 @@ class ThreeDWave {
       attrType: 'numeric',
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down', 'infinite'],
+        responsiveOptions: ['add', 'subtract', 'infinite'],
         gain: 1,
         fall: 1,
       },
@@ -233,7 +233,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down', 'infinite'],
+        responsiveOptions: ['add', 'subtract', 'infinite'],
         gain: 1,
         fall: 1,
       },
@@ -258,7 +258,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down', 'infinite'],
+        responsiveOptions: ['add', 'subtract', 'infinite'],
         gain: 1,
         fall: 1,
       },
@@ -284,7 +284,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down', 'infinite'],
+        responsiveOptions: ['add', 'subtract', 'infinite'],
         gain: 1,
         fall: 1,
       },
@@ -309,7 +309,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down', 'infinite'],
+        responsiveOptions: ['add', 'subtract', 'infinite'],
         gain: 1,
         fall: 1,
       },
@@ -334,7 +334,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down', 'infinite'],
+        responsiveOptions: ['add', 'subtract', 'infinite'],
         gain: 1,
         fall: 1,
       },
@@ -360,7 +360,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions: ['add', 'subtract'],
         gain: 1,
         fall: 1,
       },
@@ -386,7 +386,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions: ['add', 'subtract'],
         gain: 1,
         fall: 1,
       },
@@ -412,7 +412,7 @@ class ThreeDWave {
       lockOn: false,
       audio: {
         responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions: ['add', 'subtract'],
         gain: 1,
         fall: 1,
       },

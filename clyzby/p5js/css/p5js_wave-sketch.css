@@ -5,9 +5,6 @@ body {
   background-color: #000;
 }
 
-*, *:before, *:after {
-}
-
 * {
   font-family: 'Montserrat', sans-serif;
 }
@@ -20,6 +17,19 @@ body {
   clear: both;
 }
 
+
+
+#help-section {
+  position: absolute;
+  left: 450px;
+  z-index: 5;
+  padding: 30px;
+  background-color: #000000bd;
+  border: 1px solid #292929;
+  width: 150px;
+  text-align: center;
+  display: none;
+}
 
 #help-section .help-inner {
   position: relative;
@@ -96,6 +106,7 @@ body {
   position: relative;
 }
 
+
 #sub-menu {
   width: 449px;
   position: fixed;
@@ -104,8 +115,30 @@ body {
   background: linear-gradient(180deg, rgba(0, 0, 0, 1) 66%, rgba(0, 0, 0, 0) 100%);
 }
 
+#sub-menu .master-control-heading {
+  color: #fff;
+  margin: 15px 0 0 0;
+  text-align: center;
+}
+
+#sub-menu i.global-control {
+  font-size: 30px;
+}
+
+#sub-menu .icon-wrapper {
+  padding: 0 20px;
+  text-align: center;
+}
+
+#settings-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+
 #ctrlObject-control-panel {
-  padding: 60px 20px 200px;
+  padding: 85px 20px 200px;
   position: relative;
 }
 
@@ -119,9 +152,6 @@ body {
   float: left;
 }
 
-#sub-menu i {
-  float: right;
-}
 
 i.material-icons {
   z-index: 2;
@@ -145,10 +175,15 @@ i.material-icons:hover {
   color: #0eb1ff;
 }
 
+i.material-icons:active, i.material-icons.inactive:active {
+  color: #0ecd78;
+}
+
 .ctrlObject-settings {
   display: block;
   position: relative;
   color: #000;
+  margin-top: 25px;
 }
 
 .ctrlObject-settings input {
@@ -157,8 +192,9 @@ i.material-icons:hover {
 }
 .input-assigner {
   margin-bottom: 10px;
+  display: none;
 }
-.input-assigner input {
+.input-assigner input  {
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   display: inline-block;
@@ -215,10 +251,7 @@ i.material-icons:hover {
   text-align: center;
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
-}
-
-.range-slider-wrapper p {
-  /*padding-top: 25px;*/
+  margin: 20px 0 0 0;
 }
 
 .range-slider-wrapper i {
@@ -233,7 +266,6 @@ i.material-icons:hover {
   opacity: .8;
   color: #aa0000
 }
-
 
 *:disabled, .disabled.disabled {
   cursor: not-allowed;
@@ -252,7 +284,7 @@ i.material-icons:hover {
 
 #settings-menu button.settings-toggle-button,
 #settings-menu .audio-button {
-  margin: 20px auto;
+  margin: 20px auto 0;
   font-family: 'Oswald', sans-serif;
   border: 3px solid #fff;
   color: #fff;
@@ -269,6 +301,7 @@ i.material-icons:hover {
   transition: all 0.3s;
   overflow: hidden;
   text-align: center;
+
 }
 
 /* hide the file input button bc its ugly*/
@@ -340,7 +373,7 @@ label.radio-input:after {
   background: initial;
   border-radius: 10px;
   box-shadow: initial;
-  margin: 40px 10px 30px 0;
+  margin: 30px 10px 20px;
   height: 14px;
 }
 
@@ -616,17 +649,3 @@ label.radio-input:after {
 }
 
 
-
-#help-section {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  z-index: 5;
-  padding: 30px;
-  background-color: #000000bd;
-  border: 1px solid #292929;
-  border-bottom: none;
-  width: 150px;
-  text-align: center;
-  display: none;
-}
