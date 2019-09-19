@@ -192,6 +192,7 @@ i.material-icons:active, i.material-icons.inactive:active {
 }
 .input-assigner {
   margin-bottom: 10px;
+  display: none;
 }
 .input-assigner input  {
   font-family: 'Montserrat', sans-serif;
