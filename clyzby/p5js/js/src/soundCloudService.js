@@ -53,13 +53,35 @@ $(() => {
     }
   });
 
+  $("form#soundcloud-link-form").submit((e) => {
+
+    let url = $("#soundcloud-link-resolver").val();
+    let response = resolveSoundCloudLink(url);
+    e.preventDefault;
+    return false;
+  });
+
   resolveSoundCloudLink(PLAYLIST_URL);
 });
 
 
+let scGetTracksByUser = (uid, limit) => {
+  return SC.get(
+    "/tracks",
+    {
+      user_id: uid,
+      limit: limit
+    },
+    function(response) {
+      console.log(response);
+      return response;
+    }
+  );
+
+};
 
 
-let resolveSoundCloudLink = (url) => {
+async function resolveSoundCloudLink(url) {
 
   if (!url) {
     url = $("#soundcloud-link-resolver").val();
@@ -69,37 +91,46 @@ let resolveSoundCloudLink = (url) => {
     client_id: CLIENT_ID
   });
 
-  SC.resolve(url)
+  let scResponse = await SC.resolve(url)
     .then(function (response) {
       console.log(response);
-      tracks = [];
-      if (response.kind === 'track') {
-        tracks.push(response);
-      }
 
-      if (response.kind === "playlist") {
-        tracks = response.tracks;
-      }
-
-      console.log(tracks);
-      for (let i = 0; i < tracks.length; i++) {
-        urlList.push(tracks[i].stream_url + '?client_id=' + CLIENT_ID);
-      }
-      if (playlistWrapper.hasClass('minimized')) {
-        $("#minimize-playlist").click();
-      }
-      playlistContainer.append(createPlaylist(response));
+      return response;
     })
     .catch(function (error) {
       console.log(error);
       // alert('Unable to resolve soundcloud url: ' + error);
-    })
-    .then(() => {
-      $("#soundcloud-link-resolver").val('');
     });
+
+
+    let tracks = [];
+
+    if (scResponse.kind === 'track') {
+      tracks.push(scResponse);
+    }
+    else if (scResponse.kind === "playlist") {
+      tracks = scResponse.tracks;
+    }
+    else if (scResponse.kind === "user") {
+      let uid = Number(scResponse.uri.split("/").pop());
+      tracks = await scGetTracksByUser(uid, 50);
+      scResponse.tracks = tracks;
+    }
+    else if (scResponse[0] && scResponse[0].kind && scResponse[0].kind === "track") {
+      tracks = scResponse;
+      scResponse = {
+        kind : 'playlist',
+        tracks : scResponse,
+        title : url,
+      };
+    }
+
+    if (tracks.length) {
+      playlistContainer.append(createPlaylist(scResponse));
+    }
+
+    $("#soundcloud-link-resolver").val('');
 };
-
-
 
 
 //loadSound callbacks
@@ -188,6 +219,8 @@ function changeSong(btn, listItem) {
 //Playlist
 function createPlaylist(responseData) {
 
+
+
   playlistContainer.html('');
 
   let tracks = [];
@@ -196,11 +229,24 @@ function createPlaylist(responseData) {
     $('#playlist-title').hide();
   }
 
-  if (responseData.kind === "playlist") {
+  if (responseData.kind === "user") {
+    responseData.title = responseData.username;
+  }
+
+  if (responseData.kind === "playlist" || responseData.kind === "user") {
     tracks = responseData.tracks;
     console.log(responseData.title)
     $('#playlist-title').show();
     $('#playlist-title').html(responseData.title);
+  }
+
+
+
+  for (let i = 0; i < tracks.length; i++) {
+    urlList.push(tracks[i].stream_url + '?client_id=' + CLIENT_ID);
+  }
+  if (playlistWrapper.hasClass('minimized')) {
+    $("#minimize-playlist").click();
   }
 
   let list = document.createElement('ul');
