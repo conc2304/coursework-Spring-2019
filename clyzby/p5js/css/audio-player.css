@@ -99,6 +99,7 @@
 #audio-player .playlist-username, #audio-player .playlist-song-title {
   text-align: left;
   margin: 0;
+  cursor: pointer;
 }
 
 #audio-player .input-assigner input{

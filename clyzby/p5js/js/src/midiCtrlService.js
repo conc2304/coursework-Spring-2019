@@ -97,7 +97,7 @@ let setElementAttribute = (MIDImessageData, timeStamp, triggerSource) => {
   let velocity = (MIDImessageData.length > 2) ? MIDImessageData[2] : MIDImessageData[1]; // a velocity value might not be included with a noteOff command
 
 
-  if ($("#toggle-midi-assigner").hasClass('inactive') && $(':focus').hasClass('midi-assigner')) {
+  if ($("#toggle-input-assigner").hasClass('inactive') && $(':focus').hasClass('midi-assigner')) {
     setMidiCtrl(midiCtrlMap, note);
     return;
   }

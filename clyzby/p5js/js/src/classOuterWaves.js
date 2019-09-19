@@ -24,7 +24,7 @@ class OuterWaves {
       attrType: 'numeric',
       audio : {
         responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions : ['add', 'subtract'],
         gain : 1,
         fall : 1, // not sure what this will do yet
       },
@@ -49,7 +49,7 @@ class OuterWaves {
       attrType: 'numeric',
       audio : {
         responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions : ['add', 'subtract'],
         gain : 1,
         fall : 1, // not sure what this will do yet
       },
@@ -74,7 +74,7 @@ class OuterWaves {
       attrType: 'numeric',
       audio : {
         responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions : ['add', 'subtract'],
         gain : 1,
         fall : 1, // not sure what this will do yet
       },
@@ -99,7 +99,7 @@ class OuterWaves {
       attrType: 'numeric',
       audio : {
         responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions : ['add', 'subtract'],
         gain : 1,
         fall : 1, // not sure what this will do yet
       },
@@ -124,7 +124,7 @@ class OuterWaves {
       attrType: 'numeric',
       audio : {
         responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions : ['add', 'subtract'],
         gain : 1,
         fall : 1, // not sure what this will do yet
       },
@@ -148,7 +148,7 @@ class OuterWaves {
       attrType: 'numeric',
       audio : {
         responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions : ['add', 'subtract'],
         gain : 1,
         fall : 1, // not sure what this will do yet
       },
@@ -173,7 +173,7 @@ class OuterWaves {
       attrType: 'numeric',
       audio : {
         responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions : ['add', 'subtract'],
         gain : 1,
         fall : 1, // not sure what this will do yet
       },
@@ -198,7 +198,7 @@ class OuterWaves {
       attrType : 'numeric',
       audio : {
         responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions : ['add', 'subtract'],
         gain : 1,
         fall : 1, // not sure what this will do yet
       },
@@ -223,7 +223,7 @@ class OuterWaves {
       attrType : 'numeric',
       audio : {
         responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract', 'loop up', 'loop down'],
+        responsiveOptions : ['add', 'subtract'],
         gain : 1,
         fall : 1, // not sure what this will do yet
       },
