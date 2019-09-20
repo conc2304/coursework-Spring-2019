@@ -477,6 +477,9 @@ let setIntroDefaults = () => {
 
   let freqToAssign = freqBands.midLow.ranges[0];
   $($(".freq-selector")[0]).val(`${freqToAssign[0]} - ${freqToAssign[1]} Hz`).trigger("change");
+  if ($('#ThreeDWave-wrapper')) {
+    $($('#ThreeDWave-wrapper .freq-selector')[0]).val(`${freqToAssign[0]} - ${freqToAssign[1]} Hz`).trigger("change");
+  }
 };
 
 

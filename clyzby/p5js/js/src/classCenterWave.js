@@ -29,8 +29,8 @@ class CenterWave {
     //   easingMin : 0,
     // };
 
-    this.shake = false;
-    this.shakeGain = 0.009;  // should be make this a dial/ controllable by button
+    // this.shake = true;
+    // this.shakeGain = 0.009;  // should be make this a dial/ controllable by button
 
     //  Numeric Type Attributes
     this.radius = {
@@ -47,7 +47,7 @@ class CenterWave {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource : null,
@@ -72,7 +72,7 @@ class CenterWave {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource : null,
@@ -97,7 +97,7 @@ class CenterWave {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource : null,
@@ -122,7 +122,7 @@ class CenterWave {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource : null,
@@ -172,7 +172,7 @@ class CenterWave {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource : null,
@@ -197,7 +197,7 @@ class CenterWave {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource : null,

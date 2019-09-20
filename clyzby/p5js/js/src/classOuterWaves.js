@@ -25,7 +25,7 @@ class OuterWaves {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource: null,
@@ -50,7 +50,7 @@ class OuterWaves {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource: null,
@@ -75,7 +75,7 @@ class OuterWaves {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource: null,
@@ -100,7 +100,7 @@ class OuterWaves {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource: null,
@@ -125,7 +125,7 @@ class OuterWaves {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource: null,
@@ -149,7 +149,7 @@ class OuterWaves {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource: null,
@@ -174,7 +174,7 @@ class OuterWaves {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource: null,
@@ -199,7 +199,7 @@ class OuterWaves {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource : null,
@@ -224,7 +224,7 @@ class OuterWaves {
       audio : {
         responsiveType : 'add',
         responsiveOptions : ['add', 'subtract'],
-        gain : 1,
+        gain : 0.5,
         fall : 1, // not sure what this will do yet
       },
       triggerSource : null,
