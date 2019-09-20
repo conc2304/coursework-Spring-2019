@@ -36,17 +36,42 @@ class ThreeDWave {
       easingMin: 0,
     };
 
-    this.velocity = {
-      displayLabel: 'Velocity',
-      description: 'This sets how fast the disturbance of the wave is moving',
-      resetValue: 0.01,
-      defaultValue: 0.01,
-      currentValue: 0.01,
+    this.elemQty = {
+      displayLabel: 'Number of Shapes',
+      resetValue: 1,
+      defaultValue: 1,
+      currentValue: 1,
       targetValue: null,
-      min: 0.001,    // this can be edited by the user
-      defaultMin: 0.001,   // this is the range within which the user can edit the min and max values
-      max: 0.2,    // this can be edited by the user
-      defaultMax: 0.2,   // this is the range within which the user can edit the min and max values
+      min: 1,  // this can be edited by the user
+      defaultMin: 1, // this is the range within which the user can edit the min and max values
+      max: 20, // this can be edited by the user
+      defaultMax: 20, // this is the range within which the user can edit the min and max values
+      attrType: 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.1,
+      noteHeldEasing: 0.05,
+      easingMax: 0,
+      easingMin: 0,
+    };
+
+    this.xSpacing = {
+      displayLabel: 'X Spacing',
+      description: 'Sets the horizontal distance between each point in the wave.',
+      resetValue: 300,
+      defaultValue: 300,
+      currentValue: 300,
+      targetValue: null,
+      min: 90,   // this can be edited by the user
+      defaultMin: 90,    // this is the range within which the user can edit the min and max values
+      max: 900,    // this can be edited by the user
+      defaultMax: 900,   // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
       triggerSource: null,
       lockOn: false,
@@ -114,17 +139,17 @@ class ThreeDWave {
       easingMin: 0,
     };
 
-    this.xSpacing = {
-      displayLabel: 'X Spacing',
-      description: 'Sets the horizontal distance between each point in the wave.',
-      resetValue: 100,
-      defaultValue: 100,
-      currentValue: 100,
+    this.velocity = {
+      displayLabel: 'Velocity',
+      description: 'This sets how fast the disturbance of the wave is moving',
+      resetValue: 0.01,
+      defaultValue: 0.01,
+      currentValue: 0.01,
       targetValue: null,
-      min: 90,   // this can be edited by the user
-      defaultMin: 90,    // this is the range within which the user can edit the min and max values
-      max: 450,    // this can be edited by the user
-      defaultMax: 450,   // this is the range within which the user can edit the min and max values
+      min: 0.001,    // this can be edited by the user
+      defaultMin: 0.001,   // this is the range within which the user can edit the min and max values
+      max: 0.2,    // this can be edited by the user
+      defaultMax: 0.2,   // this is the range within which the user can edit the min and max values
       attrType: 'numeric',
       triggerSource: null,
       lockOn: false,
@@ -138,56 +163,6 @@ class ThreeDWave {
       noteHeldEasing: 0.1,
       easingMax: 0,
       easingMin: 0,
-    };
-
-    this.hue = {
-      displayLabel : 'Color',
-      resetValue : 100,
-      defaultValue : 100,
-      currentValue : 200,
-      targetValue : null,
-      min : 0,    // this can be edited by the user
-      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
-      max : 360,    // this can be edited by the user
-      defaultMax : 360,   //  this is the range within which the user can edit the min and max values
-      attrType : 'numeric',
-      audio : {
-        responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract'],
-        gain : 1,
-        fall : 1, // not sure what this will do yet
-      },
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
-    };
-
-    this.saturation = {
-      displayLabel : 'Saturation',
-      resetValue : 100,
-      defaultValue : 100,
-      currentValue : 100,
-      targetValue : null,
-      min : 0,    // this can be edited by the user
-      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
-      max : 100,    // this can be edited by the user
-      defaultMax : 100,   //  this is the range within which the user can edit the min and max values
-      attrType : 'numeric',
-      audio : {
-        responsiveType : 'add',
-        responsiveOptions : ['add', 'subtract'],
-        gain : 1,
-        fall : 1, // not sure what this will do yet
-      },
-      triggerSource : null,
-      lockOn : false,
-      easingValue : 0.1,
-      noteHeldEasing : 0.1,
-      easingMax : 0,
-      easingMin : 0,
     };
 
 
@@ -344,32 +319,6 @@ class ThreeDWave {
       easingMin: 0,
     };
 
-    this.translateZ = {
-      displayLabel: 'Translate Z',
-      description: '',
-      resetValue: 0,
-      defaultValue: 0,
-      currentValue: 0,
-      targetValue: null,
-      min: -900,   // this can be edited by the user
-      defaultMin: -900,    // this is the range within which the user can edit the min and max values
-      max: 900,    // this can be edited by the user
-      defaultMax: 900,   // this is the range within which the user can edit the min and max values
-      attrType: 'numeric',
-      triggerSource: null,
-      lockOn: false,
-      audio: {
-        responsiveType: 'add',
-        responsiveOptions: ['add', 'subtract'],
-        gain: 1,
-        fall: 1,
-      },
-      easingValue: 0.009,
-      noteHeldEasing: 0.002,
-      easingMax: 0,
-      easingMin: 0,
-    };
-
     this.translateX = {
       displayLabel: 'Translate X',
       description: '',
@@ -420,6 +369,108 @@ class ThreeDWave {
       noteHeldEasing: 0.002,
       easingMax: 0,
       easingMin: 0,
+    };
+
+    this.translateZ = {
+      displayLabel: 'Translate Z',
+      description: '',
+      resetValue: 0,
+      defaultValue: 0,
+      currentValue: 0,
+      targetValue: null,
+      min: -900,   // this can be edited by the user
+      defaultMin: -900,    // this is the range within which the user can edit the min and max values
+      max: 900,    // this can be edited by the user
+      defaultMax: 900,   // this is the range within which the user can edit the min and max values
+      attrType: 'numeric',
+      triggerSource: null,
+      lockOn: false,
+      audio: {
+        responsiveType: 'add',
+        responsiveOptions: ['add', 'subtract'],
+        gain: 1,
+        fall: 1,
+      },
+      easingValue: 0.009,
+      noteHeldEasing: 0.002,
+      easingMax: 0,
+      easingMin: 0,
+    };
+
+    
+    this.strokeHue = {
+      displayLabel : 'Line Color',
+      resetValue : 200,
+      defaultValue : 200,
+      currentValue : 200,
+      targetValue : null,
+      min : 0,    // this can be edited by the user
+      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
+      max : 360,    // this can be edited by the user
+      defaultMax : 360,   //  this is the range within which the user can edit the min and max values
+      attrType : 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.1,
+      easingMax : 0,
+      easingMin : 0,
+    };
+
+    this.fillHue = {
+      displayLabel : 'Fill Color',
+      resetValue : 100,
+      defaultValue : 100,
+      currentValue : 100,
+      targetValue : null,
+      min : 0,    // this can be edited by the user
+      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
+      max : 360,    // this can be edited by the user
+      defaultMax : 360,   //  this is the range within which the user can edit the min and max values
+      attrType : 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.1,
+      easingMax : 0,
+      easingMin : 0,
+    };
+
+    this.saturation = {
+      displayLabel : 'Saturation',
+      resetValue : 100,
+      defaultValue : 100,
+      currentValue : 100,
+      targetValue : null,
+      min : 0,    // this can be edited by the user
+      defaultMin : 0,   //  this is the range within which the user can edit the min and max values
+      max : 100,    // this can be edited by the user
+      defaultMax : 100,   //  this is the range within which the user can edit the min and max values
+      attrType : 'numeric',
+      audio : {
+        responsiveType : 'add',
+        responsiveOptions : ['add', 'subtract'],
+        gain : 1,
+        fall : 1, // not sure what this will do yet
+      },
+      triggerSource : null,
+      lockOn : false,
+      easingValue : 0.1,
+      noteHeldEasing : 0.1,
+      easingMax : 0,
+      easingMin : 0,
     };
 
 
@@ -493,26 +544,32 @@ ThreeDWave.prototype.render = function () {
   if (this.xSpacing.currentValue <= 0) {
     this.xSpacing.currentValue = this.xSpacing.min / 2;
   }
-  this.yPoints = new Array(Math.floor(this.waveWidth / this.xSpacing.currentValue));
+
+  if (this.elemQty.currentValue < this.elemQty.defaultMin) {
+    this.elemQty.currentValue = this.elemQty.defaultMin;
+  }
+  this.yPoints = new Array(Math.floor(this.waveWidth / this.elemQty.currentValue));
+  let waveWidth = this.xSpacing.currentValue * Math.round(this.elemQty.currentValue - 1);
+
   this.calcWave();
-
-
   this.rotateWave();
-  myp5.push();
+
+  myp5.translate(this.translateX.currentValue, this.translateY.currentValue, this.translateZ.currentValue);
+
   if (!(this.shape.currentValue === 'lambo' || this.shape.currentValue === 'glock')) {
     this.setColor();
   }
 
-  for (let x = 0; x < this.yPoints.length; x++) {
-    let xPos = x * this.xSpacing.currentValue - this.windowWidth / 2 + this.translateX.currentValue;
-    let yPos = myp5.height / 2 + this.yPoints[x] - this.windowHeight / 2 + this.translateY.currentValue;
-    let zPos = (x % 4 === 0) ? yPos + this.translateZ.currentValue : yPos;
+  for (let x = 0; x < this.elemQty.currentValue; x++) {
+    let xPos = -(waveWidth/2) + (x * this.xSpacing.currentValue);
+    let yPos = myp5.height/2 + this.yPoints[x] - this.windowHeight / 2;
+    let zPos = 0;
 
-    myp5.translate(xPos + this.windowWidth / 4, yPos, zPos);
+    myp5.push();
+    myp5.translate(xPos, yPos, zPos);
     this.renderShape();
+    myp5.pop();
   }
-  myp5.pop();
-
 };
 
 
@@ -520,9 +577,9 @@ ThreeDWave.prototype.render = function () {
  * Sets the rotational speed along the X, Y, and Z axis of the individual wave.
  */
 ThreeDWave.prototype.rotateWave = function () {
-  myp5.rotateX(myp5.frameCount * 0.001 * this.waveRotateX.currentValue);
-  myp5.rotateY(myp5.frameCount * 0.001 * this.waveRotateY.currentValue);
-  myp5.rotateZ(myp5.frameCount * 0.001 * this.waveRotateZ.currentValue);
+  myp5.rotateX(myp5.frameCount * 0.01 * this.waveRotateX.currentValue);
+  myp5.rotateY(myp5.frameCount * 0.01 * this.waveRotateY.currentValue);
+  myp5.rotateZ(myp5.frameCount * 0.01 * this.waveRotateZ.currentValue);
 };
 
 /**
@@ -541,13 +598,13 @@ ThreeDWave.prototype.setColor = function () {
   switch (this.stroke.currentValue) {
     case 'Outline':
       myp5.strokeWeight(1);
-      myp5.stroke(this.hue.currentValue, this.saturation.currentValue, 100);
+      myp5.stroke(this.strokeHue.currentValue, this.saturation.currentValue, 100);
       myp5.noFill();
       break;
     case 'Fill + Outline':
       myp5.strokeWeight(1);
-      myp5.stroke(this.hue.currentValue, this.saturation.currentValue, 100);
-      myp5.fill(this.hue.currentValue + myp5.frameCount, this.saturation.currentValue, 100);
+      myp5.stroke(this.strokeHue.currentValue, this.saturation.currentValue, 100);
+      myp5.fill(this.fillHue.currentValue, this.saturation.currentValue, 100);
       break;
   }
 };
@@ -564,13 +621,7 @@ ThreeDWave.prototype.renderShape = function () {
 
   myp5.push();
 
-  // this.rotateShape();
-  myp5.rotateZ(myp5.frameCount * 0.01 * this.rotateZ.currentValue);
-  myp5.rotateY(myp5.frameCount * 0.01 * this.rotateY.currentValue);
-  myp5.rotateX(myp5.frameCount * 0.01 * this.rotateX.currentValue);
-
-  // myp5.rotateX(myp5.frameCount * 0.01);
-  // myp5.rotateY(myp5.frameCount * 0.01);
+  this.rotateShape();
 
   switch (this.shape.currentValue) {
     case 'box':
@@ -599,8 +650,6 @@ ThreeDWave.prototype.renderShape = function () {
       break;
   }
   myp5.pop();
-
-
 };
 
 
