@@ -1,5 +1,41 @@
 let uploadLoading = false;
 let uploadedAudio;
+let autoPlayOn = false;
+let peakCount = 0;
+
+
+let freqBands5 = {
+  low: {
+    optGroup: 'Low',
+    ranges: [
+      [1, 140],
+    ]
+  },
+  midLow: {
+    optGroup: 'Mid - Low',
+    ranges: [
+      [140, 400],
+    ]
+  },
+  mid: {
+    optGroup: 'Mid',
+    ranges: [
+      [400, 2600],
+    ]
+  },
+  midHigh: {
+    optGroup: 'Mid - High',
+    ranges: [
+      [2600, 5200],
+    ]
+  },
+  high: {
+    optGroup: 'High',
+    ranges: [
+      [5200, 14000],  // fft analysis breaks at 23,000k hz
+    ]
+  },
+};
 
 let freqBands10 = {
   low: {
@@ -38,7 +74,6 @@ let freqBands10 = {
     ]
   },
 };
-
 
 let freqBands31 = {
   low: {
@@ -99,8 +134,8 @@ let freqBands31 = {
 };
 
 
-let freqBands = freqBands10;
-
+let freqBands = freqBands5;
+let backgroundStrobe = false;
 
 /**
  * On file upload trigger callback to play new file.
@@ -165,6 +200,30 @@ let getEQEnergy = (fft) => {
   }
 
   fft.analyze();
+
+  if (backgroundStrobe) {
+    peakDetect.update(fft);
+
+    if (peakDetect.isDetected) {
+      bgColor = 200;
+      peakCount++;
+      if (autoPlayOn) {
+        if (peakCount%32 === 0) {
+          randomizeSettings(false, 50);
+          console.log('32')
+        } 
+        else if (peakCount%16 === 0) {
+          randomizeSettings(false, 20);
+          console.log('16')
+        } else if (peakCount%8 == 0) {
+          randomizeSettings(false, 1);
+          console.log('8')
+        }
+      }
+    } else {
+      bgColor = bgColor * 0.0005;
+    }
+  }
 
   let fftAnalysis = [];
   fftAnalysis[0] = 0;  // account for the default text 'Frequency Ranges'

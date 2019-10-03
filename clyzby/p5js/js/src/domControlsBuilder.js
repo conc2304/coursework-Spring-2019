@@ -24,6 +24,11 @@ $(() => {
     randomizeAudioCtrls();
   });
 
+  $("#set-background-strobe").click(() => {
+    $("#set-background-strobe").toggleClass("inactive");
+    backgroundStrobe = !backgroundStrobe;
+  });
+
 
   $("#toggle-help").click(() => {
     $("#toggle-help").toggleClass("inactive");
@@ -475,10 +480,11 @@ let setIntroDefaults = () => {
   });
 
 
-  let freqToAssign = freqBands.midLow.ranges[0];
+  let freqToAssign = freqBands.low.ranges[0];
+  let secondFreq = freqBands.high.ranges[0];
   $($(".freq-selector")[0]).val(`${freqToAssign[0]} - ${freqToAssign[1]} Hz`).trigger("change");
   if ($('#ThreeDWave-wrapper')) {
-    $($('#ThreeDWave-wrapper .freq-selector')[0]).val(`${freqToAssign[0]} - ${freqToAssign[1]} Hz`).trigger("change");
+    $($('#ThreeDWave-wrapper .freq-selector')[0]).val(`${secondFreq[0]} - ${secondFreq[1]} Hz`).trigger("change");
   }
 };
 
@@ -1000,8 +1006,9 @@ let resetSettings = (ctrlElement) => {
  * This can either randomize every visual element
  * or just a single visual element if it gets passed in
  * @param ctrlElement
+ * @param percent
  */
-let randomizeSettings = (ctrlElement = false) => {
+let randomizeSettings = (ctrlElement = false, percent) => {
   // "use strict";
 
   let ctrlElementsArray = [];
@@ -1017,6 +1024,7 @@ let randomizeSettings = (ctrlElement = false) => {
   console.log(ctrlElementsArray);
 
   let rVal;
+  let valueRange;
   let optLength;
   let optIndex;
 
@@ -1043,7 +1051,13 @@ let randomizeSettings = (ctrlElement = false) => {
 
       if (ctrlElem[prop].attrType === "numeric") {
 
-        rVal = myp5.random(ctrlElem[prop].min, ctrlElem[prop].max);
+        if (percent) {
+          invertP = 100 - percent;
+          valueRange = ctrlElem[prop].resetValue * invertP/100;
+          rVal = myp5.random(ctrlElem[prop].min + valueRange, ctrlElem[prop].max - valueRange);
+        } else {
+          rVal = myp5.random(ctrlElem[prop].min, ctrlElem[prop].max);
+        }
 
         $(`.range-slider.${ctrlObjectName}-${prop}`)[0]
           .noUiSlider.set([null, rVal, null]);

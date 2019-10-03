@@ -16,6 +16,7 @@
 
 
 let audio;
+let bgColor = 0;
 
 let s = (sketch) => {
   'use strict';
@@ -24,8 +25,6 @@ let s = (sketch) => {
   let outerWaves;
   let threeDWave;
   let domCtrl = {};
-  // let fft, amplitude, peakDetect;
-
 
 
   // keep all 'custom' code here
@@ -89,11 +88,12 @@ let s = (sketch) => {
   let fftAnalysis = {};
   let tempObj;
   sketch.draw = () => {
-    sketch.background(0);
+    sketch.background(bgColor);
+  
 
-    let seconds = Math.floor(audio.currentTime() % 60);
-    let minutes = Math.floor(audio.currentTime() / 60);
-    if (audio.isLoaded() && !audio.isPaused()) {
+    if (audio && audio.isLoaded() && !audio.isPaused()) {
+      let seconds = Math.floor(audio.currentTime() % 60);
+      let minutes = Math.floor(audio.currentTime() / 60);
 
       let time = ('0' + minutes).substr(-2) + ':' + ('0' + seconds).substr(-2);
       songTime.html(time);

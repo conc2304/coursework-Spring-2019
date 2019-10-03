@@ -27,7 +27,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,
@@ -78,7 +78,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,
@@ -104,7 +104,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,
@@ -130,7 +130,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,
@@ -156,7 +156,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,
@@ -182,7 +182,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract', 'infinite'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       triggerSource: null,
@@ -209,7 +209,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract', 'infinite'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,
@@ -234,7 +234,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract', 'infinite'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,
@@ -260,7 +260,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract', 'infinite'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,
@@ -285,7 +285,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract', 'infinite'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,
@@ -310,7 +310,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract', 'infinite'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,
@@ -336,7 +336,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,
@@ -362,7 +362,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,
@@ -388,7 +388,7 @@ class ThreeDWave {
       audio: {
         responsiveType: 'add',
         responsiveOptions: ['add', 'subtract'],
-        gain: 1,
+        gain: 0.5,
         fall: 1,
       },
       easingValue: 0.7,

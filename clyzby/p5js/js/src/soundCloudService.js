@@ -12,8 +12,11 @@ let progressBar = $('#progressBar');
 let fft;
 
 let CLIENT_ID = 'NmW1FlPaiL94ueEu7oziOWjYEzZzQDcK';
-// let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/safe-bass';
-let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/depth';
+
+let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/safe-bass';
+// let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/depth';
+
+// let PLAYLIST_URL = 'https://soundcloud.com/hollyherndon/sets/movement-53';
 
 
 $(() => {
@@ -24,16 +27,16 @@ $(() => {
   });
 
   $('#next').click(() => {
-    changeSong(next, null);
+    changeSong('next', null);
   });
 
   $('#prev').click(() => {
-    changeSong(prev, null);
+    changeSong('prev', null);
   });
 
   $('#playlist-wrapper').click((e) => {
     let listItem = e.target;
-    changeSong(select, listItem);
+    changeSong('select', listItem);
   });
 
   $('#progressBar').click((progbar) => {
@@ -160,18 +163,14 @@ function touchStarted() {
   }
 }
 
-//
-//Setup
 function setup(loadsong) {
   audio = myp5.loadSound(loadsong, success, error, progress);
   fft = new p5.FFT();
   amplitude = new p5.Amplitude();
-  peakDetect = new p5.PeakDetect(20,100);
+  peakDetect = new p5.PeakDetect(1500, 14000, .55);
   fft.setInput(audio);
   amplitude.setInput(audio);
 }
-
-
 
 
 //  Audio Controls
@@ -196,15 +195,15 @@ function changeSong(btn, listItem) {
   }
   audio.stop();
   audio.onended(pauseEndSong);
-  if (btn === next) {
+  if (btn === 'next') {
     currentIndex = Math.min(currentIndex + 1, urlList.length - 1);
     playCurrentSound();
   }
-  if (btn === prev) {
+  if (btn === 'prev') {
     currentIndex = Math.max(currentIndex - 1, 0);
     playCurrentSound();
   }
-  if (btn === select && listItem) {
+  if (btn === 'select' && listItem) {
     for (let i = 0; i < urlList.length; i++) {
       if (tracks[i].title === listItem.innerHTML) {
         currentIndex = i;
