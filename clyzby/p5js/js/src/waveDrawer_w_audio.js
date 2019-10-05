@@ -29,7 +29,7 @@ let s = (sketch) => {
 
   // keep all 'custom' code here
 
-  sketch.preload = (loadsong) => {
+  sketch.preload = (lodsong) => {
     sketch.objects = {};
     sketch.objects.lambo = myp5.loadModel('files/3d_obj/lp670.obj', true);
     sketch.objects.glock = myp5.loadModel('files/3d_obj/Glock 3d.obj', true);
@@ -37,12 +37,14 @@ let s = (sketch) => {
     // this is where each different "sketch" should change - this should be the only customizing
     // all future controllable objects should integrate via this
     // todo pass in these as arguments from another file?
-    centerWave = new CenterWave(sketch.windowWidth, sketch.windowHeight);
-    outerWaves = new OuterWaves(sketch.windowWidth, sketch.windowHeight);
-    threeDWave = new ThreeDWave(sketch.windowWidth, sketch.windowHeight);
+    // centerWave = new CenterWave(sketch.windowWidth, sketch.windowHeight);
+    // outerWaves = new OuterWaves(sketch.windowWidth, sketch.windowHeight);
+    // threeDWave = new ThreeDWave(sketch.windowWidth, sketch.windowHeight);
+    poseDetectionRegistration = new PoseDetector(sketch.windowWidth, sketch.windowHeight);
 
     sketch.ctrlElementsArray = [];
-    sketch.ctrlElementsArray.push(centerWave, outerWaves, threeDWave);
+    // sketch.ctrlElementsArray.push(centerWave, outerWaves, threeDWave, poseDetectionRegistration);
+    sketch.ctrlElementsArray.push( poseDetectionRegistration);
   };
 
 
@@ -66,6 +68,8 @@ let s = (sketch) => {
 
     // when everything is loaded open the control bar
     $("#settings-open").click();
+
+    p5setupPoseNet(sketch);
   };
 
 
