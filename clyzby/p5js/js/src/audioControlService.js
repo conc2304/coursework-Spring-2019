@@ -4,7 +4,7 @@ let autoPlayOn = false;
 let peakCount = 0;
 
 
-let freqBands5 = {
+const freqBands5 = {
   low: {
     optGroup: 'Low',
     ranges: [
@@ -37,7 +37,7 @@ let freqBands5 = {
   },
 };
 
-let freqBands10 = {
+const freqBands10 = {
   low: {
     optGroup: 'Low',
     ranges: [
@@ -75,7 +75,7 @@ let freqBands10 = {
   },
 };
 
-let freqBands31 = {
+const freqBands31 = {
   low: {
     optGroup: 'Low',
     ranges: [
@@ -325,6 +325,7 @@ let applyAudioEnergyValues = (energyValues) => {
   let audioValue;
 
   let ctrlHandlers = elementPropToFQMap;
+  // console.log(ctrlHandlers);
   for (let controlElementName in ctrlHandlers) {
     if (!ctrlHandlers.hasOwnProperty(controlElementName)) {
       continue;

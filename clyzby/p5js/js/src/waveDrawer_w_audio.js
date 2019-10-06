@@ -37,14 +37,16 @@ let s = (sketch) => {
     // this is where each different "sketch" should change - this should be the only customizing
     // all future controllable objects should integrate via this
     // todo pass in these as arguments from another file?
-    // centerWave = new CenterWave(sketch.windowWidth, sketch.windowHeight);
-    // outerWaves = new OuterWaves(sketch.windowWidth, sketch.windowHeight);
-    // threeDWave = new ThreeDWave(sketch.windowWidth, sketch.windowHeight);
+
+    centerWave = new CenterWave(sketch.windowWidth, sketch.windowHeight);
+    outerWaves = new OuterWaves(sketch.windowWidth, sketch.windowHeight);
+    threeDWave = new ThreeDWave(sketch.windowWidth, sketch.windowHeight);
     poseDetectionRegistration = new PoseDetector(sketch.windowWidth, sketch.windowHeight);
 
     sketch.ctrlElementsArray = [];
+
     // sketch.ctrlElementsArray.push(centerWave, outerWaves, threeDWave, poseDetectionRegistration);
-    sketch.ctrlElementsArray.push( poseDetectionRegistration);
+    sketch.ctrlElementsArray.push(poseDetectionRegistration, centerWave);
   };
 
 
@@ -123,6 +125,7 @@ let s = (sketch) => {
         continue;
       }
 
+      tempObj.easeInto();
       tempObj.render();
     }
   };

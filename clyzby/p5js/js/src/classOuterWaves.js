@@ -300,7 +300,6 @@ OuterWaves.prototype.calcWave = function () {
 OuterWaves.prototype.render = function () {
   "use strict";
 
-  this.easeInto();
   if (this.xSpacing.currentValue <= 0) {
     this.xSpacing.currentValue = this.xSpacing.min / 2;
   }
