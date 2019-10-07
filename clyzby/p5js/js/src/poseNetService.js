@@ -26,6 +26,8 @@ class PoseDetector {
         this.windowHeight = windowHeight;
         this.easeInto = easeInto;
         this.history = [];
+        this.colorRotate = true;
+
 
 
         this.radius = {
@@ -79,7 +81,66 @@ class PoseDetector {
             easingMin: 0,
         };
 
+        this.shape = {
+            displayLabel: 'Shape',
+            resetValue: 'ellipse',
+            defaultValue: 'ellipse',
+            currentValue: 'ellipse',
+            targetValue: null,
+            options: ['line', 'triangle', 'square', 'pentagon', 'ellipse'],
+            attrType: 'variable',
+            lockOn: false,
+        };
 
+        this.hue = {
+            displayLabel: 'Color',
+            resetValue: 100,
+            defaultValue: 100,
+            currentValue: 200,
+            targetValue: null,
+            min: 0,    // this can be edited by the user
+            defaultMin: 0,   //  this is the range within which the user can edit the min and max values
+            max: 360,    // this can be edited by the user
+            defaultMax: 360,   //  this is the range within which the user can edit the min and max values
+            attrType: 'numeric',
+            audio: {
+                responsiveType: 'add',
+                responsiveOptions: ['add', 'subtract'],
+                gain: 0.5,
+                fall: 1, // not sure what this will do yet
+            },
+            triggerSource: null,
+            lockOn: false,
+            easingValue: 0.1,
+            noteHeldEasing: 0.1,
+            easingMax: 0,
+            easingMin: 0,
+        };
+
+        this.saturation = {
+            displayLabel: 'Saturation',
+            resetValue: 100,
+            defaultValue: 100,
+            currentValue: 100,
+            targetValue: null,
+            min: 0,    // this can be edited by the user
+            defaultMin: 0,   //  this is the range within which the user can edit the min and max values
+            max: 100,    // this can be edited by the user
+            defaultMax: 100,   //  this is the range within which the user can edit the min and max values
+            attrType: 'numeric',
+            audio: {
+                responsiveType: 'add',
+                responsiveOptions: ['add', 'subtract'],
+                gain: 0.5,
+                fall: 1, // not sure what this will do yet
+            },
+            triggerSource: null,
+            lockOn: false,
+            easingValue: 0.1,
+            noteHeldEasing: 0.1,
+            easingMax: 0,
+            easingMin: 0,
+        };
 
 
         this.flipHorizintal = {
@@ -106,8 +167,8 @@ PoseDetector.prototype.render = function () {
 
 
     // We can call both functions to draw all keypoints and the skeletons
-    this.drawKeypoints();
     this.drawTrailers();
+    this.drawKeypoints();
 }
 
 
@@ -118,6 +179,8 @@ PoseDetector.prototype.drawKeypoints = function () {
         // For each pose detected, loop through all the keypoints
         let pose = poses[i].pose;
         this.history.unshift(pose);
+        myp5.noStroke();
+        myp5.fill(this.hue.currentValue, this.saturation.currentValue, 100);
         this.renderPose(pose);
     }
 }
@@ -143,38 +206,77 @@ PoseDetector.prototype.drawSkeleton = function () {
 PoseDetector.prototype.drawTrailers = function () {
 
     this.history = this.history.slice(0, this.trailLength.currentValue);
-
-    let opacity = 100;
     let historyLength = this.history.length;
+
     for (let i = 0; i < historyLength; i++) {
 
+        let percent = (historyLength - (i + 1)) / historyLength;
+        let rotationAmount = myp5.map(percent, 0, 1, 0, 100)
         let pose = this.history[i];
-        for (let j = 0; j < pose.keypoints.length; j++) {
-            // A keypoint is an object describing a body part (like rightArm or leftShoulder)
-            let keypoint = pose.keypoints[j];
-            // Only draw an ellipse is the pose probability is bigger than 0.2
-            if (keypoint.score > 0.2) {
-                myp5.noFill();
-                myp5.stroke(100, 360, 360);
-                myp5.ellipse(keypoint.position.x - this.windowWidth / 2, keypoint.position.y - this.windowHeight / 2, this.radius.currentValue, this.radius.currentValue);
-            }
-        }
+        let tempHue = this.hue.currentValue;
 
+
+        hue =  (this.colorRotate === true ) ? 
+            (tempHue + rotationAmount) % 360 : 
+            tempHue;
+
+        myp5.pop();
+        myp5.noFill();
+        myp5.stroke(hue, this.saturation.currentValue, rotationAmount);
+        this.renderPose(pose);
+        myp5.push();
     }
 }
 
 
 PoseDetector.prototype.renderPose = function (pose) {
-
     for (let j = 0; j < pose.keypoints.length; j++) {
         // A keypoint is an object describing a body part (like rightArm or leftShoulder)
         let keypoint = pose.keypoints[j];
-        // Only draw an ellipse is the pose probability is bigger than 0.2
         if (keypoint.score > 0.2) {
-            myp5.fill(100, 200, 100);
-            myp5.noStroke();
-            myp5.ellipse(keypoint.position.x - this.windowWidth / 2, keypoint.position.y - this.windowHeight / 2, this.radius.currentValue, this.radius.currentValue);
+            this.renderShape(keypoint.position.x - this.windowWidth / 2, keypoint.position.y - this.windowHeight / 2, this.radius.currentValue)
         }
     }
-
 }
+
+
+
+/**
+ * Renders a given shape along the the passed x and y positions.
+ * @param xPos
+ * @param yPos
+ * @param radius
+ */
+PoseDetector.prototype.renderShape = function (xPos, yPos, radius) {
+
+    let polygons = ['line', 'triangle', 'square', 'pentagon'];  // polygons we are allowing for set in the shape attribute
+
+    if (this.shape.currentValue === 'ellipse') {
+        myp5.ellipse(xPos, yPos, radius, radius);  // one above and one below
+    } else if (polygons.includes(this.shape.currentValue)) {
+        let sides;
+        switch (this.shape.currentValue) {
+            case 'line':
+                sides = 2;
+                break;
+            case 'triangle':
+                sides = 3;
+                break;
+            case 'square':
+                sides = 4;
+                break;
+            case 'pentagon':
+                sides = 5;
+                break;
+        }
+        myp5.push();
+        myp5.strokeWeight(3);
+        myp5.translate(xPos, yPos);
+        myp5.rotate(myp5.atan(myp5.frameCount / 50.0));
+        myp5.polygon(0, 0, radius, sides);
+        myp5.pop();
+
+    } else {
+        myp5.ellipse(xPos, yPos, radius, radius);  // one above and one below
+    }
+};
