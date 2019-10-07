@@ -24,8 +24,6 @@ let p5setupPoseNet = sketch => {
   initializeBoids(sketch.width, sketch.height);
 };
 
-
-
 class PoseDetector {
   constructor(windowWidth, windowHeight) {
     this.windowWidth = windowWidth;
@@ -148,26 +146,28 @@ class PoseDetector {
       easingMax: 0,
       easingMin: 0
     };
-
-
   }
 }
 
 PoseDetector.prototype.render = function() {
   this.easeInto();
-  if (flipHorizintal) {
-    myp5.scale(-1.0, 1.0);
-  }
+
   // myp5.image(video, - this.windowWidth / 2, -this.windowHeight / 2, this.windowWidth, this.windowHeight);
 
   // We can call both functions to draw all keypoints and the skeletons
 
   if (this.mode.currentValue === "Flocking") {
     flock.run();
-  } else {
-    this.drawTrailers();
+    //   } else {
+    // this.drawTrailers();
+    if (flipHorizintal) {
+      myp5.scale(-1.0, 1.0);
+    }
     this.drawKeypoints();
-    // this.drawSkeleton();
+    this.drawSkeleton();
+    if (flipHorizintal) {
+      myp5.scale(1.0, 1.0);
+    }
   }
 };
 
@@ -230,6 +230,8 @@ PoseDetector.prototype.renderPose = function(pose) {
     // A keypoint is an object describing a body part (like rightArm or leftShoulder)
     let keypoint = pose.keypoints[j];
     if (keypoint.score > 0.2) {
+      // console.log('render');
+      // console.log({x: keypoint.position.x - this.windowWidth / 2, y: keypoint.position.y - this.windowHeight / 2, part: keypoint.part});
       this.renderShape(
         keypoint.position.x - this.windowWidth / 2,
         keypoint.position.y - this.windowHeight / 2,
@@ -281,18 +283,14 @@ function initializeBoids(windowWidth, windowHeight) {
   flock = new Flock();
   // Add an initial set of boids into the system
   for (let i = 0; i < 100; i++) {
-    let b = new Boid(windowWidth , windowHeight);
+    let b = new Boid(windowWidth, windowHeight);
     flock.addBoid(b);
   }
 }
 
 // Add a new boid into the System
 function mouseDragged() {
-    console.log(myp5.mouseX + ', ' + myp5.mouseY);
-    console.log(myp5.width + ', ' + myp5.height);
-  flock.addBoid(
-    new Boid(myp5.mouseX - myp5.width , myp5.mouseY)
-  );
+  flock.addBoid(new Boid(myp5.mouseX - myp5.width, myp5.mouseY));
 }
 
 // The Nature of Code
@@ -326,13 +324,13 @@ function Boid(x, y) {
   this.acceleration = myp5.createVector(0, 0);
   this.velocity = myp5.createVector(myp5.random(-1, 1), myp5.random(-1, 1));
   if (flipHorizintal) {
-      this.position = myp5.createVector(-x, y);
+    this.position = myp5.createVector(-x, y);
   } else {
     this.position = myp5.createVector(x, y);
   }
   this.r = 3.0;
-  this.maxspeed = 3; // Maximum speed
-  this.maxforce = 0.05; // Maximum steering force
+  this.maxspeed = 15; // Maximum speed
+  this.maxforce = 1; // Maximum steering force
 }
 
 Boid.prototype.run = function(boids) {
@@ -376,8 +374,14 @@ Boid.prototype.update = function() {
 // A method that calculates and applies a steering force towards a target
 // STEER = DESIRED MINUS VELOCITY
 Boid.prototype.seek = function(target) {
-
-  let desired = p5.Vector.sub(target, this.position); // A vector pointing from the location to the target
+  let mouseX = flipHorizintal ? -myp5.mouseX : myp5.mouseX;
+  //   let nearestTarget = getNearestTartget(this.position);
+  //   console.log(nearestTarget);
+  //   let homingDirection = myp5.createVector(nearestTarget.x, nearestTarget.y);
+  console.log(-myp5.mouseX);
+  console.log(myp5.mouseX);
+  let homingDirection = myp5.createVector(myp5.mouseX, myp5.mouseY);
+  let desired = p5.Vector.sub(homingDirection, this.position); // A vector pointing from the location to the target
   // Normalize desired and scale to maximum speed
   desired.normalize();
   desired.mult(this.maxspeed);
@@ -392,6 +396,7 @@ Boid.prototype.render = function() {
   let theta = this.velocity.heading() + radians(90);
   myp5.fill(127);
   myp5.stroke(200);
+  myp5.strokeWeight(1);
   myp5.push();
   myp5.translate(
     this.position.x - myp5.width / 2,
@@ -400,8 +405,8 @@ Boid.prototype.render = function() {
   myp5.rotate(theta);
   myp5.beginShape();
   myp5.vertex(0, -this.r * 2);
-  myp5.vertex(-this.r, this.r * 2);
-  myp5.vertex(this.r, this.r * 2);
+  myp5.vertex(-this.r, this.r * 5);
+  myp5.vertex(this.r, this.r * 5);
   myp5.endShape(CLOSE);
   myp5.pop();
 };
@@ -494,3 +499,51 @@ Boid.prototype.cohesion = function(boids) {
     return myp5.createVector(0, 0);
   }
 };
+
+function getNearestTartget(seeker) {
+  let distance = null;
+  let position = { x: 0, y: 0 };
+
+  if (!poses || poses.length <= 0 || !poses[0].pose.keypoints) {
+    return position;
+  }
+  let keypoints = poses[0].pose.keypoints;
+
+  for (let i = 0; i < keypoints.length; i++) {
+    // A keypoint is an object describing a body part (like rightArm or leftShoulder)
+    let keypoint = keypoints[i];
+    if (keypoint.score < 0.2) {
+      continue;
+    }
+
+    keypoint.position.x -= this.windowWidth / 2;
+    keypoint.position.y -= this.windowHeight / 2;
+    nextDistance = getDistance(seeker, keypoint.position);
+
+    if (distance === null) {
+      currentDistance = nextDistance;
+      position = {
+        x: keypoint.position.x,
+        y: keypoint.position.y,
+        part: keypoint.part
+      };
+    }
+
+    if (currentDistance <= nextDistance) {
+      distance = currentDistance;
+      position = {
+        x: keypoint.position.x,
+        y: keypoint.position.y,
+        part: keypoint.part
+      };
+    }
+  }
+  return position;
+}
+
+function getDistance(p, q) {
+  let dx = p.x - q.x;
+  let dy = p.y - q.y;
+  let dist = Math.sqrt(dx * dx + dy * dy);
+  return dist;
+}
