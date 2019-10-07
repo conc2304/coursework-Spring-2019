@@ -33,9 +33,9 @@ class PoseDetector {
         this.radius = {
             displayLabel: 'Size',
             description: 'Sets the size of all of the 3D shapes.',
-            resetValue: 20,
-            defaultValue: 20,
-            currentValue: 20,
+            resetValue: 40,
+            defaultValue: 40,
+            currentValue: 40,
             targetValue: null,
             min: 20,   // this can be edited by the user
             defaultMin: 20,    // this is the range within which the user can edit the min and max values
@@ -169,6 +169,8 @@ PoseDetector.prototype.render = function () {
     // We can call both functions to draw all keypoints and the skeletons
     this.drawTrailers();
     this.drawKeypoints();
+    // this.drawSkeleton();
+    
 }
 
 
@@ -179,8 +181,9 @@ PoseDetector.prototype.drawKeypoints = function () {
         // For each pose detected, loop through all the keypoints
         let pose = poses[i].pose;
         this.history.unshift(pose);
-        myp5.noStroke();
-        myp5.fill(this.hue.currentValue, this.saturation.currentValue, 100);
+        myp5.noFill();
+        myp5.strokeWeight(3);
+        myp5.stroke(this.hue.currentValue, this.saturation.currentValue, 100);
         this.renderPose(pose);
     }
 }
@@ -195,7 +198,8 @@ PoseDetector.prototype.drawSkeleton = function () {
         for (let j = 0; j < skeleton.length; j++) {
             let partA = skeleton[j][0];
             let partB = skeleton[j][1];
-            myp5.stroke(100, 200, 100);
+            myp5.stroke(this.hue.currentValue, this.saturation.currentValue, 100);
+            myp5.strokeWeight(1);
             myp5.line(partA.position.x, partA.position.y, partB.position.x, partB.position.y);
         }
     }
@@ -222,6 +226,7 @@ PoseDetector.prototype.drawTrailers = function () {
 
         myp5.pop();
         myp5.noFill();
+        myp5.strokeWeight(3);
         myp5.stroke(hue, this.saturation.currentValue, rotationAmount);
         this.renderPose(pose);
         myp5.push();
@@ -269,12 +274,13 @@ PoseDetector.prototype.renderShape = function (xPos, yPos, radius) {
                 sides = 5;
                 break;
         }
-        myp5.push();
+        myp5.pop();        
         myp5.strokeWeight(3);
         myp5.translate(xPos, yPos);
         myp5.rotate(myp5.atan(myp5.frameCount / 50.0));
         myp5.polygon(0, 0, radius, sides);
-        myp5.pop();
+        myp5.push();
+
 
     } else {
         myp5.ellipse(xPos, yPos, radius, radius);  // one above and one below
