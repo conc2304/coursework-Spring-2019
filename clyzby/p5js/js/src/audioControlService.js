@@ -143,7 +143,8 @@ let backgroundStrobe = false;
  */
 let uploaded = (file) => {
   uploadLoading = true;
-  uploadedAudio = myp5.loadSound(file.data, uploadedAudioPlay);
+  setup(file.data);
+  buttonPlay.html("pause");
 };
 
 
