@@ -144,7 +144,14 @@ let backgroundStrobe = false;
 let uploaded = (file) => {
   uploadLoading = true;
   setup(file.data);
+
   buttonPlay.html("pause");
+  let track =  {
+    title: file.name,
+    permalink_url: ''
+  }
+  currentIndex = 0;
+  tracks.unshift(track);
 };
 
 
