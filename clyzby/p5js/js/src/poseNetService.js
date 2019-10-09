@@ -1,13 +1,10 @@
 let video;
 let poses = [];
 let poseDetectionRegistration;
-let flipHorizintal = true;
-
-const imageScaleFactor = 0.50;
-// const flipHorizontal = false;
-const outputStride = 16;
-
 let pose;
+
+// const partsToTrack = ['nose', 'rightWrist','rightElbow', 'leftElbow', 'leftWrist', 'rightAnkle', 'leftAnkle'];
+const partsToTrack = ['nose', 'rightWrist', 'leftWrist', 'rightAnkle', 'leftAnkle'];
 
 
 let p5setupPoseNet = sketch => {
@@ -34,7 +31,6 @@ let p5setupPoseNet = sketch => {
     poses = results;
     console
   });
-
 
   // Hide the video element, and just show the canvas
   video.hide();
@@ -177,31 +173,19 @@ class PoseDetector {
 }
 
 PoseDetector.prototype.render = function() {
-  // this.easeInto();
-
-  // myp5.image(video, - this.windowWidth / 2, -this.windowHeight / 2, this.windowWidth, this.windowHeight);
-
   // We can call both functions to draw all keypoints and the skeletons
-
-  // if (flipHorizintal) {
-  //   myp5.scale(-1.0, 1.0);
-  // }
 
   if (this.mode.currentValue === "Flocking") {
     flock.run();
   }
 
   if (this.mode.currentValue === "Triangulate") {
-    // createParticles(poses);
+    createParticle();
     renderParticleNet();
   }
 
   this.drawKeypoints();
   this.drawSkeleton();
-
-  // if (flipHorizintal) {
-  //   myp5.scale(1.0, 1.0);
-  // }
 };
 
 // A function to draw ellipses over the detected keypoints
@@ -560,7 +544,6 @@ function getNearestTartget(seeker) {
       continue;
     }
 
-    let partsToTrack = ['nose', 'rightWrist', ,'rightElbow', 'leftElbow', 'leftWrist', 'rightAnkle', 'leftAnkle'];
     if (!partsToTrack.includes(keypoint.part)) {
         continue;
     }
@@ -727,11 +710,24 @@ function renderParticleNet() {
 }
 
 
-function mouseDragged() {
-  allParticles.push(new Particle(mouseX, mouseY, maxLevel));
+function createParticle() {
+
+  for (let i = 0; i < poses.length; i++) {
+    let pose = poses[i].pose;
+
+    for (let j = 0; j < pose.keypoints.length; j++) {
+    // A keypoint is an object describing a body part (like rightArm or leftShoulder)
+      let keypoint = pose.keypoints[j];
+      if (keypoint.score > 0.2 && partsToTrack.includes(keypoint.part)) {
+        allParticles.push(new Particle(keypoint.position.x - this.windowWidth / 2, keypoint.position.y - this.windowHeight / 2, maxLevel));
+      }
+    }
+  }
 }
 
-
+// function mouseDragged() {
+  // allParticles.push(new Particle(mouseX, mouseY, maxLevel));
+// }
 
 
 function keyPressed() {
