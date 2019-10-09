@@ -3,8 +3,8 @@ let poses = [];
 let poseDetectionRegistration;
 let pose;
 
-// const partsToTrack = ['nose', 'rightWrist','rightElbow', 'leftElbow', 'leftWrist', 'rightAnkle', 'leftAnkle'];
-const partsToTrack = ['nose', 'rightWrist', 'leftWrist', 'rightAnkle', 'leftAnkle'];
+const partsToTrack = ['nose', 'rightWrist','rightElbow', 'leftElbow', 'leftWrist', 'rightAnkle', 'leftAnkle', 'leftHip', 'rightHip'];
+// const partsToTrack = ['nose', 'rightWrist', 'leftWrist', 'rightAnkle', 'leftAnkle'];
 
 
 let p5setupPoseNet = sketch => {
@@ -51,7 +51,7 @@ class PoseDetector {
       displayLabel: "Mode",
       resetValue: "Basic",
       defaultValue: "Basic",
-      currentValue: "Flocking",
+      currentValue: "Triangulate",
       targetValue: null,
       options: ["Basic", "Flocking", "Triangulate", ],
       attrType: "variable",
@@ -185,7 +185,7 @@ PoseDetector.prototype.render = function() {
   }
 
   this.drawKeypoints();
-  this.drawSkeleton();
+  // this.drawSkeleton();
 };
 
 // A function to draw ellipses over the detected keypoints
@@ -646,16 +646,16 @@ class Particle {
 
 function renderParticleNet() {
   // Create fade effect.
-  myp5.noStroke();
-  myp5.fill(0, 30);
-  myp5.rect(0, 0, width, height);
+  // myp5.noStroke();
+  // myp5.fill(0, 30);
+  // myp5.rect(0, 0, width, height);
   
   // Move and spawn particles.
   // Remove any that is below the velocity threshold.
   for (var i = allParticles.length-1; i > -1; i--) {
     allParticles[i].move();
     
-    if (allParticles[i].vel.mag() < 0.01) {
+    if (allParticles[i].vel.mag() < .5) {
       allParticles.splice(i, 1);
     }
   }
@@ -676,17 +676,18 @@ function renderParticleNet() {
       var p3 = allParticles[data[i+2]];
       
       // Don't draw triangle if its area is too big.
-      var distThresh = 75;
+      var distThreshMax = 300;
+      var distTreshMin = 20;
       
-      if (myp5.dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y) > distThresh) {
+      if (myp5.dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y) > distThreshMax || myp5.dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y) < distTreshMin) {
         continue;
       }
       
-      if (myp5.dist(p2.pos.x, p2.pos.y, p3.pos.x, p3.pos.y) > distThresh) {
+      if (myp5.dist(p2.pos.x, p2.pos.y, p3.pos.x, p3.pos.y) > distThreshMax || myp5.dist(p2.pos.x, p2.pos.y, p3.pos.x, p3.pos.y) < distTreshMin) {
         continue;
       }
       
-      if (myp5.dist(p1.pos.x, p1.pos.y, p3.pos.x, p3.pos.y) > distThresh) {
+      if (myp5.dist(p1.pos.x, p1.pos.y, p3.pos.x, p3.pos.y) > distThreshMax || myp5.dist(p1.pos.x, p1.pos.y, p3.pos.x, p3.pos.y) < distTreshMin) {
         continue;
       }
       
@@ -699,6 +700,7 @@ function renderParticleNet() {
         myp5.stroke(165+p1.life*1.5, 360, 360);
       }
       
+      myp5.strokeWeight(2)
       myp5.triangle(p1.pos.x, p1.pos.y, 
                p2.pos.x, p2.pos.y, 
                p3.pos.x, p3.pos.y);
@@ -718,6 +720,7 @@ function createParticle() {
     for (let j = 0; j < pose.keypoints.length; j++) {
     // A keypoint is an object describing a body part (like rightArm or leftShoulder)
       let keypoint = pose.keypoints[j];
+      // if (keypoint.score > 0.2 && ['nose', 'rightWrist', 'leftWrist'].includes(keypoint.part)) {
       if (keypoint.score > 0.2 && partsToTrack.includes(keypoint.part)) {
         allParticles.push(new Particle(keypoint.position.x - this.windowWidth / 2, keypoint.position.y - this.windowHeight / 2, maxLevel));
       }
@@ -725,9 +728,7 @@ function createParticle() {
   }
 }
 
-// function mouseDragged() {
-  // allParticles.push(new Particle(mouseX, mouseY, maxLevel));
-// }
+
 
 
 function keyPressed() {
