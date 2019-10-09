@@ -62,6 +62,15 @@
   right: 0;
 }
 
+#upload-file-icon{
+  position: absolute;
+  left: 0;;
+}
+
+input#upload-file {
+  display: none;
+}
+
 #ctrlObject-control-panel.audio-player-open {
   padding-bottom:425px;
 }
