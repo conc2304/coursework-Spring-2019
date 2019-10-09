@@ -1,23 +1,41 @@
 let video;
-let poseNet;
 let poses = [];
 let poseDetectionRegistration;
-
 let flipHorizintal = true;
 
-let flock;
+const imageScaleFactor = 0.50;
+// const flipHorizontal = false;
+const outputStride = 16;
+
+let pose;
+
 
 let p5setupPoseNet = sketch => {
   video = createCapture(sketch.VIDEO);
   video.size(sketch.width, sketch.height);
 
+  const ml5Options = {
+    imageScaleFactor: 0.2,
+    outputStride: 16,  // 8, 16, 32
+    flipHorizontal: true,
+    minConfidence: 0.5,
+    maxPoseDetections: 1,
+    scoreThreshold: 0.5,
+    nmsRadius: 20,
+    detectionType: 'single',
+    multiplier: 0.75,
+   }
+
   // Create a new poseNet method with a single detection
-  poseNet = ml5.poseNet(video);
+  const poseNet = ml5.poseNet(video, ml5Options, function() {console.log('ML5 Model Loaded')});
   // This sets up an event that fills the global variable "poses"
   // with an array every time new poses are detected
   poseNet.on("pose", function(results) {
     poses = results;
+    console
   });
+
+
   // Hide the video element, and just show the canvas
   video.hide();
 
@@ -31,8 +49,17 @@ class PoseDetector {
     this.easeInto = easeInto;
     this.history = [];
     this.colorRotate = true;
+
+
     this.mode = {
-      currentValue: "Flocking"
+      displayLabel: "Mode",
+      resetValue: "Basic",
+      defaultValue: "Basic",
+      currentValue: "Flocking",
+      targetValue: null,
+      options: ["Basic", "Flocking", "Triangulate", ],
+      attrType: "variable",
+      lockOn: false
     };
 
     this.radius = {
@@ -150,26 +177,31 @@ class PoseDetector {
 }
 
 PoseDetector.prototype.render = function() {
-  this.easeInto();
+  // this.easeInto();
 
   // myp5.image(video, - this.windowWidth / 2, -this.windowHeight / 2, this.windowWidth, this.windowHeight);
 
   // We can call both functions to draw all keypoints and the skeletons
 
-  if (this.mode.currentValue === "Flocking") {
-    //   } else {
-    // this.drawTrailers();
-    if (flipHorizintal) {
-      myp5.scale(-1.0, 1.0);
-    }
-    flock.run();
+  // if (flipHorizintal) {
+  //   myp5.scale(-1.0, 1.0);
+  // }
 
-    this.drawKeypoints();
-    this.drawSkeleton();
-    if (flipHorizintal) {
-      myp5.scale(1.0, 1.0);
-    }
+  if (this.mode.currentValue === "Flocking") {
+    flock.run();
   }
+
+  if (this.mode.currentValue === "Triangulate") {
+    // createParticles(poses);
+    renderParticleNet();
+  }
+
+  this.drawKeypoints();
+  this.drawSkeleton();
+
+  // if (flipHorizintal) {
+  //   myp5.scale(1.0, 1.0);
+  // }
 };
 
 // A function to draw ellipses over the detected keypoints
@@ -287,19 +319,8 @@ PoseDetector.prototype.renderShape = function(xPos, yPos, radius) {
   }
 };
 
-function initializeBoids(windowWidth, windowHeight) {
-  flock = new Flock();
-  // Add an initial set of boids into the system
-  for (let i = 0; i < 100; i++) {
-    let b = new Boid(windowWidth, windowHeight);
-    flock.addBoid(b);
-  }
-}
 
-// Add a new boid into the System
-function mouseDragged() {
-  flock.addBoid(new Boid(myp5.mouseX - myp5.width, myp5.mouseY));
-}
+
 
 // The Nature of Code
 // Daniel Shiffman
@@ -330,12 +351,12 @@ class Boid {
     constructor(x, y) {
         this.acceleration = myp5.createVector(0, 0);
         this.velocity = myp5.createVector(myp5.random(-1, 1), myp5.random(-1, 1));
-        if (flipHorizintal) {
-            this.position = myp5.createVector(-x, y);
-        }
-        else {
-            this.position = myp5.createVector(x, y);
-        }
+        // if (flipHorizintal) {
+            // this.position = myp5.createVector(-x, y);
+        // }
+        // else {
+        this.position = myp5.createVector(x, y);
+        // }
         this.r = 5;
         this.maxspeed = 12; // Maximum speed
         this.maxforce = .8; // Maximum steering force
@@ -500,7 +521,20 @@ class Boid {
 }
 
 
+let flock;
+function initializeBoids(windowWidth, windowHeight) {
+  flock = new Flock();
+  // Add an initial set of boids into the system
+  for (let i = 0; i < 100; i++) {
+    let b = new Boid(windowWidth, windowHeight);
+    flock.addBoid(b);
+  }
+}
 
+// Add a new boid into the System
+function mouseDragged() {
+  flock.addBoid(new Boid(myp5.mouseX - myp5.width, myp5.mouseY));
+}
 
 
 
@@ -526,7 +560,8 @@ function getNearestTartget(seeker) {
       continue;
     }
 
-    if (!['nose', 'rightWrist', 'leftWrist', 'rightAnkle', 'leftAnkle'].includes(keypoint.part)) {
+    let partsToTrack = ['nose', 'rightWrist', ,'rightElbow', 'leftElbow', 'leftWrist', 'rightAnkle', 'leftAnkle'];
+    if (!partsToTrack.includes(keypoint.part)) {
         continue;
     }
 
@@ -560,4 +595,145 @@ function getDistance(p, q) {
   let dy = p.y - q.y;
   let dist = Math.sqrt(dx * dx + dy * dy);
   return dist;
+}
+
+
+
+
+
+
+
+
+
+/*
+Frozen brush
+
+Makes use of a delaunay algorithm to create crystal-like shapes.
+I did NOT develop delaunay.js, and not sure who the author really is to give proper credit.
+
+Controls:
+	- Drag the mouse.
+    - Press any key to toggle between fill and stroke.
+
+Inspired by:
+	Makio135's sketch www.openprocessing.org/sketch/385808
+
+Author:
+  Jason Labbe
+
+Site:
+  jasonlabbe3d.com
+*/
+
+var allParticles = [];
+var maxLevel = 5;
+var useFill = false;
+
+var data = [];
+
+
+// Moves to a random direction and comes to a stop.
+// Spawns other particles within its lifetime.
+class Particle {
+  constructor(x, y, level) {
+    this.level = level;
+    this.life = 0;
+    this.pos = new p5.Vector(x, y);
+    this.vel = p5.Vector.random2D();
+    this.vel.mult(map(this.level, 0, maxLevel, 5, 2));
+    this.move = function () {
+      this.life++;
+      // Add friction.
+      this.vel.mult(0.9);
+      this.pos.add(this.vel);
+      // Spawn a new particle if conditions are met.
+      if (this.life % 10 == 0) {
+        if (this.level > 0) {
+          this.level -= 1;
+          var newParticle = new Particle(this.pos.x, this.pos.y, this.level - 1);
+          allParticles.push(newParticle);
+        }
+      }
+    };
+  }
+}
+
+
+
+
+function renderParticleNet() {
+  // Create fade effect.
+  myp5.noStroke();
+  myp5.fill(0, 30);
+  myp5.rect(0, 0, width, height);
+  
+  // Move and spawn particles.
+  // Remove any that is below the velocity threshold.
+  for (var i = allParticles.length-1; i > -1; i--) {
+    allParticles[i].move();
+    
+    if (allParticles[i].vel.mag() < 0.01) {
+      allParticles.splice(i, 1);
+    }
+  }
+  
+  if (allParticles.length > 0) {
+    // Run script to get points to create triangles with.
+    data = Delaunay.triangulate(allParticles.map(function(pt) {
+      return [pt.pos.x, pt.pos.y];
+    }));
+  	
+    myp5.strokeWeight(0.1);
+    
+    // Display triangles individually.
+    for (var i = 0; i < data.length; i += 3) {
+      // Collect particles that make this triangle.
+      var p1 = allParticles[data[i]];
+      var p2 = allParticles[data[i+1]];
+      var p3 = allParticles[data[i+2]];
+      
+      // Don't draw triangle if its area is too big.
+      var distThresh = 75;
+      
+      if (myp5.dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y) > distThresh) {
+        continue;
+      }
+      
+      if (myp5.dist(p2.pos.x, p2.pos.y, p3.pos.x, p3.pos.y) > distThresh) {
+        continue;
+      }
+      
+      if (myp5.dist(p1.pos.x, p1.pos.y, p3.pos.x, p3.pos.y) > distThresh) {
+        continue;
+      }
+      
+      // Base its hue by the particle's life.
+      if (useFill) {
+        myp5.noStroke();
+        myp5.fill(165+p1.life*1.5, 360, 360);
+      } else {
+        myp5.noFill();
+        myp5.stroke(165+p1.life*1.5, 360, 360);
+      }
+      
+      myp5.triangle(p1.pos.x, p1.pos.y, 
+               p2.pos.x, p2.pos.y, 
+               p3.pos.x, p3.pos.y);
+    }
+  }
+  
+  myp5.noStroke();
+  myp5.fill(255);
+}
+
+
+function mouseDragged() {
+  allParticles.push(new Particle(mouseX, mouseY, maxLevel));
+}
+
+
+
+
+function keyPressed() {
+  useFill = ! useFill;
 }
