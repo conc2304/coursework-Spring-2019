@@ -3,7 +3,17 @@ let poses = [];
 let poseDetectionRegistration;
 let pose;
 
-const partsToTrack = ['nose', 'rightWrist','rightElbow', 'leftElbow', 'leftWrist', 'rightAnkle', 'leftAnkle', 'leftHip', 'rightHip'];
+const partsToTrack = [
+  "nose",
+  "leftElbow",
+  "rightElbow",
+  "rightWrist",
+  "leftWrist",
+  "rightAnkle",
+  "leftAnkle",
+  "leftHip",
+  "rightHip"
+];
 // const partsToTrack = ['nose', 'rightWrist', 'leftWrist', 'rightAnkle', 'leftAnkle'];
 
 
