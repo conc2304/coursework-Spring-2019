@@ -14,7 +14,6 @@ const partsToTrack = [
   "leftHip",
   "rightHip"
 ];
-// const partsToTrack = ['nose', 'rightWrist', 'leftWrist', 'rightAnkle', 'leftAnkle'];
 
 
 let p5setupPoseNet = sketch => {
@@ -39,7 +38,6 @@ let p5setupPoseNet = sketch => {
   // with an array every time new poses are detected
   poseNet.on("pose", function(results) {
     poses = results;
-    console
   });
 
   // Hide the video element, and just show the canvas
@@ -61,7 +59,7 @@ class PoseDetector {
       displayLabel: "Mode",
       resetValue: "Basic",
       defaultValue: "Basic",
-      currentValue: "Triangulate",
+      currentValue: "Flocking",
       targetValue: null,
       options: ["Basic", "Flocking", "Triangulate", ],
       attrType: "variable",
@@ -119,6 +117,109 @@ class PoseDetector {
       easingMin: 0
     };
 
+    this.boidAlignDist = {
+      displayLabel: "Boid Align Dist",
+      resetValue: 50,
+      defaultValue: 50,
+      currentValue: 50,
+      targetValue: null,
+      min: 0, // this can be edited by the user
+      defaultMin: 0, //  this is the range within which the user can edit the min and max values
+      max: 100, // this can be edited by the user
+      defaultMax: 100, //  this is the range within which the user can edit the min and max values
+      attrType: "numeric",
+      audio: {
+        responsiveType: "add",
+        responsiveOptions: ["add", "subtract"],
+        gain: 0.5,
+        fall: 1 // not sure what this will do yet
+      },
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.7,
+      noteHeldEasing: 0.1,
+      easingMax: 0,
+      easingMin: 0
+    };
+
+    this.boidCohesionDist = {
+      displayLabel: "Boid Cohesion Dist",
+      resetValue: 50,
+      defaultValue: 50,
+      currentValue: 50,
+      targetValue: null,
+      min: 0, // this can be edited by the user
+      defaultMin: 0, //  this is the range within which the user can edit the min and max values
+      max: 100, // this can be edited by the user
+      defaultMax: 100, //  this is the range within which the user can edit the min and max values
+      attrType: "numeric",
+      audio: {
+        responsiveType: "add",
+        responsiveOptions: ["add", "subtract"],
+        gain: 0.5,
+        fall: 1 // not sure what this will do yet
+      },
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.7,
+      noteHeldEasing: 0.1,
+      easingMax: 0,
+      easingMin: 0
+    };
+
+
+    this.maxBoidSpeed = {
+      displayLabel: "Boid Speed",
+      resetValue: 8,
+      defaultValue: 8,
+      currentValue: 8,
+      targetValue: null,
+      min: 1, // this can be edited by the user
+      defaultMin: 1, //  this is the range within which the user can edit the min and max values
+      max: 20, // this can be edited by the user
+      defaultMax: 20, //  this is the range within which the user can edit the min and max values
+      attrType: "numeric",
+      audio: {
+        responsiveType: "add",
+        responsiveOptions: ["add", "subtract"],
+        gain: 0.5,
+        fall: 1 // not sure what this will do yet
+      },
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.7,
+      noteHeldEasing: 0.1,
+      easingMax: 0,
+      easingMin: 0
+    };
+
+    this.maxBoidForce = {
+      displayLabel: "Boid Turning Force",
+      resetValue: 0.8,
+      defaultValue: 0.8,
+      currentValue: 0.8,
+      targetValue: null,
+      min: 0.01, // this can be edited by the user
+      defaultMin: 0.01, //  this is the range within which the user can edit the min and max values
+      max: 5, // this can be edited by the user
+      defaultMax: 5, //  this is the range within which the user can edit the min and max values
+      attrType: "numeric",
+      audio: {
+        responsiveType: "add",
+        responsiveOptions: ["add", "subtract"],
+        gain: 0.5,
+        fall: 1 // not sure what this will do yet
+      },
+      triggerSource: null,
+      lockOn: false,
+      easingValue: 0.7,
+      noteHeldEasing: 0.1,
+      easingMax: 0,
+      easingMin: 0
+    };
+
+
+
     this.shape = {
       displayLabel: "Shape",
       resetValue: "ellipse",
@@ -129,6 +230,11 @@ class PoseDetector {
       attrType: "variable",
       lockOn: false
     };
+
+
+
+
+
 
     this.hue = {
       displayLabel: "Color",
@@ -343,7 +449,7 @@ class Flock {
 // Methods for Separation, Cohesion, Alignment added
 class Boid {
     constructor(x, y) {
-        this.acceleration = myp5.createVector(0, 0);
+        this.acceleration = myp5.createVector(myp5.windowWidth / 2, myp5.windowHeight / 2);
         this.velocity = myp5.createVector(myp5.random(-1, 1), myp5.random(-1, 1));
         // if (flipHorizintal) {
             // this.position = myp5.createVector(-x, y);
@@ -352,8 +458,8 @@ class Boid {
         this.position = myp5.createVector(x, y);
         // }
         this.r = 5;
-        this.maxspeed = 12; // Maximum speed
-        this.maxforce = .8; // Maximum steering force
+        this.maxspeed = poseDetectionRegistration.maxBoidSpeed.defaultValue; // Maximum speed
+        this.maxforce = poseDetectionRegistration.maxBoidForce.defaultValue; // Maximum steering force
     }
     run(boids) {
         this.flock(boids);
@@ -384,7 +490,7 @@ class Boid {
         // Update velocity
         this.velocity.add(this.acceleration);
         // Limit speed
-        this.velocity.limit(this.maxspeed);
+        this.velocity.limit(poseDetectionRegistration.maxBoidSpeed.currentValue);
         this.position.add(this.velocity);
         // Reset accelertion to 0 each cycle
         this.acceleration.mult(0);
@@ -400,17 +506,18 @@ class Boid {
         let desired = p5.Vector.sub(homingDirection, this.position); // A vector pointing from the location to the target
         // Normalize desired and scale to maximum speed
         desired.normalize();
-        desired.mult(this.maxspeed);
+        desired.mult(poseDetectionRegistration.maxBoidSpeed.currentValue);
         // Steering = Desired minus Velocity
         let steer = p5.Vector.sub(desired, this.velocity);
-        steer.limit(this.maxforce); // Limit to maximum steering force
+        steer.limit(poseDetectionRegistration.maxBoidForce.currentValue); // Limit to maximum steering force
         return steer;
     }
     renderBoid() {
         // Draw a triangle rotated in the direction of velocity
         let theta = this.velocity.heading() + radians(90);
+        this.r = myp5.map(poseDetectionRegistration.radius.currentValue, poseDetectionRegistration.radius.min, poseDetectionRegistration.radius.max, 2, 15);
         myp5.noFill();
-        myp5.stroke(200, 200, 200);
+        myp5.stroke(poseDetectionRegistration.hue.currentValue, poseDetectionRegistration.saturation.currentValue, 200);
         myp5.strokeWeight(2);
         myp5.push();
         myp5.translate(this.position.x - myp5.width / 2, this.position.y - myp5.height / 2);
@@ -436,7 +543,8 @@ class Boid {
     // Separation
     // Method checks for nearby boids and steers away
     separateBoids(boids) {
-        let desiredseparation = 25.0;
+        let desiredseparation = myp5.map(poseDetectionRegistration.trailLength.currentValue, poseDetectionRegistration.trailLength.min, poseDetectionRegistration.trailLength.max, 0, 40);
+        // let desiredseparation = 25.0;
         let steer = myp5.createVector(0, 0);
         let count = 0;
         // For every boid in the system, check if it's too close
@@ -460,16 +568,17 @@ class Boid {
         if (steer.mag() > 0) {
             // Implement Reynolds: Steering = Desired - Velocity
             steer.normalize();
-            steer.mult(this.maxspeed);
+            steer.mult(poseDetectionRegistration.maxBoidSpeed.currentValue);
             steer.sub(this.velocity);
-            steer.limit(this.maxforce);
+            steer.limit(poseDetectionRegistration.maxBoidForce.currentValue);
         }
         return steer;
     }
     // Alignment
     // For every nearby boid in the system, calculate the average velocity
     alignBoids(boids) {
-        let neighbordist = 50;
+        let neighbordist = myp5.map(poseDetectionRegistration.boidAlignDist.currentValue, poseDetectionRegistration.boidAlignDist.min, poseDetectionRegistration.boidAlignDist.max, 0, 100);
+
         let sum = createVector(0, 0);
         let count = 0;
         for (let i = 0; i < boids.length; i++) {
@@ -482,9 +591,9 @@ class Boid {
         if (count > 0) {
             sum.div(count);
             sum.normalize();
-            sum.mult(this.maxspeed);
+            sum.mult(poseDetectionRegistration.maxBoidSpeed.currentValue);
             let steer = p5.Vector.sub(sum, this.velocity);
-            steer.limit(this.maxforce);
+            steer.limit(poseDetectionRegistration.maxBoidForce.currentValue);
             return steer;
         }
         else {
@@ -494,8 +603,8 @@ class Boid {
     // Cohesion
     // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
     boidCohesion(boids) {
-        let neighbordist = 50;
-        let sum = myp5.createVector(0, 0); // Start with empty vector to accumulate all locations
+      let neighbordist = myp5.map(poseDetectionRegistration.boidCohesionDist.currentValue, poseDetectionRegistration.boidCohesionDist.min, poseDetectionRegistration.boidCohesionDist.max, 0, 100);
+      let sum = myp5.createVector(0, 0); // Start with empty vector to accumulate all locations
         let count = 0;
         for (let i = 0; i < boids.length; i++) {
             let d = p5.Vector.dist(this.position, boids[i].position);
@@ -558,7 +667,30 @@ function getNearestTartget(seeker) {
         continue;
     }
 
+    let part = keypoint.part.toLowerCase();
+    let gravity = 0;
+
+    // have a graviational preference to these body parts
+    if (part.includes('wrist')) {
+      gravity = 0.4;
+    }
+    else if (part.includes('ankle')) {
+      gravity = 0.3;
+    }
+    else if (part.includes('elbow')) {
+      gravity = 0.1;
+    }
+    else if (part.includes('nose')) {
+      gravity = 0.1;
+    }
+    else if (part.includes('hip')) {
+      gravity = 0.05;
+    }
+
+
+
     nextDistance = getDistance(seeker, keypoint.position);
+    nextDistance = nextDistance * (nextDistance/gravity);
 
     if (distance === null) {
       currentDistance = nextDistance;
@@ -676,7 +808,7 @@ function renderParticleNet() {
       return [pt.pos.x, pt.pos.y];
     }));
   	
-    myp5.strokeWeight(0.1);
+    myp5.strokeWeight(0.5);
     
     // Display triangles individually.
     for (var i = 0; i < data.length; i += 3) {
@@ -702,12 +834,13 @@ function renderParticleNet() {
       }
       
       // Base its hue by the particle's life.
+      let color = poseDetectionRegistration.hue.currentValue;
       if (useFill) {
         myp5.noStroke();
-        myp5.fill(165+p1.life*1.5, 360, 360);
+        myp5.fill(color + p1.life * 1.5, 360, 360);
       } else {
         myp5.noFill();
-        myp5.stroke(165+p1.life*1.5, 360, 360);
+        myp5.stroke(color + p1.life * 1.5, 360, 360);
       }
       
       myp5.strokeWeight(2)
@@ -730,7 +863,6 @@ function createParticle() {
     for (let j = 0; j < pose.keypoints.length; j++) {
     // A keypoint is an object describing a body part (like rightArm or leftShoulder)
       let keypoint = pose.keypoints[j];
-      // if (keypoint.score > 0.2 && ['nose', 'rightWrist', 'leftWrist'].includes(keypoint.part)) {
       if (keypoint.score > 0.2 && partsToTrack.includes(keypoint.part)) {
         allParticles.push(new Particle(keypoint.position.x - this.windowWidth / 2, keypoint.position.y - this.windowHeight / 2, maxLevel));
       }
