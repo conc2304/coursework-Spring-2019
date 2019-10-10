@@ -59,9 +59,9 @@ class PoseDetector {
       displayLabel: "Mode",
       resetValue: "Basic",
       defaultValue: "Basic",
-      currentValue: "Flocking",
+      currentValue: "Triangulate",
       targetValue: null,
-      options: ["Basic", "Flocking", "Triangulate", ],
+      options: ["Basic", "Flocking", "Triangulate", "Shaper"],
       attrType: "variable",
       lockOn: false
     };
@@ -300,9 +300,15 @@ PoseDetector.prototype.render = function() {
     renderParticleNet();
   }
 
+  if (this.mode.currentValue === "Shaper") {
+    this.renderShaper();
+  }
+
   this.drawKeypoints();
   // this.drawSkeleton();
 };
+
+
 
 // A function to draw ellipses over the detected keypoints
 PoseDetector.prototype.drawKeypoints = function() {
@@ -335,7 +341,8 @@ PoseDetector.prototype.drawSkeleton = function() {
       let partA = skeleton[j][0];
       let partB = skeleton[j][1];
       myp5.stroke(this.hue.currentValue, this.saturation.currentValue, 100);
-      myp5.strokeWeight(1);
+      myp5.stroke(0, this.saturation.currentValue, 100);
+      myp5.strokeWeight(8);
       myp5.line(
         partA.position.x,
         partA.position.y,
@@ -345,6 +352,18 @@ PoseDetector.prototype.drawSkeleton = function() {
     }
   }
 };
+
+PoseDetector.prototype.renderShaper = function() {
+  for (let i = 0; i < poses.length; i++) {
+    // For each pose detected, loop through all the keypoints
+    let pose = poses[i].pose;
+    this.history.unshift(pose);
+    myp5.noFill();
+    myp5.strokeWeight(3);
+    myp5.stroke(this.hue.currentValue, this.saturation.currentValue, 100);
+    this.renderShaperPose(pose);
+  }
+}
 
 PoseDetector.prototype.drawTrailers = function() {
   this.history = this.history.slice(0, this.trailLength.currentValue);
@@ -365,6 +384,38 @@ PoseDetector.prototype.drawTrailers = function() {
     this.renderPose(pose);
   }
 };
+
+PoseDetector.prototype.renderShaperPose = function(pose) {
+
+  myp5.noFill();
+  myp5.strokeWeight(5);
+  myp5.beginShape();
+  let first = null;
+  for (let j = 0; j < pose.keypoints.length; j++) {
+    // A keypoint is an object describing a body part (like rightArm or leftShoulder)
+    let keypoint = pose.keypoints[j];
+
+    if (keypoint.score < 0.2) {
+      continue;
+    }
+
+    // if (!partsToTrack.includes(keypoint.part) || keypoint.part.toLowerCase() === 'nose') {
+    //   continue;
+    // }
+
+    if (first === null) {
+      first = j;
+    }
+       
+    myp5.curveVertex(keypoint.position.x - this.windowWidth / 2, keypoint.position.y - this.windowHeight / 2);
+  }
+  if (first && pose.keypoints) {
+    // myp5.curveVertex(pose.keypoints[first].position.x - this.windowWidth / 2, pose.keypoints[first].position.y - this.windowHeight / 2);
+  }
+  myp5.endShape(CLOSE);
+  myp5.noStroke();
+
+}
 
 PoseDetector.prototype.renderPose = function(pose) {
   for (let j = 0; j < pose.keypoints.length; j++) {
