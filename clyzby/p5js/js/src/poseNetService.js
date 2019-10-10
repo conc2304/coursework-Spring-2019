@@ -434,7 +434,7 @@ class Flock {
   }
   run() {
     for (let i = 0; i < this.boids.length; i++) {
-      this.boids[i].run(this.boids); // Passing the entire list of boids to each boid individually
+      this.boids[i].run(this.boids, i); // Passing the entire list of boids to each boid individually
     }
   }
   addBoid(b) {
@@ -461,11 +461,11 @@ class Boid {
         this.maxspeed = poseDetectionRegistration.maxBoidSpeed.defaultValue; // Maximum speed
         this.maxforce = poseDetectionRegistration.maxBoidForce.defaultValue; // Maximum steering force
     }
-    run(boids) {
+    run(boids, i) {
         this.flock(boids);
         this.updateBoid();
         this.boidBorders();
-        this.renderBoid();
+        this.renderBoid(i);
     }
     applyForce(force) {
         // We could add mass here if we want A = F / M
@@ -512,10 +512,11 @@ class Boid {
         steer.limit(poseDetectionRegistration.maxBoidForce.currentValue); // Limit to maximum steering force
         return steer;
     }
-    renderBoid() {
+    renderBoid(i) {
         // Draw a triangle rotated in the direction of velocity
         let theta = this.velocity.heading() + radians(90);
         this.r = myp5.map(poseDetectionRegistration.radius.currentValue, poseDetectionRegistration.radius.min, poseDetectionRegistration.radius.max, 2, 15);
+        this.r = this.r * (1 + myp5.noise((5 * i) + myp5.frameCount * 0.009 ));
         myp5.noFill();
         myp5.stroke(poseDetectionRegistration.hue.currentValue, poseDetectionRegistration.saturation.currentValue, 200);
         myp5.strokeWeight(2);
