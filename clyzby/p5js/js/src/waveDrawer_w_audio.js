@@ -41,12 +41,12 @@ let s = (sketch) => {
     centerWave = new CenterWave(sketch.windowWidth, sketch.windowHeight);
     outerWaves = new OuterWaves(sketch.windowWidth, sketch.windowHeight);
     threeDWave = new ThreeDWave(sketch.windowWidth, sketch.windowHeight);
-    poseDetectionRegistration = new PoseDetector(sketch.windowWidth, sketch.windowHeight);
+    poseInstance = new PoseDetector(sketch.windowWidth, sketch.windowHeight);
 
     sketch.ctrlElementsArray = [];
 
     // sketch.ctrlElementsArray.push(centerWave, outerWaves, threeDWave, poseDetectionRegistration);
-    sketch.ctrlElementsArray.push(poseDetectionRegistration, centerWave);
+    sketch.ctrlElementsArray.push(poseInstance, centerWave);
   };
 
 
