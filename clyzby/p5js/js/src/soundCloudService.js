@@ -13,15 +13,14 @@ let fft;
 
 let CLIENT_ID = 'NmW1FlPaiL94ueEu7oziOWjYEzZzQDcK';
 
-let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/safe-bass';
+// let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/safe-bass';
 // let PLAYLIST_URL = 'https://soundcloud.com/clyzby/sets/depth';
 
-// let PLAYLIST_URL = 'https://soundcloud.com/hollyherndon/sets/movement-53';
+let PLAYLIST_URL = 'https://soundcloud.com/hollyherndon/sets/movement-53';
 
 
 $(() => {
-
-
+  
   $('#play').click(() => {
     playCurrentSound();
   });

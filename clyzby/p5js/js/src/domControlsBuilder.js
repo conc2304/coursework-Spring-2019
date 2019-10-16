@@ -186,13 +186,16 @@ let addMasterElementControls = (ctrlElem, parent) => {
   // parent should be icon wrapper
   let iconWrapper = document.createElement('div');
   console.log(ctrlElemName);
+  
   $(iconWrapper).addClass('icon-wrapper')
     .appendTo(parent);
 
 
+  let visStatus = (ctrlElem.bypass) ? 'visibility_off' : 'visibility';
+
   let icons = [
     {
-      htmlIcon: 'visibility',
+      htmlIcon: visStatus,
       title: 'Visibility',
       onclick: `toggleVisibility('${ctrlElemName}', this)`,
       helper: 'Toggles whether this element is visible or not.',
@@ -221,6 +224,8 @@ let addMasterElementControls = (ctrlElem, parent) => {
     if (!icons.hasOwnProperty(i)) {
       continue;
     }
+
+    
     let icon = document.createElement('i');
     $(icon).addClass('material-icons md-light helper')
       .html(icons[i].htmlIcon)
@@ -228,6 +233,10 @@ let addMasterElementControls = (ctrlElem, parent) => {
       .data('helper', icons[i].helper)
       .attr('onclick', icons[i].onclick)
       .appendTo(iconWrapper);
+
+    if (icons[i].title === 'Visibility' && visStatus === 'visibility_off') {
+      $(icon).addClass('inactive');
+    }
   }
 };
 

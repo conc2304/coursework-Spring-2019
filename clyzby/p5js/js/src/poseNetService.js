@@ -43,6 +43,7 @@ class PoseDetector {
     this.easeInto = easeInto;
     this.history = [];
     this.colorRotate = true;
+    this.bypass = true;
 
 
     this.mode = {
@@ -134,9 +135,9 @@ class PoseDetector {
 
     this.shape = {
       displayLabel: "Keypoint Shape",
-      resetValue: "ellipse",
-      defaultValue: "ellipse",
-      currentValue: "ellipse",
+      resetValue: "off",
+      defaultValue: "off",
+      currentValue: "off",
       targetValue: null,
       options: ["off", "line", "triangle", "square", "pentagon", "ellipse"],
       attrType: "variable",
@@ -586,27 +587,6 @@ function getNearestTartget(seeker) {
       continue;
     }
 
-    let gravity = 0;
-    if (keypoint.part.includes('Wrist')) {
-      gravity = 0.6;
-    }
-    else if (keypoint.part.includes('Elbow')) {
-      gravity = 0.4;
-    }
-    else if (keypoint.part.includes('Ankle')) {
-      gravity = 0.4;
-    }
-    else if (keypoint.part.includes('hip')) {
-      gravity = 0.3;
-    }
-    else if (keypoint.part.includes('hip')) {
-      gravity = 0.2;
-    }
-    else if (keypoint.part.includes('nose')) {
-      gravity = .1;
-    }
-
-
     let part = keypoint.part.toLowerCase();
     let gravity = 0;
 
@@ -765,7 +745,6 @@ function renderParticleNet() {
       }
 
       // Base its hue by the particle's life.
-      let color = poseDetectionRegistration.hue.currentValue;
       if (useFill) {
         myp5.noStroke();
         myp5.fill(poseInstance.hue.currentValue + p1.life * 1.5, poseInstance.saturation.currentValue, 360);

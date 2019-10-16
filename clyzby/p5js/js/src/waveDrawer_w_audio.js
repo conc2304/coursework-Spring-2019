@@ -45,8 +45,8 @@ let s = (sketch) => {
 
     sketch.ctrlElementsArray = [];
 
-    // sketch.ctrlElementsArray.push(centerWave, outerWaves, threeDWave, poseDetectionRegistration);
-    sketch.ctrlElementsArray.push(poseInstance, centerWave);
+    sketch.ctrlElementsArray.push(centerWave, outerWaves, threeDWave, poseInstance);
+    // sketch.ctrlElementsArray.push(poseInstance, centerWave);
   };
 
 
