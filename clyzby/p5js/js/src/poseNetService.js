@@ -1,19 +1,9 @@
 let video;
 let poses = [];
-let poseDetectionRegistration;
+let poseInstance;
 let pose;
 
-const partsToTrack = [
-  "nose",
-  "leftElbow",
-  "rightElbow",
-  "rightWrist",
-  "leftWrist",
-  "rightAnkle",
-  "leftAnkle",
-  "leftHip",
-  "rightHip"
-];
+const partsToTrack = ['nose', 'rightWrist', 'rightElbow', 'leftElbow', 'leftWrist', 'rightAnkle', 'leftAnkle', 'leftHip', 'rightHip'];
 
 
 let p5setupPoseNet = sketch => {
@@ -30,13 +20,13 @@ let p5setupPoseNet = sketch => {
     nmsRadius: 20,
     detectionType: 'single',
     multiplier: 0.75,
-   }
+  }
 
   // Create a new poseNet method with a single detection
-  const poseNet = ml5.poseNet(video, ml5Options, function() {console.log('ML5 Model Loaded')});
+  const poseNet = ml5.poseNet(video, ml5Options, function () { console.log('ML5 Model Loaded') });
   // This sets up an event that fills the global variable "poses"
   // with an array every time new poses are detected
-  poseNet.on("pose", function(results) {
+  poseNet.on("pose", function (results) {
     poses = results;
   });
 
@@ -57,11 +47,11 @@ class PoseDetector {
 
     this.mode = {
       displayLabel: "Mode",
-      resetValue: "Basic",
-      defaultValue: "Basic",
+      resetValue: "Triangulate",
+      defaultValue: "Triangulate",
       currentValue: "Triangulate",
       targetValue: null,
-      options: ["Basic", "Flocking", "Triangulate", "Shaper"],
+      options: ["Flocking", "Triangulate",],
       attrType: "variable",
       lockOn: false
     };
@@ -117,67 +107,16 @@ class PoseDetector {
       easingMin: 0
     };
 
-    this.boidAlignDist = {
-      displayLabel: "Boid Align Dist",
-      resetValue: 50,
-      defaultValue: 50,
-      currentValue: 50,
-      targetValue: null,
-      min: 0, // this can be edited by the user
-      defaultMin: 0, //  this is the range within which the user can edit the min and max values
-      max: 100, // this can be edited by the user
-      defaultMax: 100, //  this is the range within which the user can edit the min and max values
-      attrType: "numeric",
-      audio: {
-        responsiveType: "add",
-        responsiveOptions: ["add", "subtract"],
-        gain: 0.5,
-        fall: 1 // not sure what this will do yet
-      },
-      triggerSource: null,
-      lockOn: false,
-      easingValue: 0.7,
-      noteHeldEasing: 0.1,
-      easingMax: 0,
-      easingMin: 0
-    };
-
-    this.boidCohesionDist = {
-      displayLabel: "Boid Cohesion Dist",
-      resetValue: 50,
-      defaultValue: 50,
-      currentValue: 50,
-      targetValue: null,
-      min: 0, // this can be edited by the user
-      defaultMin: 0, //  this is the range within which the user can edit the min and max values
-      max: 100, // this can be edited by the user
-      defaultMax: 100, //  this is the range within which the user can edit the min and max values
-      attrType: "numeric",
-      audio: {
-        responsiveType: "add",
-        responsiveOptions: ["add", "subtract"],
-        gain: 0.5,
-        fall: 1 // not sure what this will do yet
-      },
-      triggerSource: null,
-      lockOn: false,
-      easingValue: 0.7,
-      noteHeldEasing: 0.1,
-      easingMax: 0,
-      easingMin: 0
-    };
-
-
-    this.maxBoidSpeed = {
-      displayLabel: "Boid Speed",
+    this.magnitude = {
+      displayLabel: "Magnitude",
       resetValue: 8,
       defaultValue: 8,
       currentValue: 8,
       targetValue: null,
-      min: 1, // this can be edited by the user
-      defaultMin: 1, //  this is the range within which the user can edit the min and max values
-      max: 20, // this can be edited by the user
-      defaultMax: 20, //  this is the range within which the user can edit the min and max values
+      min: 3, // this can be edited by the user
+      defaultMin: 3, //  this is the range within which the user can edit the min and max values
+      max: 14, // this can be edited by the user
+      defaultMax: 14, //  this is the range within which the user can edit the min and max values
       attrType: "numeric",
       audio: {
         responsiveType: "add",
@@ -192,49 +131,17 @@ class PoseDetector {
       easingMax: 0,
       easingMin: 0
     };
-
-    this.maxBoidForce = {
-      displayLabel: "Boid Turning Force",
-      resetValue: 0.8,
-      defaultValue: 0.8,
-      currentValue: 0.8,
-      targetValue: null,
-      min: 0.01, // this can be edited by the user
-      defaultMin: 0.01, //  this is the range within which the user can edit the min and max values
-      max: 5, // this can be edited by the user
-      defaultMax: 5, //  this is the range within which the user can edit the min and max values
-      attrType: "numeric",
-      audio: {
-        responsiveType: "add",
-        responsiveOptions: ["add", "subtract"],
-        gain: 0.5,
-        fall: 1 // not sure what this will do yet
-      },
-      triggerSource: null,
-      lockOn: false,
-      easingValue: 0.7,
-      noteHeldEasing: 0.1,
-      easingMax: 0,
-      easingMin: 0
-    };
-
-
 
     this.shape = {
-      displayLabel: "Shape",
+      displayLabel: "Keypoint Shape",
       resetValue: "ellipse",
       defaultValue: "ellipse",
       currentValue: "ellipse",
       targetValue: null,
-      options: ["line", "triangle", "square", "pentagon", "ellipse"],
+      options: ["off", "line", "triangle", "square", "pentagon", "ellipse"],
       attrType: "variable",
       lockOn: false
     };
-
-
-
-
-
 
     this.hue = {
       displayLabel: "Color",
@@ -288,7 +195,7 @@ class PoseDetector {
   }
 }
 
-PoseDetector.prototype.render = function() {
+PoseDetector.prototype.render = function () {
   // We can call both functions to draw all keypoints and the skeletons
 
   if (this.mode.currentValue === "Flocking") {
@@ -305,18 +212,19 @@ PoseDetector.prototype.render = function() {
   }
 
   this.drawKeypoints();
+  this.drawTrailers();
   // this.drawSkeleton();
 };
 
 
 
 // A function to draw ellipses over the detected keypoints
-PoseDetector.prototype.drawKeypoints = function() {
+PoseDetector.prototype.drawKeypoints = function () {
   // Loop through all the poses detected
   if (!poses) {
-      return;
+    return;
   }
-  
+
   for (let i = 0; i < poses.length; i++) {
     // For each pose detected, loop through all the keypoints
     let pose = poses[i].pose;
@@ -325,14 +233,13 @@ PoseDetector.prototype.drawKeypoints = function() {
     myp5.strokeWeight(3);
     myp5.stroke(this.hue.currentValue, this.saturation.currentValue, 100);
     this.renderPose(pose);
-
   }
 };
 
-PoseDetector.prototype.drawSkeleton = function() {
+PoseDetector.prototype.drawSkeleton = function () {
   // Loop through all the skeletons detected
   if (!poses) {
-      return;
+    return;
   }
   for (let i = 0; i < poses.length; i++) {
     let skeleton = poses[i].skeleton;
@@ -353,19 +260,8 @@ PoseDetector.prototype.drawSkeleton = function() {
   }
 };
 
-PoseDetector.prototype.renderShaper = function() {
-  for (let i = 0; i < poses.length; i++) {
-    // For each pose detected, loop through all the keypoints
-    let pose = poses[i].pose;
-    this.history.unshift(pose);
-    myp5.noFill();
-    myp5.strokeWeight(3);
-    myp5.stroke(this.hue.currentValue, this.saturation.currentValue, 100);
-    this.renderShaperPose(pose);
-  }
-}
 
-PoseDetector.prototype.drawTrailers = function() {
+PoseDetector.prototype.drawTrailers = function () {
   this.history = this.history.slice(0, this.trailLength.currentValue);
   let historyLength = this.history.length;
 
@@ -385,39 +281,8 @@ PoseDetector.prototype.drawTrailers = function() {
   }
 };
 
-PoseDetector.prototype.renderShaperPose = function(pose) {
 
-  myp5.noFill();
-  myp5.strokeWeight(5);
-  myp5.beginShape();
-  let first = null;
-  for (let j = 0; j < pose.keypoints.length; j++) {
-    // A keypoint is an object describing a body part (like rightArm or leftShoulder)
-    let keypoint = pose.keypoints[j];
-
-    if (keypoint.score < 0.2) {
-      continue;
-    }
-
-    // if (!partsToTrack.includes(keypoint.part) || keypoint.part.toLowerCase() === 'nose') {
-    //   continue;
-    // }
-
-    if (first === null) {
-      first = j;
-    }
-       
-    myp5.curveVertex(keypoint.position.x - this.windowWidth / 2, keypoint.position.y - this.windowHeight / 2);
-  }
-  if (first && pose.keypoints) {
-    // myp5.curveVertex(pose.keypoints[first].position.x - this.windowWidth / 2, pose.keypoints[first].position.y - this.windowHeight / 2);
-  }
-  myp5.endShape(CLOSE);
-  myp5.noStroke();
-
-}
-
-PoseDetector.prototype.renderPose = function(pose) {
+PoseDetector.prototype.renderPose = function (pose) {
   for (let j = 0; j < pose.keypoints.length; j++) {
     // A keypoint is an object describing a body part (like rightArm or leftShoulder)
     let keypoint = pose.keypoints[j];
@@ -438,9 +303,12 @@ PoseDetector.prototype.renderPose = function(pose) {
  * @param yPos
  * @param radius
  */
-PoseDetector.prototype.renderShape = function(xPos, yPos, radius) {
+PoseDetector.prototype.renderShape = function (xPos, yPos, radius) {
   let polygons = ["line", "triangle", "square", "pentagon"]; // polygons we are allowing for set in the shape attribute
 
+  if (this.shape.currentValue === "off") {
+    return;
+  }
   if (this.shape.currentValue === "ellipse") {
     myp5.ellipse(xPos, yPos, radius, radius); // one above and one below
   } else if (polygons.includes(this.shape.currentValue)) {
@@ -459,12 +327,12 @@ PoseDetector.prototype.renderShape = function(xPos, yPos, radius) {
         sides = 5;
         break;
     }
-    myp5.pop();
+    myp5.push();
     myp5.strokeWeight(3);
     myp5.translate(xPos, yPos);
     myp5.rotate(myp5.atan(myp5.frameCount / 50.0));
     myp5.polygon(0, 0, radius, sides);
-    myp5.push();
+    myp5.pop();
   } else {
     myp5.ellipse(xPos, yPos, radius, radius); // one above and one below
   }
@@ -499,180 +367,180 @@ class Flock {
 // Boid class
 // Methods for Separation, Cohesion, Alignment added
 class Boid {
-    constructor(x, y) {
-        this.acceleration = myp5.createVector(myp5.windowWidth / 2, myp5.windowHeight / 2);
-        this.velocity = myp5.createVector(myp5.random(-1, 1), myp5.random(-1, 1));
-        // if (flipHorizintal) {
-            // this.position = myp5.createVector(-x, y);
-        // }
-        // else {
-        this.position = myp5.createVector(x, y);
-        // }
-        this.r = 5;
-        this.maxspeed = poseDetectionRegistration.maxBoidSpeed.defaultValue; // Maximum speed
-        this.maxforce = poseDetectionRegistration.maxBoidForce.defaultValue; // Maximum steering force
-    }
-    run(boids, i) {
-        this.flock(boids);
-        this.updateBoid();
-        this.boidBorders();
-        this.renderBoid(i);
-    }
-    applyForce(force) {
-        // We could add mass here if we want A = F / M
-        this.acceleration.add(force);
-    }
-    // We accumulate a new acceleration each time based on three rules
-    flock(boids) {
-        let sep = this.separateBoids(boids); // Separation
-        let ali = this.alignBoids(boids); // Alignment
-        let coh = this.boidCohesion(boids); // Cohesion
-        // Arbitrarily weight these forces
-        sep.mult(1.5);
-        ali.mult(1.0);
-        coh.mult(1.0);
-        // Add the force vectors to acceleration
-        this.applyForce(sep);
-        this.applyForce(ali);
-        this.applyForce(coh);
-    }
-    // Method to update location
-    updateBoid() {
-        // Update velocity
-        this.velocity.add(this.acceleration);
-        // Limit speed
-        this.velocity.limit(poseDetectionRegistration.maxBoidSpeed.currentValue);
-        this.position.add(this.velocity);
-        // Reset accelertion to 0 each cycle
-        this.acceleration.mult(0);
-    }
-    // A method that calculates and applies a steering force towards a target
-    // STEER = DESIRED MINUS VELOCITY
-    seekBoid(target) {
-        let nearestTarget = getNearestTartget(this.position);
-        // console.log(nearestTarget);
-        // console.log(nearestTarget);
-        let homingDirection = myp5.createVector(nearestTarget.x, nearestTarget.y);
-        //   let homingDirection = myp5.createVector(myp5.mouseX, myp5.mouseY);
-        let desired = p5.Vector.sub(homingDirection, this.position); // A vector pointing from the location to the target
-        // Normalize desired and scale to maximum speed
-        desired.normalize();
-        desired.mult(poseDetectionRegistration.maxBoidSpeed.currentValue);
-        // Steering = Desired minus Velocity
-        let steer = p5.Vector.sub(desired, this.velocity);
-        steer.limit(poseDetectionRegistration.maxBoidForce.currentValue); // Limit to maximum steering force
-        return steer;
-    }
-    renderBoid(i) {
-        // Draw a triangle rotated in the direction of velocity
-        let theta = this.velocity.heading() + radians(90);
-        this.r = myp5.map(poseDetectionRegistration.radius.currentValue, poseDetectionRegistration.radius.min, poseDetectionRegistration.radius.max, 2, 15);
-        this.r = this.r * (1 + myp5.noise((5 * i) + myp5.frameCount * 0.009 ));
-        myp5.noFill();
-        myp5.stroke(poseDetectionRegistration.hue.currentValue, poseDetectionRegistration.saturation.currentValue, 200);
-        myp5.strokeWeight(2);
-        myp5.push();
-        myp5.translate(this.position.x - myp5.width / 2, this.position.y - myp5.height / 2);
-        myp5.rotate(theta);
-        myp5.beginShape();
-        myp5.vertex(0, -this.r * 2);
-        myp5.vertex(-this.r, this.r * 5);
-        myp5.vertex(this.r, this.r * 5);
-        myp5.endShape(CLOSE);
-        myp5.pop();
-    }
-    // Wraparound
-    boidBorders() {
-        if (this.position.x < -this.r)
-            this.position.x = myp5.width + this.r;
-        if (this.position.y < -this.r)
-            this.position.y = myp5.height + this.r;
-        if (this.position.x > myp5.width + this.r)
-            this.position.x = -this.r;
-        if (this.position.y > myp5.height + this.r)
-            this.position.y = -this.r;
-    }
-    // Separation
-    // Method checks for nearby boids and steers away
-    separateBoids(boids) {
-        let desiredseparation = myp5.map(poseDetectionRegistration.trailLength.currentValue, poseDetectionRegistration.trailLength.min, poseDetectionRegistration.trailLength.max, 0, 40);
-        // let desiredseparation = 25.0;
-        let steer = myp5.createVector(0, 0);
-        let count = 0;
-        // For every boid in the system, check if it's too close
-        for (let i = 0; i < boids.length; i++) {
-            let d = p5.Vector.dist(this.position, boids[i].position);
-            // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
-            if (d > 0 && d < desiredseparation) {
-                // Calculate vector pointing away from neighbor
-                let diff = p5.Vector.sub(this.position, boids[i].position);
-                diff.normalize();
-                diff.div(d); // Weight by distance
-                steer.add(diff);
-                count++; // Keep track of how many
-            }
-        }
-        // Average -- divide by how many
-        if (count > 0) {
-            steer.div(count);
-        }
-        // As long as the vector is greater than 0
-        if (steer.mag() > 0) {
-            // Implement Reynolds: Steering = Desired - Velocity
-            steer.normalize();
-            steer.mult(poseDetectionRegistration.maxBoidSpeed.currentValue);
-            steer.sub(this.velocity);
-            steer.limit(poseDetectionRegistration.maxBoidForce.currentValue);
-        }
-        return steer;
-    }
-    // Alignment
-    // For every nearby boid in the system, calculate the average velocity
-    alignBoids(boids) {
-        let neighbordist = myp5.map(poseDetectionRegistration.boidAlignDist.currentValue, poseDetectionRegistration.boidAlignDist.min, poseDetectionRegistration.boidAlignDist.max, 0, 100);
+  constructor(x, y) {
+    this.acceleration = myp5.createVector(0, 0);
+    this.velocity = myp5.createVector(myp5.random(-1, 1), myp5.random(-1, 1));
+    // if (flipHorizintal) {
+    // this.position = myp5.createVector(-x, y);
+    // }
+    // else {
+    this.position = myp5.createVector(x, y);
+    // }
+    this.r = 5;
+    this.maxspeed = 8; // Maximum speed
+    this.maxforce = 0.8; // Maximum steering force .8
+  }
+  run(boids) {
+    this.flock(boids);
+    this.updateBoid();
+    this.boidBorders();
+    this.renderBoid();
+  }
+  applyForce(force) {
+    // We could add mass here if we want A = F / M
+    this.acceleration.add(force);
+  }
+  // We accumulate a new acceleration each time based on three rules
+  flock(boids) {
+    let sep = this.separateBoids(boids); // Separation
+    let ali = this.alignBoids(boids); // Alignment
+    let coh = this.boidCohesion(boids); // Cohesion
+    // Arbitrarily weight these forces
+    sep.mult(1.5);
+    ali.mult(1.0);
+    coh.mult(1.0);
+    // Add the force vectors to acceleration
+    this.applyForce(sep);
+    this.applyForce(ali);
+    this.applyForce(coh);
+  }
+  // Method to update location
+  updateBoid() {
+    // Update velocity
+    this.maxspeed = poseInstance.magnitude.currentValue;
 
-        let sum = createVector(0, 0);
-        let count = 0;
-        for (let i = 0; i < boids.length; i++) {
-            let d = p5.Vector.dist(this.position, boids[i].position);
-            if (d > 0 && d < neighbordist) {
-                sum.add(boids[i].velocity);
-                count++;
-            }
-        }
-        if (count > 0) {
-            sum.div(count);
-            sum.normalize();
-            sum.mult(poseDetectionRegistration.maxBoidSpeed.currentValue);
-            let steer = p5.Vector.sub(sum, this.velocity);
-            steer.limit(poseDetectionRegistration.maxBoidForce.currentValue);
-            return steer;
-        }
-        else {
-            return createVector(0, 0);
-        }
+    this.velocity.add(this.acceleration);
+    // Limit speed
+    this.velocity.limit(this.maxspeed);
+    this.position.add(this.velocity);
+    // Reset accelertion to 0 each cycle
+    this.acceleration.mult(0);
+  }
+  // A method that calculates and applies a steering force towards a target
+  // STEER = DESIRED MINUS VELOCITY
+  seekBoid(target) {
+    let nearestTarget = getNearestTartget(this.position);
+    // console.log(nearestTarget);
+    // console.log(nearestTarget);
+    let homingDirection = myp5.createVector(nearestTarget.x, nearestTarget.y);
+    //   let homingDirection = myp5.createVector(myp5.mouseX, myp5.mouseY);
+    let desired = p5.Vector.sub(homingDirection, this.position); // A vector pointing from the location to the target
+    // Normalize desired and scale to maximum speed
+    desired.normalize();
+    desired.mult(this.maxspeed);
+    // Steering = Desired minus Velocity
+    let steer = p5.Vector.sub(desired, this.velocity);
+    this.maxforce = myp5.map(poseInstance.magnitude.currentValue, poseInstance.magnitude.min, poseInstance.magnitude.min, 0.03, 1)
+    steer.limit(this.maxforce); // Limit to maximum steering force
+    return steer;
+  }
+  renderBoid() {
+    this.r = myp5.map(poseInstance.radius.currentValue, poseInstance.radius.min, poseInstance.radius.max, 1, 30, true);
+    // Draw a triangle rotated in the direction of velocity
+    let theta = this.velocity.heading() + radians(90);
+    myp5.noFill();
+    myp5.stroke(poseInstance.hue.currentValue, poseInstance.saturation.currentValue, 200);
+    myp5.strokeWeight(2);
+    myp5.push();
+    myp5.translate(this.position.x - myp5.width / 2, this.position.y - myp5.height / 2);
+    myp5.rotate(theta);
+    myp5.beginShape();
+    myp5.vertex(0, -this.r* 2);
+    myp5.vertex(-this.r, this.r * 5);
+    myp5.vertex(this.r, this.r * 5);
+    myp5.endShape(CLOSE);
+    myp5.pop();
+  }
+  // Wraparound
+  boidBorders() {
+    if (this.position.x < -this.r)
+      this.position.x = myp5.width + this.r;
+    if (this.position.y < -this.r)
+      this.position.y = myp5.height + this.r;
+    if (this.position.x > myp5.width + this.r)
+      this.position.x = -this.r;
+    if (this.position.y > myp5.height + this.r)
+      this.position.y = -this.r;
+  }
+  // Separation
+  // Method checks for nearby boids and steers away
+  separateBoids(boids) {
+    let desiredseparation = myp5.map(poseInstance.trailLength.currentValue, poseInstance.trailLength.min, poseInstance.trailLength.max, 10, 60);
+    let steer = myp5.createVector(0, 0);
+    let count = 0;
+    // For every boid in the system, check if it's too close
+    for (let i = 0; i < boids.length; i++) {
+      let d = p5.Vector.dist(this.position, boids[i].position);
+      // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
+      if (d > 0 && d < desiredseparation) {
+        // Calculate vector pointing away from neighbor
+        let diff = p5.Vector.sub(this.position, boids[i].position);
+        diff.normalize();
+        diff.div(d); // Weight by distance
+        steer.add(diff);
+        count++; // Keep track of how many
+      }
     }
-    // Cohesion
-    // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
-    boidCohesion(boids) {
-      let neighbordist = myp5.map(poseDetectionRegistration.boidCohesionDist.currentValue, poseDetectionRegistration.boidCohesionDist.min, poseDetectionRegistration.boidCohesionDist.max, 0, 100);
-      let sum = myp5.createVector(0, 0); // Start with empty vector to accumulate all locations
-        let count = 0;
-        for (let i = 0; i < boids.length; i++) {
-            let d = p5.Vector.dist(this.position, boids[i].position);
-            if (d > 0 && d < neighbordist) {
-                sum.add(boids[i].position); // Add location
-                count++;
-            }
-        }
-        if (count > 0) {
-            sum.div(count);
-            return this.seekBoid(sum); // Steer towards the location
-        }
-        else {
-            return myp5.createVector(0, 0);
-        }
+    // Average -- divide by how many
+    if (count > 0) {
+      steer.div(count);
     }
+    // As long as the vector is greater than 0
+    if (steer.mag() > 0) {
+      // Implement Reynolds: Steering = Desired - Velocity
+      steer.normalize();
+      steer.mult(this.maxspeed);
+      steer.sub(this.velocity);
+      steer.limit(this.maxforce);
+    }
+    return steer;
+  }
+  // Alignment
+  // For every nearby boid in the system, calculate the average velocity
+  alignBoids(boids) {
+    let neighbordist = 50;
+    let sum = createVector(0, 0);
+    let count = 0;
+    for (let i = 0; i < boids.length; i++) {
+      let d = p5.Vector.dist(this.position, boids[i].position);
+      if (d > 0 && d < neighbordist) {
+        sum.add(boids[i].velocity);
+        count++;
+      }
+    }
+    if (count > 0) {
+      sum.div(count);
+      sum.normalize();
+      sum.mult(this.maxspeed);
+      let steer = p5.Vector.sub(sum, this.velocity);
+      steer.limit(this.maxforce);
+      return steer;
+    }
+    else {
+      return createVector(0, 0);
+    }
+  }
+  // Cohesion
+  // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
+  boidCohesion(boids) {
+    let neighbordist = 50;
+    let sum = myp5.createVector(0, 0); // Start with empty vector to accumulate all locations
+    let count = 0;
+    for (let i = 0; i < boids.length; i++) {
+      let d = p5.Vector.dist(this.position, boids[i].position);
+      if (d > 0 && d < neighbordist) {
+        sum.add(boids[i].position); // Add location
+        count++;
+      }
+    }
+    if (count > 0) {
+      sum.div(count);
+      return this.seekBoid(sum); // Steer towards the location
+    }
+    else {
+      return myp5.createVector(0, 0);
+    }
+  }
 }
 
 
@@ -687,14 +555,9 @@ function initializeBoids(windowWidth, windowHeight) {
 }
 
 // Add a new boid into the System
-function mouseDragged() {
+function addBoid() {
   flock.addBoid(new Boid(myp5.mouseX - myp5.width, myp5.mouseY));
 }
-
-
-
-
-
 
 
 
@@ -711,13 +574,38 @@ function getNearestTartget(seeker) {
   for (let i = 0; i < keypoints.length; i++) {
     // A keypoint is an object describing a body part (like rightArm or leftShoulder)
     let keypoint = keypoints[i];
-    if (keypoint.score < 0.2 || keypoint.position.x > myp5.width || keypoint.position.x < 0 || keypoint.position.y < 0 || keypoint.position.y > myp5.height ) {
+    if (keypoint.score < 0.2) {
+      continue;
+    }
+
+    if (keypoint.position.x > myp5.width || keypoint.position.x < 0 || keypoint.position.y < 0 || keypoint.position.y > myp5.height) {
       continue;
     }
 
     if (!partsToTrack.includes(keypoint.part)) {
-        continue;
+      continue;
     }
+
+    let gravity = 0;
+    if (keypoint.part.includes('Wrist')) {
+      gravity = 0.6;
+    }
+    else if (keypoint.part.includes('Elbow')) {
+      gravity = 0.4;
+    }
+    else if (keypoint.part.includes('Ankle')) {
+      gravity = 0.4;
+    }
+    else if (keypoint.part.includes('hip')) {
+      gravity = 0.3;
+    }
+    else if (keypoint.part.includes('hip')) {
+      gravity = 0.2;
+    }
+    else if (keypoint.part.includes('nose')) {
+      gravity = .1;
+    }
+
 
     let part = keypoint.part.toLowerCase();
     let gravity = 0;
@@ -742,7 +630,7 @@ function getNearestTartget(seeker) {
 
 
     nextDistance = getDistance(seeker, keypoint.position);
-    nextDistance = nextDistance * (nextDistance/gravity);
+    nextDistance = nextDistance * gravity;
 
     if (distance === null) {
       currentDistance = nextDistance;
@@ -762,6 +650,7 @@ function getNearestTartget(seeker) {
       };
     }
   }
+  // }
 
 
   return position;
@@ -773,12 +662,6 @@ function getDistance(p, q) {
   let dist = Math.sqrt(dx * dx + dy * dy);
   return dist;
 }
-
-
-
-
-
-
 
 
 
@@ -817,7 +700,7 @@ class Particle {
     this.life = 0;
     this.pos = new p5.Vector(x, y);
     this.vel = p5.Vector.random2D();
-    this.vel.mult(map(this.level, 0, maxLevel, 5, 2));
+    this.vel.mult(map(this.level, 0, maxLevel, 6, 2));
     this.move = function () {
       this.life++;
       // Add friction.
@@ -839,71 +722,71 @@ class Particle {
 
 
 function renderParticleNet() {
-  // Create fade effect.
-  // myp5.noStroke();
-  // myp5.fill(0, 30);
-  // myp5.rect(0, 0, width, height);
-  
+
   // Move and spawn particles.
   // Remove any that is below the velocity threshold.
-  for (var i = allParticles.length-1; i > -1; i--) {
+  for (var i = allParticles.length - 1; i > -1; i--) {
     allParticles[i].move();
-    
-    if (allParticles[i].vel.mag() < .5) {
+
+    if (allParticles[i].vel.mag() < myp5.map(poseInstance.magnitude.currentValue, poseInstance.magnitude.min, poseInstance.magnitude.max, 0.05,  0.5)) {
       allParticles.splice(i, 1);
     }
   }
-  
+
   if (allParticles.length > 0) {
     // Run script to get points to create triangles with.
-    data = Delaunay.triangulate(allParticles.map(function(pt) {
+    data = Delaunay.triangulate(allParticles.map(function (pt) {
       return [pt.pos.x, pt.pos.y];
     }));
-  	
-    myp5.strokeWeight(0.5);
-    
+
+    myp5.strokeWeight(0.1);
+
     // Display triangles individually.
     for (var i = 0; i < data.length; i += 3) {
       // Collect particles that make this triangle.
       var p1 = allParticles[data[i]];
-      var p2 = allParticles[data[i+1]];
-      var p3 = allParticles[data[i+2]];
-      
+      var p2 = allParticles[data[i + 1]];
+      var p3 = allParticles[data[i + 2]];
+
       // Don't draw triangle if its area is too big.
-      var distThreshMax = 300;
-      var distTreshMin = 20;
-      
+      var distThreshMax = myp5.map(poseInstance.trailLength.currentValue, poseInstance.trailLength.min, poseInstance.trailLength.max, 100, 500);
+      var distTreshMin = myp5.map(poseInstance.trailLength.currentValue, poseInstance.trailLength.min, poseInstance.trailLength.max, 5, 30);
+
       if (myp5.dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y) > distThreshMax || myp5.dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y) < distTreshMin) {
         continue;
       }
-      
+
       if (myp5.dist(p2.pos.x, p2.pos.y, p3.pos.x, p3.pos.y) > distThreshMax || myp5.dist(p2.pos.x, p2.pos.y, p3.pos.x, p3.pos.y) < distTreshMin) {
         continue;
       }
-      
+
       if (myp5.dist(p1.pos.x, p1.pos.y, p3.pos.x, p3.pos.y) > distThreshMax || myp5.dist(p1.pos.x, p1.pos.y, p3.pos.x, p3.pos.y) < distTreshMin) {
         continue;
       }
-      
+
       // Base its hue by the particle's life.
       let color = poseDetectionRegistration.hue.currentValue;
       if (useFill) {
         myp5.noStroke();
-        myp5.fill(color + p1.life * 1.5, 360, 360);
+        myp5.fill(poseInstance.hue.currentValue + p1.life * 1.5, poseInstance.saturation.currentValue, 360);
       } else {
         myp5.noFill();
-        myp5.stroke(color + p1.life * 1.5, 360, 360);
+        myp5.stroke(poseInstance.hue.currentValue + p1.life * 1.5, poseInstance.saturation.currentValue, 360);
       }
-      
-      myp5.strokeWeight(2)
-      myp5.triangle(p1.pos.x, p1.pos.y, 
-               p2.pos.x, p2.pos.y, 
-               p3.pos.x, p3.pos.y);
+
+      myp5.strokeWeight(myp5.map(poseInstance.radius.currentValue, poseInstance.radius.min, poseInstance.radius.max, 1, 4))
+      myp5.push();
+      myp5.scale(myp5.map(poseInstance.radius.currentValue, poseInstance.radius.min, poseInstance.radius.max, 1, 4));
+      myp5.triangle(p1.pos.x, p1.pos.y,
+        p2.pos.x, p2.pos.y,
+        p3.pos.x, p3.pos.y);
+      myp5.pop();
+
     }
   }
-  
+
   myp5.noStroke();
-  myp5.fill(255);
+  // myp5.fill(255);
 }
 
 
@@ -913,7 +796,7 @@ function createParticle() {
     let pose = poses[i].pose;
 
     for (let j = 0; j < pose.keypoints.length; j++) {
-    // A keypoint is an object describing a body part (like rightArm or leftShoulder)
+      // A keypoint is an object describing a body part (like rightArm or leftShoulder)
       let keypoint = pose.keypoints[j];
       if (keypoint.score > 0.2 && partsToTrack.includes(keypoint.part)) {
         allParticles.push(new Particle(keypoint.position.x - this.windowWidth / 2, keypoint.position.y - this.windowHeight / 2, maxLevel));
@@ -926,5 +809,5 @@ function createParticle() {
 
 
 function keyPressed() {
-  useFill = ! useFill;
+  useFill = !useFill;
 }
